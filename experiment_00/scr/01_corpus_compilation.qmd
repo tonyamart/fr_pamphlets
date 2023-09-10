@@ -1,0 +1,181 @@
+---
+title: "01_corpus_compilation"
+format: html
+editor: visual
+---
+
+# Corpus compilation
+
+```{r}
+library(tidyverse)
+library(tidytext)
+library(udpipe)
+
+theme_set(theme_minimal())
+```
+
+## raw files
+
+```{r}
+# create a filelist
+lf <- list.files(path = "../corpus/", full.names = T)
+# head(lf)
+
+# read texts and put them in a tibble
+df <- tibble(
+  path = lf,
+  text = sapply(path, read_file)
+)
+
+tail(df)
+```
+
+### retrieve metadata
+
+```{r}
+df <- df %>% 
+  # extract metadata from the textfiles
+  mutate(author = str_extract(text,"\\n\\nAutor : .*? Auteur du texte"),
+         author = str_remove_all(author, "\\n\\nAutor : |\\. Auteur du texte"),
+         ) %>%
+  mutate(title = str_extract(text, "\\n\\nTitel : .*?\\n\\n"),
+         title = str_remove_all(title, "\\n\\nTitel : |\\n\\n$")
+         ) %>% 
+  mutate(publisher = str_extract(text, "\\n\\nVerleger : .*?\\n\\n"),
+         publisher = str_remove_all(publisher, "\\n\\nVerleger : |\\n\\n$")
+         ) %>% 
+  mutate(year = str_extract(text, "\\n\\Erscheinungsdatum : .*?\\n\\n"),
+         year = str_remove_all(year, "\\n\\Erscheinungsdatum : |\\n\\n$")
+         ) %>% 
+  mutate(type = str_extract(text, "\\n\\Typ : .*?\\n\\n"),
+         type = str_remove_all(type, "\\n\\Typ : |\\n\\n$")
+         ) %>% 
+  mutate(format = str_extract(text, "\\n\\Format : .*?\\n\\n"),
+         format = str_remove_all(format, "\\n\\Format : |\\n\\n$")
+         ) %>% 
+  mutate(link_gallica = str_extract(text, "\\n\\nIdentificativo : .*?\\n\\n"),
+         link_gallica = str_remove_all(link_gallica, "\\n\\nIdentificativo : |\\n\\n"),
+         link_gallica = ifelse(!is.na(link_gallica), paste0("http://catalogue.bnf.fr/", link_gallica), link_gallica)
+         ) %>% 
+  mutate(ocr_acc = str_extract(text, "Die Erkennungsquote liegt für dieses Dokument bei .*?\\."),
+         ocr_acc = str_remove_all(ocr_acc, "Die Erkennungsquote liegt für dieses Dokument bei |%|\\.")
+         ) %>% 
+  
+  # separate metadata from texts
+  separate_rows(text, sep = "Die Erkennungsquote liegt für dieses Dokument bei") %>% 
+  # remove metadata
+  filter(!str_detect(text, "^Ihre Anfrage")) %>% 
+  # some cleaning
+  mutate(text = str_remove_all(text, "^.*?\\%\\.\\n\\n"))
+
+head(df)
+```
+
+### store ad rda & meta
+
+```{r}
+save(df, file = "../data/corpus_0709.rda")
+write.csv(df %>% select(-text), file = "../metadata.csv")
+```
+
+## load data
+
+```{r}
+meta <- read.csv("../metadata.csv", sep = ";") %>% select(-X)
+load("../data/corpus_0709.rda")
+texts <- df %>% select(path, text)
+
+#glimpse(meta)
+#glimpse(texts)
+
+corpus <- meta %>% 
+  left_join(texts, by = "path")
+
+glimpse(corpus)
+```
+
+# Statistics
+
+### Tokenisation
+
+#### Words
+
+```{r}
+tokens <- corpus %>% 
+  # tokenisation
+  unnest_tokens(input = text,
+                output = word,
+                token = "words") %>% 
+  # remove 1-char length tokens
+  filter(nchar(word) > 1) %>% 
+  # remove digits 
+  filter(!str_detect(word, "\\d+"))
+
+tokens %>% 
+  count(word, sort = T) %>% head(10)
+```
+
+Most frequent words distribution
+
+```{r}
+tokens %>% 
+  count(word, sort = T) 
+
+tokens %>% 
+  count(word, sort = T) %>% 
+  head(2000) %>% 
+  mutate(g = ifelse(n < 200, "red", "gray")) %>% 
+  ggplot(aes(x = reorder_within(word, -n, word), y = n, fill = g)) + 
+  scale_x_reordered() + 
+  geom_col() + 
+  labs(x = "Number of words",
+       y = "Word rank") + 
+  theme(axis.text.x = element_blank(),
+        legend.position = "None")
+```
+
+#### Words by each author
+
+```{r}
+tokens %>% 
+  count(author, sort = T)
+```
+
+```{r}
+glimpse(tokens)
+
+corpus_cln <- tokens %>% 
+  group_by(path) %>% 
+  mutate(text = paste(word, collapse = " ")) %>% 
+  ungroup() %>% 
+  select(-word) %>% 
+  distinct() %>% 
+  mutate(path_new = str_replace(path, "\\.\\./corpus/", "corpus_cln/"))
+
+str(corpus_cln)
+```
+
+```{r}
+for (i in 1:nrow(corpus_cln)) {
+  write_file(x = corpus_cln$text[i], file = corpus_cln$path_new[i])
+}
+```
+
+### Lemmatisation
+
+```{r}
+model <- udpipe_download_model(language = "french")
+fr_model <- udpipe_load_model(model)
+```
+
+```{r}
+x <- udpipe_annotate(fr_model,
+                     x = corpus_cln$text,
+                     tagger = "default")
+
+as.data.frame(x)
+```
+
+# Stylo()
+
+Fast exploration with existing files how clusters

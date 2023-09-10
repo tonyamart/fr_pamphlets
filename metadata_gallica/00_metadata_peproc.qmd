@@ -1,0 +1,404 @@
+---
+title: "00_metadata_preproc"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(kableExtra)
+```
+
+## Load data
+
+### Preselected list of works (Damien's table)
+
+Open manually selected list of works and count how many works with links to BNF/Gallica are available for each author.
+
+```{r}
+preselected <- read.csv("raw_metadata/selection_damien.csv", sep = ";")
+glimpse(preselected)
+
+preselected_cln <- preselected %>% 
+  filter(link != "") %>% 
+  mutate(author = ifelse(author == "Du Crest [Ducrest]", "Ducrest", author),
+         source = "preselected",
+         link = str_remove_all(link, "[[:space:]]+$")) %>% 
+  rename(title_preselected = title) 
+
+preselected_cln %>% 
+  count(author)
+```
+
+### Exported data from BNF
+
+Data exported for each author, date of publication limited as 1700-1799.
+
+Steps of data cleaning below:
+
+-   removal of exemplars data, 1 row = 1 title
+
+-   removal of collective works
+
+```{r}
+fl <- list.files(path = "raw_metadata/bnf/", full.names = T)
+
+fl
+
+x <- NULL
+df <- NULL
+
+for (i in 1:length(fl)) {
+  x <- read.csv(fl[i], sep = ";")
+  
+  x <- x %>% 
+    select(-n..notice.BnF, -Localisation, -Exemplaire.n., -Couverture, -X) %>% 
+    distinct()
+  
+  df <- rbind(df, x)
+}
+
+glimpse(df)
+```
+
+How raw data from BNF looks like (even if kind of filtered by author during the search). Number of works by each of 12 authors:
+
+```{r}
+df %>% 
+  count(Auteur)
+```
+
+Load an additional table of authors to remove collective works
+
+```{r}
+authors <- read.csv("raw_metadata/authors_transl.csv", sep = ";")
+authors
+```
+
+Filter only selected authors from the BNF data & show how many titles for each author we have:
+
+```{r}
+df %>% 
+  filter(Auteur %in% authors$author_bnf) %>% 
+  count(Auteur)
+```
+
+```{r, echo=FALSE, include=FALSE}
+
+#All BNF
+
+#Load all data from BNF for French-language books between 1700 and 1790 (for some reason haven't found all 12 authors, probably the query should be altered)
+
+# x <- read.csv("raw_metadata/bnf_all.csv", sep = ";")
+# 
+# x <- read.delim("raw_metadata/test.tsv", sep = "\t")
+# glimpse(x)
+# 
+# # select 20 years period to be filtered
+# years <- as.character(1770:1790)
+# 
+# df <- x %>%
+#   # remove data about exemplars and leave only unique titles
+#   select(-n..notice.BnF, -Localisation, -Exemplaire.n., -Couverture, -X) %>%
+#   distinct() #%>% 
+#   # filter date of publication between 1770 and 1790
+#   # leave date ranges for exeptional cases
+#   #mutate(date_filter = str_replace_all(Date, "(\\d{4})-\\d{4}", "\\1")) %>% 
+#   #filter(date_filter %in% years)
+# 
+# # quick check on the number of books (digitised)
+# df %>% count(Date, sort = T)
+
+# df %>% 
+#   count(Auteur, sort = T) %>% 
+#   filter(Auteur %in% authors$author_bnf)
+```
+
+## Data merging and cleaning
+
+### Clean BNF table
+
+Clean links from ISSN
+
+```{r}
+df <- df %>% 
+  rename(link = Identifiant) %>% 
+  mutate(link = str_remove_all(link, "[[:space:]]\\|[[:space:]].*")) %>% 
+  # remove one row withough a link
+  filter(str_detect(link, "^http"))
+
+# head(df)
+```
+
+Some statistics
+
+```{r}
+print(paste0("Number of rows in the bibliography: ", nrow(df)))
+print(paste0("Number of rows in the selection by Damien: ", nrow(preselected_cln)))
+```
+
+### Merging
+
+Attach table of preselected books
+
+```{r}
+biblio_intersection <- df %>% 
+  mutate(link = str_replace_all(link, "http:", "https:"),
+         link = str_remove_all(link, "\\s+$")) %>% 
+  inner_join(preselected_cln, by = "link") %>% 
+  select(link, author, Auteur) %>% 
+  mutate(source = "both")
+glimpse(biblio_intersection)
+```
+
+```{r}
+biblio_antijoin <- df %>% 
+  mutate(source = "bnf",
+         link = str_replace_all(link, "http:", "https:"),
+         link = str_remove_all(link, "\\s+$")) %>% 
+  anti_join(preselected_cln, by = "link") %>% 
+  filter(Auteur %in% authors$author_bnf) %>% 
+  select(link, Auteur) %>% 
+  left_join(authors %>% rename(Auteur = author_bnf,
+                               author = author_short), by = "Auteur") %>% 
+  mutate(source = "bnf") %>% 
+  select(link, author, Auteur, source)
+
+glimpse(biblio_antijoin)
+```
+
+```{r}
+selected_non_found <- preselected_cln %>% 
+  anti_join(df %>% mutate(source = "bnf",
+         link = str_replace_all(link, "http:", "https:"),
+         link = str_remove_all(link, "\\s+$")), by = "link") %>% 
+  select(link, author) %>% 
+  left_join(authors %>% 
+              filter(author_bnf != "Ducrest, Charles-Louis. Auteur du texte") %>% 
+              rename(Auteur = author_bnf,
+                     author = author_short),
+            by = "author") %>% 
+  mutate(source = "selected")
+
+glimpse(selected_non_found)
+```
+
+### Sample bibliography
+
+Create final bibliography with links for all found authors
+
+```{r}
+biblio <- rbind(biblio_intersection, biblio_antijoin, selected_non_found)
+
+table(biblio$source)
+biblio %>% 
+  count(author)
+```
+
+```{r}
+# write.csv(biblio, "raw_metadata/biblio_sample.csv")
+```
+
+## Scraping
+
+Retrieve metadata from BNF using links
+
+```{r}
+# load data
+biblio <- read.csv("raw_metadata/biblio_sample.csv")
+```
+
+```{r}
+# load packages
+library(rvest, warn.conflicts=FALSE)
+library(xml2)
+
+#biblio_t <- biblio %>% sample_n(10)
+```
+
+Each book's page in BNF catalogue has a field with the metadata
+
+```{r}
+w <- read_html("https://catalogue.bnf.fr/ark:/12148/cb30263686w")
+
+w %>% html_nodes(xpath = '//meta[@name]') 
+
+# w %>% html_nodes(xpath = '//meta') %>% html_attr('content')
+
+#w %>% html_nodes(xpath = '//meta[@name="DC.title"]') %>% 
+#  html_attr('content')
+```
+
+```{r, echo=FALSE, include=FALSE}
+# Scrape entire metadata (some issues with reshaping it back in a table)
+
+# t1 <- Sys.time()
+# 
+# metadata <- sapply(biblio$link, function(url) {
+#   url %>% 
+#     as.character() %>% 
+#     read_html() %>% 
+#     html_nodes(xpath = '//meta[@name]') 
+# })
+# 
+# t2 <- Sys.time()
+# 
+# print(paste0("time: ", t2-t1))
+```
+
+```{r}
+# # transformation from listed xml to df
+# t <- metadata %>% 
+#   map(xml_attrs) %>% 
+#   map_df(~as.list(.))
+# 
+# # names are not unique, thus the transformation to columns is not clean
+# tt <- t %>% 
+#   select(name, content) %>% 
+#   mutate(name = str_remove_all(name, "DC\\.")) %>% 
+#   filter(name %in% c("title", "publisher", "date", "format")) %>% 
+#   group_by(name) %>% 
+#   mutate(row = row_number()) %>% 
+#   tidyr::pivot_wider(names_from = name, values_from = content)
+# 
+
+```
+
+The following code retrieved the fields of metadata separately
+
+```{r}
+# t1 <- Sys.time()
+# 
+# author <- sapply(biblio$link, function(url) {
+#   url %>% 
+#     as.character() %>% 
+#     read_html() %>% 
+#     html_nodes(xpath = '//meta[@name="DC.creator"]') %>% 
+#     html_attr('content')
+# })
+# 
+# t2 <- Sys.time()
+# 
+# print(paste0("time: ", t2-t1))
+```
+
+```{r}
+# t1 <- Sys.time()
+# 
+# 
+# title <- sapply(biblio$link, function(url) {
+#   url %>% 
+#     as.character() %>% 
+#     read_html() %>% 
+#     html_nodes(xpath = '//meta[@name="DC.title"]') %>% 
+#     html_attr('content')
+# })
+# 
+# date <- sapply(biblio$link, function(url) {
+#   url %>% 
+#     as.character() %>% 
+#     read_html() %>% 
+#     html_nodes(xpath = '//meta[@name="DC.date"]') %>% 
+#     html_attr('content')
+# })
+# 
+# t2 <- Sys.time()
+# 
+# print(paste0("time: ", t2-t1))
+```
+
+```{r}
+
+# t1 <- Sys.time()
+# 
+# publisher <- sapply(biblio$link, function(url) {
+#   url %>% 
+#     as.character() %>% 
+#     read_html() %>% 
+#     html_nodes(xpath = '//meta[@name="DC.publisher"]') %>% 
+#     html_attr('content')
+# })
+# 
+# format <- sapply(biblio$link, function(url) {
+#   url %>% 
+#     as.character() %>% 
+#     read_html() %>% 
+#     html_nodes(xpath = '//meta[@name="DC.format"]') %>% 
+#     html_attr('content')
+# })
+# 
+# t2 <- Sys.time()
+# 
+# print(paste0("time: ", t2-t1))
+```
+
+Export links to Gallica
+
+```{r}
+# w %>% 
+#   html_elements("h3") 
+
+w %>% 
+  html_elements(".exemplaire-action-visualiser") %>% 
+  html_attr("href")
+```
+
+```{r}
+# gallica_url <- sapply(biblio$link, function(url) {
+#   url %>% 
+#     as.character() %>% 
+#     read_html() %>% 
+#     html_elements(".exemplaire-action-visualiser") %>% 
+#     html_attr("href")
+# })
+```
+
+Create resulting table from collected lists
+
+```{r}
+# x <- tibble(
+#   author_short = biblio$author,
+#   gallica_link = sapply(gallica_url, paste, collapse = "   "),
+#   title = sapply(title, paste, collapse = " | "),
+#   year = sapply(date, paste, collapse = "-"),
+#   author_bnf = sapply(author, paste, collapse = " | "),
+#   publisher = sapply(publisher, paste, collapse = " | "),
+#   format = sapply(format, paste, collapse = " | "),
+#   source = biblio$source,
+#   bnf_cat = biblio$link
+#   ) %>% 
+#   mutate(pages = str_extract(format, "\\d+\\sp\\."))
+# 
+# x
+# 
+# write.csv(x, "bibliography_12authors.csv")
+```
+
+## Load bibliography
+
+```{r}
+b <- read.csv("bibliography_12authors.csv")
+
+head(b) %>% kbl()
+```
+
+```{r}
+b %>% 
+  count(author_short)
+```
+
+```{r}
+b %>% 
+  select(year) %>% 
+  distinct() %>% 
+  arrange(-desc(year)) %>% kbl()
+```
+
+```{r}
+larger_texts <- b %>% 
+  mutate(pages = str_remove_all(pages, " p\\."),
+         pages = as.numeric(pages)) %>% 
+  filter(pages > 20) 
+
+# write.csv(larger_texts, "larger_texts.csv")
+```

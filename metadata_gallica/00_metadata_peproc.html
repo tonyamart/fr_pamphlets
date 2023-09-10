@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.361">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>00_metadata_preproc</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="00_metadata_peproc_files/libs/clipboard/clipboard.min.js"></script>
+<script src="00_metadata_peproc_files/libs/quarto-html/quarto.js"></script>
+<script src="00_metadata_peproc_files/libs/quarto-html/popper.min.js"></script>
+<script src="00_metadata_peproc_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="00_metadata_peproc_files/libs/quarto-html/anchor.min.js"></script>
+<link href="00_metadata_peproc_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="00_metadata_peproc_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="00_metadata_peproc_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="00_metadata_peproc_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="00_metadata_peproc_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+<script src="00_metadata_peproc_files/libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="00_metadata_peproc_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">00_metadata_preproc</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'kableExtra'
+
+The following object is masked from 'package:dplyr':
+
+    group_rows</code></pre>
+</div>
+</div>
+<section id="load-data" class="level2">
+<h2 class="anchored" data-anchor-id="load-data">Load data</h2>
+<section id="preselected-list-of-works-damiens-table" class="level3">
+<h3 class="anchored" data-anchor-id="preselected-list-of-works-damiens-table">Preselected list of works (Damien’s table)</h3>
+<p>Open manually selected list of works and count how many works with links to BNF/Gallica are available for each author.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>preselected <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"raw_metadata/selection_damien.csv"</span>, <span class="at">sep =</span> <span class="st">";"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(preselected)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 370
+Columns: 3
+$ author &lt;chr&gt; "Clavière", "Clavière", "Clavière", "Clavière", "Clavière", "Cl…
+$ title  &lt;chr&gt; "Correspondance du ministre Clavière et du général Montesquiou,…
+$ link   &lt;chr&gt; "https://catalogue.bnf.fr/ark:/12148/cb36307960r", "", "https:/…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>preselected_cln <span class="ot">&lt;-</span> preselected <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(link <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">author =</span> <span class="fu">ifelse</span>(author <span class="sc">==</span> <span class="st">"Du Crest [Ducrest]"</span>, <span class="st">"Ducrest"</span>, author),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">source =</span> <span class="st">"preselected"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">link =</span> <span class="fu">str_remove_all</span>(link, <span class="st">"[[:space:]]+$"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">title_preselected =</span> title) </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>preselected_cln <span class="sc">%&gt;%</span> </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(author)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            author  n
+1         Clavière 15
+2        Condorcet  7
+3       Desmoulins  9
+4          Ducrest  5
+5           Laclos  7
+6           Manuel  6
+7            Marat 27
+8 Olympe de Gouges 46
+9           Pétion 28</code></pre>
+</div>
+</div>
+</section>
+<section id="exported-data-from-bnf" class="level3">
+<h3 class="anchored" data-anchor-id="exported-data-from-bnf">Exported data from BNF</h3>
+<p>Data exported for each author, date of publication limited as 1700-1799.</p>
+<p>Steps of data cleaning below:</p>
+<ul>
+<li><p>removal of exemplars data, 1 row = 1 title</p></li>
+<li><p>removal of collective works</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fl <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"raw_metadata/bnf/"</span>, <span class="at">full.names =</span> T)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>fl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "raw_metadata/bnf//brissot.csv"    "raw_metadata/bnf//claviere.csv"  
+ [3] "raw_metadata/bnf//condorcet.csv"  "raw_metadata/bnf//desmoulins.csv"
+ [5] "raw_metadata/bnf//ducrest.csv"    "raw_metadata/bnf//gouges.csv"    
+ [7] "raw_metadata/bnf//laclos.csv"     "raw_metadata/bnf//manuel.csv"    
+ [9] "raw_metadata/bnf//marat.csv"      "raw_metadata/bnf//mirabeau.csv"  
+[11] "raw_metadata/bnf//petion.csv"     "raw_metadata/bnf//sieyes.csv"    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(fl)) {</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(fl[i], <span class="at">sep =</span> <span class="st">";"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x <span class="sc">%&gt;%</span> </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>n..notice.BnF, <span class="sc">-</span>Localisation, <span class="sc">-</span>Exemplaire.n., <span class="sc">-</span>Couverture, <span class="sc">-</span>X) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">distinct</span>()</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df, x)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 237
+Columns: 12
+$ Identifiant      &lt;chr&gt; "http://catalogue.bnf.fr/ark:/12148/cb30163031s", "ht…
+$ Type.de.notice   &lt;chr&gt; "monographie", "périodique : notice d'ensemble biblio…
+$ Type.de.document &lt;chr&gt; "texte imprimé", "publication en série imprimée", "te…
+$ Titre            &lt;chr&gt; "L'ombre de J.-P. Brissot, aux législateurs français,…
+$ Auteur           &lt;chr&gt; "Brissot de Warville, Jacques-Pierre (1754-1793). Aut…
+$ Contributeur     &lt;chr&gt; "", "", "", "Brissot de Warville, Jacques-Pierre (175…
+$ Editeur          &lt;chr&gt; "R. Vatar (Paris)", "chez Perisse le jeune, libraire,…
+$ Date             &lt;chr&gt; "1798-1799", "1784-1785", "1791", "1782-1785", "1789"…
+$ Description      &lt;chr&gt; "", "Variante(s) de titre : Tableau de l'état présent…
+$ Sujet            &lt;chr&gt; "France -- 1795-1799 (Directoire)", "", "Descriptions…
+$ Langue           &lt;chr&gt; "fre | français | ", "fre | français | ", "fre | fran…
+$ Format           &lt;chr&gt; "[1]-22 p. ; in-8", "", "3 vol. ([4]-LII-395 p. ; [2]…</code></pre>
+</div>
+</div>
+<p>How raw data from BNF looks like (even if kind of filtered by author during the search). Number of works by each of 12 authors:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Auteur)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Auteur
+1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+2                                                                                                                                                                                                                                                                                                                                                                                                                                              frère de Choderlos de Laclos, l'auteur des Liaisons dangereuses
+3                                                                                                                                                                                                                                                                                                                                                                                                                                                              Académie des sciences (France). Auteur du texte
+4                                                                                                                                                                                                                                                                                                                                                                    Bailly, Jean Sylvain (1736-1793). Auteur du texte | Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte | 
+5                                                                                                                                                                                                                                   Bossut, Charles (1730-1814). Auteur du texte | Charles (17..-1791). Auteur du texte | Alembert, D' (1717-1783). Auteur du texte | Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte | La Lande, Jérôme de (1732-1807). Auteur du texte | 
+6                                                                                                                                                                                                                                                                                                                                                                                                                                             Brissot de Warville, Jacques-Pierre (1754-1793). Auteur du texte
+7                                                                                                                                                                                                                                                                                                                                                                                          Brissot de Warville, Jacques-Pierre (1754-1793). Auteur du texte | Clavière, Étienne (1735-1793). Auteur du texte |
+8                                                                                                                                                                                                                                                                                                                                                                                         Brissot de Warville, Jacques-Pierre (1754-1793). Auteur du texte | Clavière, Étienne (1735-1793). Auteur du texte | 
+9  Brissot de Warville, Jacques-Pierre (1754-1793). Auteur du texte | Du Morier, Joseph-Pierre (1759-1801). Auteur du texte | Baillio (l aîné de Saint Domingue). Auteur du texte | Courrejolles, François-Gabriel (1738-18..?). Auteur du texte | Tarbé, Charles (1756-1804). Auteur du texte | Milscent, Claude (1740-1794). Auteur du texte | Assemblée générale de la partie française de Saint Domingue. Auteur du texte | Assemblée générale de la partie française de Saint Domingue. Auteur du texte |
+10                                                                                                                                                                                                                                                                                                                                                                   Cerutti, Joseph-Antoine-Joachim (1738-1792). Auteur du texte | Mirabeau, Honoré-Gabriel Riquetti comte de (1749-1791). Auteur du texte | 
+11                                                                                                                                                                                                                                                                                                                                                                                                                                  Choderlos de Laclos, Pierre-Ambroise-François (1741-1803). Auteur du texte
+12                                                                                                                                                                                                                                                                                                                                                                        Choderlos de Laclos, Pierre-Ambroise-François (1741-1803). Auteur du texte | Sieyès, Emmanuel-Joseph (1748-1836). Auteur du texte | 
+13                                                                                                                                                                                                                                                                                                                                    Choiseul-Gouffier, Marie-Gabriel-Florent-Auguste de (1752-1817). Auteur du texte | Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte | 
+14                                                                                                                                                                                                                                                                                                                                                                                                                                                              Clavière, Étienne (1735-1793). Auteur du texte
+15                                                                                                                                                                                                                                                                                                                                                                                       Clavière, Étienne (1735-1793). Auteur du texte | Montesquiou-Fezensac, Anne-Pierre de (1739-1798). Auteur du texte | 
+16                                                                                                                                                                                                                                                                                                                                                                                Comnène, Démétrius (1749-1821). Auteur du texte | Mirabeau, Honoré-Gabriel Riquetti comte de (1749-1791). Auteur du texte | 
+17                                                                                                                                                                                                                                                                                                                                                                                                                          Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte
+18                                                                                                                                                                                                                                                                                                                                       Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte | Nivernais, Louis-Jules Mancini-Mazarini (1716-1798 ; duc de). Auteur du texte | 
+19                                                                                                                                                                                                                                                                                                     Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte | Peyssonnel, Charles de (1727-1790). Auteur du texte | Le Chapelier, Isaac-René-Guy (1754-1794). Auteur du texte | 
+20                                                                                                                                                                                                                                                                                                                                                            Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte | Turgot, Anne-Robert-Jacques (1727-1781). Auteur du texte | 
+21                                                                                                                                                                                                                                                                                                                                                                                                                                                            Desmoulins, Camille (1760-1794). Auteur du texte
+22                                                                                                                                                                                                                                                                                                                                                                         Desmoulins, Camille (1760-1794). Auteur du texte | Dusaulchoy de Bergemont, Joseph-François-Nicolas (1761-1835). Auteur du texte | 
+23                                                                                                                                                                                        Du Roullet, François-Louis Gand Le Bland (1716-1786 ; bailli). Auteur du texte | Suard, Jean-Baptiste-Antoine (1732-1817). Auteur du texte | Boyer, Pascal (1743-1794). Auteur du texte | Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte | Gluck (chevalier). Auteur du texte | 
+24                                                                                                                                                                                                                                                                                                                                                                                                                                                         Ducrest, Charles-Louis (1747-1824). Auteur du texte
+25                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Ducrest, Charles-Louis. Auteur du texte
+26                                                                                                                                                                                                                                     Follie, Adrien-Jacques (1746-1803). Auteur du texte | Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte | Bleschamp, Charles-Joseph de (1747-1824). Auteur du texte | Dupont de Nemours, Pierre-Samuel (1739-1817). Auteur du texte | 
+27                                                                                                                                                                                                                                                                                                                                                                                                                                                              Gouges, Olympe de (1748-1793). Auteur du texte
+28                                                                                                                                                                                                                                                                                                                                                                                Guillard, Nicolas-François (1752-1814). Auteur du texte | Brissot de Warville, Jacques-Pierre (1754-1793). Auteur du texte |
+29                                                                                                                                                                                                                                                                                                                                                                                                                  Keate, George (1729-1797). Auteur du texte | Wilson, Henry (1740-1810). Auteur du texte | 
+30                                                                                                                                                                                                                                                                                                                            Kersaint, Armand Guy (1742-1793). Auteur du texte | Lanthenas, François Xavier (1754-1799). Auteur du texte | Brissot de Warville, Jacques-Pierre (1754-1793). Auteur du texte |
+31                                                                                                                                                                                                                                                                                                                                                            La Métherie, Jean-Claude de (1743-1817). Auteur du texte | Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte | 
+32                                                                                                                                                                                                                                                                                                                                                                                                                                                                      Law, John (1671-1729). Auteur du texte
+33                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Le Cercle social (Paris). Auteur du texte
+34                                                                                                                                                                                                                                                                                                                                                                                                                                                            Livingston, William (1723-1790). Auteur du texte
+35                                                                                                                                                                                                                                                                                                                                                                                                                    Luchet, Jean-Pierre-Louis de La Roche du Maine (1739-1792 ; marquis de). Auteur du texte
+36                                                                                                                                                                                                                                                                                                                                                                                                                          Macintosh, William. Auteur du texte | Capper, James (1743-1825). Auteur du texte |
+37                                                                                                                                                                                                                                                                                                                                                                                                                                                           Manuel, Louis-Pierre (1751-1793). Auteur du texte
+38                                                                                                                                                                                                                                                                                                                                                                                                                                                               Marat, Jean-Paul (1743-1793). Auteur du texte
+39                                                                                                                                                                                                                                                                                                                                                                                                         Marat, Jean-Paul (1743-1793). Auteur du texte | Huguenin, Sulpice (1765?-1803?). Auteur du texte | 
+40                                                                                                                                                                                                                                                                                                                                                                                                                                                                   Milton, John (1608-1674). Auteur du texte
+41                                                                                                                                                                                                                                                                                                                                                                                                                                     Mirabeau, Honoré-Gabriel Riquetti comte de (1749-1791). Auteur du texte
+42                                                                                                                                                                                                                                                                                                                                   Mirabeau, Honoré-Gabriel Riquetti comte de (1749-1791). Auteur du texte | France. Assemblée nationale constituante (1789-1791). Comité ecclésiastique. Auteur du texte | 
+43                                                                                                                                                                                                                                                                                                                                                                                                 Mirabeau, Honoré-Gabriel Riquetti comte de (1749-1791). Auteur du texte | Pommier, Abbé. Auteur du texte | 
+44                                                                                                                                                                                                                                                                                                                     Mirabeau, Honoré-Gabriel Riquetti comte de (1749-1791). Auteur du texte | Turgot, Anne-Robert-Jacques (1727-1781). Auteur du texte | Washington, George (1732-1799). Auteur du texte | 
+45                                                                                                                                                                                                                                                                                                                                                                                       Montesquiou-Fezensac, Anne-Pierre de (1739-1798). Auteur du texte | Clavière, Étienne (1735-1793). Auteur du texte | 
+46                                                                                                                                                                                                                                                                                                                                                                                                                                                                  Newton, Isaac (1642-1727). Auteur du texte
+47                                                                                                                                                                                                                                                                                                                                                                                    Orléans, Louis Philippe Joseph d' (1747-1793). Auteur du texte | Sieyès, Emmanuel-Joseph (1748-1836). Auteur du texte | 
+48                                                                                                                                                                                                                                                                                                                                                                                                                                                                           Pesme-Laurenceau. Auteur du texte
+49                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Pétion, Jérôme (1756-1794). Auteur du texte
+50                                                                                                                                                                                                                                                                                                                                                                                                             Pétion, Jérôme (1756-1794). Auteur du texte | Carra, Jean-Louis (1742-1793). Auteur du texte | 
+51                                                                                                                                                                                                                                                                                                                                         Pétion, Jérôme (1756-1794). Auteur du texte | Couthon, Georges (1755-1794). Auteur du texte | Dubois de Crancé, Edmond-Louis-Alexis (1747-1814). Auteur du texte | 
+52                                                                                                                                                                                                                                                                                                                                                                                            Pétion, Jérôme (1756-1794). Auteur du texte | Dufourny de Villiers, Louis-Pierre (1739-1796). Auteur du texte | 
+53                                                                                                                                                                                                                                                                                                                                                                                                               Pétion, Jérôme (1756-1794). Auteur du texte | Fauchet, Claude (1744-1793). Auteur du texte | 
+54                                                                                                                                                                                                                                                                                                                                                                                                                                                           Rabaut Saint-Étienne (1743-1793). Auteur du texte
+55                                                                                                                                                                                                                                                                                                                          Rochon, Alexis (1741-1817). Auteur du texte | Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte | Bossut, Charles (1730-1814). Auteur du texte | 
+56                                                                                                                                                                                                                                                                                                                                                                                                                                     Saint-Georges, Joseph Boulogne (1745?-1799 ; chevalier de). Compositeur
+57                                                                                                                                                                                                                                                                                                                                                                                                                                                        Sieyès, Emmanuel-Joseph (1748-1836). Auteur du texte
+58                                                                                                                                                                                                                                                                                                                                                                             Sieyès, Emmanuel-Joseph (1748-1836). Auteur du texte | France. Assemblée nationale constituante (1789-1791). Auteur du texte | 
+59                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Smith, Adam (1723-1790). Auteur du texte
+60                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Société de 1789 (Paris). Auteur du texte
+61                                                                                                                                                                                                                                                                                                                                                                                                                                                Société des amis de la Constitution (Paris). Auteur du texte
+62                                                                                                                                                                                                                                                                                                                                                                                                             Tibulle (0050?-0018? av. J.-C.). Auteur du texte | Second, Jean (1511-1536). Auteur du texte | 
+63                                                                                                                                                                                                                                                                                                                                                                               Turgot, Anne-Robert-Jacques (1727-1781). Auteur du texte | Brissot de Warville, Jacques-Pierre (1754-1793). Auteur du texte |
+64                                                                                                                                                                                                                                                                                                                                                                                                                                                                       Voltaire (1694-1778). Auteur du texte
+65                                                                                                                                                                                                                                                                                                                                                                               Voltaire (1694-1778). Auteur du texte | Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte | 
+    n
+1  18
+2   1
+3   1
+4   1
+5   1
+6  24
+7   1
+8   1
+9   1
+10  1
+11  5
+12  2
+13  1
+14  1
+15  1
+16  1
+17 38
+18  1
+19  1
+20  1
+21  8
+22  1
+23  1
+24  4
+25  1
+26  1
+27 10
+28  1
+29  1
+30  1
+31  1
+32  1
+33  4
+34  1
+35  2
+36  1
+37  3
+38 22
+39  1
+40  1
+41 27
+42  1
+43  1
+44  1
+45  1
+46  1
+47  1
+48  1
+49 10
+50  1
+51  1
+52  1
+53  1
+54  1
+55  1
+56  1
+57  9
+58  1
+59  1
+60  1
+61  1
+62  1
+63  1
+64  2
+65  1</code></pre>
+</div>
+</div>
+<p>Load an additional table of authors to remove collective works</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>authors <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"raw_metadata/authors_transl.csv"</span>, <span class="at">sep =</span> <span class="st">";"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>authors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       author_short
+1           Brissot
+2           Brissot
+3          Clavière
+4         Condorcet
+5        Desmoulins
+6           Ducrest
+7           Ducrest
+8  Olympe de Gouges
+9            Laclos
+10           Manuel
+11            Marat
+12         Mirabeau
+13           Pétion
+14           Sieyès
+                                                                                                                                author_bnf
+1                                                                         Brissot de Warville, Jacques-Pierre (1754-1793). Auteur du texte
+2  Brissot de Warville, Jacques-Pierre (1754-1793). Auteur du texte | Brissot de Warville, Jacques-Pierre (1754-1793). Auteur du texte |\n
+3                                                                                           Clavière, Étienne (1735-1793). Auteur du texte
+4                                                       Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte
+5                                                                                         Desmoulins, Camille (1760-1794). Auteur du texte
+6                                                                                      Ducrest, Charles-Louis (1747-1824). Auteur du texte
+7                                                                                                  Ducrest, Charles-Louis. Auteur du texte
+8                                                                                           Gouges, Olympe de (1748-1793). Auteur du texte
+9                                                               Choderlos de Laclos, Pierre-Ambroise-François (1741-1803). Auteur du texte
+10                                                                                       Manuel, Louis-Pierre (1751-1793). Auteur du texte
+11                                                                                           Marat, Jean-Paul (1743-1793). Auteur du texte
+12                                                                 Mirabeau, Honoré-Gabriel Riquetti comte de (1749-1791). Auteur du texte
+13                                                                                             Pétion, Jérôme (1756-1794). Auteur du texte
+14                                                                                    Sieyès, Emmanuel-Joseph (1748-1836). Auteur du texte</code></pre>
+</div>
+</div>
+<p>Filter only selected authors from the BNF data &amp; show how many titles for each author we have:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Auteur <span class="sc">%in%</span> authors<span class="sc">$</span>author_bnf) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Auteur)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                                                               Auteur
+1                    Brissot de Warville, Jacques-Pierre (1754-1793). Auteur du texte
+2          Choderlos de Laclos, Pierre-Ambroise-François (1741-1803). Auteur du texte
+3                                      Clavière, Étienne (1735-1793). Auteur du texte
+4  Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte
+5                                    Desmoulins, Camille (1760-1794). Auteur du texte
+6                                 Ducrest, Charles-Louis (1747-1824). Auteur du texte
+7                                             Ducrest, Charles-Louis. Auteur du texte
+8                                      Gouges, Olympe de (1748-1793). Auteur du texte
+9                                   Manuel, Louis-Pierre (1751-1793). Auteur du texte
+10                                      Marat, Jean-Paul (1743-1793). Auteur du texte
+11            Mirabeau, Honoré-Gabriel Riquetti comte de (1749-1791). Auteur du texte
+12                                        Pétion, Jérôme (1756-1794). Auteur du texte
+13                               Sieyès, Emmanuel-Joseph (1748-1836). Auteur du texte
+    n
+1  24
+2   5
+3   1
+4  38
+5   8
+6   4
+7   1
+8  10
+9   3
+10 22
+11 27
+12 10
+13  9</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="data-merging-and-cleaning" class="level2">
+<h2 class="anchored" data-anchor-id="data-merging-and-cleaning">Data merging and cleaning</h2>
+<section id="clean-bnf-table" class="level3">
+<h3 class="anchored" data-anchor-id="clean-bnf-table">Clean BNF table</h3>
+<p>Clean links from ISSN</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">link =</span> Identifiant) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">link =</span> <span class="fu">str_remove_all</span>(link, <span class="st">"[[:space:]]</span><span class="sc">\\</span><span class="st">|[[:space:]].*"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># remove one row withough a link</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(link, <span class="st">"^http"</span>))</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># head(df)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Some statistics</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"Number of rows in the bibliography: "</span>, <span class="fu">nrow</span>(df)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Number of rows in the bibliography: 236"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"Number of rows in the selection by Damien: "</span>, <span class="fu">nrow</span>(preselected_cln)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Number of rows in the selection by Damien: 150"</code></pre>
+</div>
+</div>
+</section>
+<section id="merging" class="level3">
+<h3 class="anchored" data-anchor-id="merging">Merging</h3>
+<p>Attach table of preselected books</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>biblio_intersection <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">link =</span> <span class="fu">str_replace_all</span>(link, <span class="st">"http:"</span>, <span class="st">"https:"</span>),</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">link =</span> <span class="fu">str_remove_all</span>(link, <span class="st">"</span><span class="sc">\\</span><span class="st">s+$"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(preselected_cln, <span class="at">by =</span> <span class="st">"link"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(link, author, Auteur) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">source =</span> <span class="st">"both"</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(biblio_intersection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 55
+Columns: 4
+$ link   &lt;chr&gt; "https://catalogue.bnf.fr/ark:/12148/cb302486035", "https://cat…
+$ author &lt;chr&gt; "Clavière", "Condorcet", "Condorcet", "Condorcet", "Condorcet",…
+$ Auteur &lt;chr&gt; "Clavière, Étienne (1735-1793). Auteur du texte", "Condorcet, J…
+$ source &lt;chr&gt; "both", "both", "both", "both", "both", "both", "both", "both",…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>biblio_antijoin <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">source =</span> <span class="st">"bnf"</span>,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">link =</span> <span class="fu">str_replace_all</span>(link, <span class="st">"http:"</span>, <span class="st">"https:"</span>),</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">link =</span> <span class="fu">str_remove_all</span>(link, <span class="st">"</span><span class="sc">\\</span><span class="st">s+$"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(preselected_cln, <span class="at">by =</span> <span class="st">"link"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Auteur <span class="sc">%in%</span> authors<span class="sc">$</span>author_bnf) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(link, Auteur) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(authors <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Auteur =</span> author_bnf,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>                               <span class="at">author =</span> author_short), <span class="at">by =</span> <span class="st">"Auteur"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">source =</span> <span class="st">"bnf"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(link, author, Auteur, source)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(biblio_antijoin)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 114
+Columns: 4
+$ link   &lt;chr&gt; "https://catalogue.bnf.fr/ark:/12148/cb30163031s", "https://cat…
+$ author &lt;chr&gt; "Brissot", "Brissot", "Brissot", "Brissot", "Brissot", "Brissot…
+$ Auteur &lt;chr&gt; "Brissot de Warville, Jacques-Pierre (1754-1793). Auteur du tex…
+$ source &lt;chr&gt; "bnf", "bnf", "bnf", "bnf", "bnf", "bnf", "bnf", "bnf", "bnf", …</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>selected_non_found <span class="ot">&lt;-</span> preselected_cln <span class="sc">%&gt;%</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">source =</span> <span class="st">"bnf"</span>,</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">link =</span> <span class="fu">str_replace_all</span>(link, <span class="st">"http:"</span>, <span class="st">"https:"</span>),</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">link =</span> <span class="fu">str_remove_all</span>(link, <span class="st">"</span><span class="sc">\\</span><span class="st">s+$"</span>)), <span class="at">by =</span> <span class="st">"link"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(link, author) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(authors <span class="sc">%&gt;%</span> </span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>              <span class="fu">filter</span>(author_bnf <span class="sc">!=</span> <span class="st">"Ducrest, Charles-Louis. Auteur du texte"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>              <span class="fu">rename</span>(<span class="at">Auteur =</span> author_bnf,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">author =</span> author_short),</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="st">"author"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">source =</span> <span class="st">"selected"</span>)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(selected_non_found)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 96
+Columns: 4
+$ link   &lt;chr&gt; "https://catalogue.bnf.fr/ark:/12148/cb36307960r", "https://cat…
+$ author &lt;chr&gt; "Clavière", "Clavière", "Clavière", "Clavière", "Clavière", "Cl…
+$ Auteur &lt;chr&gt; "Clavière, Étienne (1735-1793). Auteur du texte", "Clavière, Ét…
+$ source &lt;chr&gt; "selected", "selected", "selected", "selected", "selected", "se…</code></pre>
+</div>
+</div>
+</section>
+<section id="sample-bibliography" class="level3">
+<h3 class="anchored" data-anchor-id="sample-bibliography">Sample bibliography</h3>
+<p>Create final bibliography with links for all found authors</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>biblio <span class="ot">&lt;-</span> <span class="fu">rbind</span>(biblio_intersection, biblio_antijoin, selected_non_found)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(biblio<span class="sc">$</span>source)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     bnf     both selected 
+     114       55       96 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>biblio <span class="sc">%&gt;%</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(author)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             author  n
+1           Brissot 24
+2          Clavière 15
+3         Condorcet 41
+4        Desmoulins 12
+5           Ducrest  5
+6            Laclos 11
+7            Manuel  6
+8             Marat 34
+9          Mirabeau 27
+10 Olympe de Gouges 53
+11           Pétion 28
+12           Sieyès  9</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(biblio, "raw_metadata/biblio_sample.csv")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="scraping" class="level2">
+<h2 class="anchored" data-anchor-id="scraping">Scraping</h2>
+<p>Retrieve metadata from BNF using links</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>biblio <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"raw_metadata/biblio_sample.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest, <span class="at">warn.conflicts=</span><span class="cn">FALSE</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xml2)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co">#biblio_t &lt;- biblio %&gt;% sample_n(10)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Each book’s page in BNF catalogue has a field with the metadata</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">"https://catalogue.bnf.fr/ark:/12148/cb30263686w"</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>w <span class="sc">%&gt;%</span> <span class="fu">html_nodes</span>(<span class="at">xpath =</span> <span class="st">'//meta[@name]'</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{xml_nodeset (14)}
+ [1] &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;\n
+ [2] &lt;meta name="DC.identifier" scheme="URI" content=""&gt;\n
+ [3] &lt;meta name="DC.title" content="Éloges des académiciens de l'Académie roy ...
+ [4] &lt;meta name="DC.creator" content="Condorcet, Jean-Antoine-Nicolas de Cari ...
+ [5] &lt;meta name="DC.publisher" content="hôtel de Thou (Paris)"&gt;\n
+ [6] &lt;meta name="DC.date" content="1773"&gt;\n
+ [7] &lt;meta name="DC.format" content="168 p. ; in-12"&gt;\n
+ [8] &lt;meta name="DC.language" content="fre"&gt;\n
+ [9] &lt;meta name="DC.language" content="français"&gt;\n
+[10] &lt;meta name="DC.type" lang="fre" content="texte imprimé"&gt;\n
+[11] &lt;meta name="DC.type" lang="eng" content="printed text"&gt;\n
+[12] &lt;meta name="DC.type" lang="eng" content="text"&gt;\n
+[13] &lt;meta name="DC.rights" lang="fre" content="Catalogue en ligne de la Bibl ...
+[14] &lt;meta name="DC.rights" lang="eng" content="French National Library onlin ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># w %&gt;% html_nodes(xpath = '//meta') %&gt;% html_attr('content')</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co">#w %&gt;% html_nodes(xpath = '//meta[@name="DC.title"]') %&gt;% </span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co">#  html_attr('content')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # transformation from listed xml to df</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># t &lt;- metadata %&gt;% </span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   map(xml_attrs) %&gt;% </span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   map_df(~as.list(.))</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="co"># # names are not unique, thus the transformation to columns is not clean</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="co"># tt &lt;- t %&gt;% </span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   select(name, content) %&gt;% </span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(name = str_remove_all(name, "DC\\.")) %&gt;% </span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(name %in% c("title", "publisher", "date", "format")) %&gt;% </span></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   group_by(name) %&gt;% </span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(row = row_number()) %&gt;% </span></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   tidyr::pivot_wider(names_from = name, values_from = content)</span></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The following code retrieved the fields of metadata separately</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># t1 &lt;- Sys.time()</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="co"># author &lt;- sapply(biblio$link, function(url) {</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   url %&gt;% </span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     as.character() %&gt;% </span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="co">#     read_html() %&gt;% </span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="co">#     html_nodes(xpath = '//meta[@name="DC.creator"]') %&gt;% </span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="co">#     html_attr('content')</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="co"># })</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="co"># t2 &lt;- Sys.time()</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="co"># print(paste0("time: ", t2-t1))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># t1 &lt;- Sys.time()</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co"># title &lt;- sapply(biblio$link, function(url) {</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   url %&gt;% </span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="co">#     as.character() %&gt;% </span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="co">#     read_html() %&gt;% </span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="co">#     html_nodes(xpath = '//meta[@name="DC.title"]') %&gt;% </span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     html_attr('content')</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="co"># })</span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a><span class="co"># date &lt;- sapply(biblio$link, function(url) {</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a><span class="co">#   url %&gt;% </span></span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     as.character() %&gt;% </span></span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a><span class="co">#     read_html() %&gt;% </span></span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a><span class="co">#     html_nodes(xpath = '//meta[@name="DC.date"]') %&gt;% </span></span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a><span class="co">#     html_attr('content')</span></span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a><span class="co"># })</span></span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a><span class="co"># t2 &lt;- Sys.time()</span></span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a><span class="co"># print(paste0("time: ", t2-t1))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># t1 &lt;- Sys.time()</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="co"># publisher &lt;- sapply(biblio$link, function(url) {</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   url %&gt;% </span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     as.character() %&gt;% </span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="co">#     read_html() %&gt;% </span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="co">#     html_nodes(xpath = '//meta[@name="DC.publisher"]') %&gt;% </span></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="co">#     html_attr('content')</span></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a><span class="co"># })</span></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a><span class="co"># format &lt;- sapply(biblio$link, function(url) {</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   url %&gt;% </span></span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a><span class="co">#     as.character() %&gt;% </span></span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     read_html() %&gt;% </span></span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a><span class="co">#     html_nodes(xpath = '//meta[@name="DC.format"]') %&gt;% </span></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a><span class="co">#     html_attr('content')</span></span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a><span class="co"># })</span></span>
+<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a><span class="co"># t2 &lt;- Sys.time()</span></span>
+<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a><span class="co"># print(paste0("time: ", t2-t1))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Export links to Gallica</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># w %&gt;% </span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   html_elements("h3") </span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>w <span class="sc">%&gt;%</span> </span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_elements</span>(<span class="st">".exemplaire-action-visualiser"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_attr</span>(<span class="st">"href"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "https://gallica.bnf.fr/ark:/12148/bpt6k15093696"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># gallica_url &lt;- sapply(biblio$link, function(url) {</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   url %&gt;% </span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     as.character() %&gt;% </span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     read_html() %&gt;% </span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     html_elements(".exemplaire-action-visualiser") %&gt;% </span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="co">#     html_attr("href")</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="co"># })</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Create resulting table from collected lists</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># x &lt;- tibble(</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   author_short = biblio$author,</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   gallica_link = sapply(gallica_url, paste, collapse = "   "),</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   title = sapply(title, paste, collapse = " | "),</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   year = sapply(date, paste, collapse = "-"),</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   author_bnf = sapply(author, paste, collapse = " | "),</span></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   publisher = sapply(publisher, paste, collapse = " | "),</span></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   format = sapply(format, paste, collapse = " | "),</span></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   source = biblio$source,</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   bnf_cat = biblio$link</span></span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   ) %&gt;% </span></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   mutate(pages = str_extract(format, "\\d+\\sp\\."))</span></span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a><span class="co"># x</span></span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(x, "bibliography_12authors.csv")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="load-bibliography" class="level2">
+<h2 class="anchored" data-anchor-id="load-bibliography">Load bibliography</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"bibliography_12authors.csv"</span>)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(b) <span class="sc">%&gt;%</span> <span class="fu">kbl</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">X</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">author_short</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">gallica_link</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">title</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">year</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">author_bnf</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">publisher</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">format</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">source</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">bnf_cat</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">pages</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Clavière</td>
+<td style="text-align: left;">https://gallica.bnf.fr/ark:/12148/bpt6k6248566r</td>
+<td style="text-align: left;">Discours de M. Clavière,... à la Société des amis de la Constitution, séante aux Jacobins Saint-Honoré, le 4 avril 1792</td>
+<td style="text-align: left;">1792</td>
+<td style="text-align: left;">Clavière, Étienne (1735-1793). Auteur du texte</td>
+<td style="text-align: left;">impr. du Patriote français (Paris)</td>
+<td style="text-align: left;">5 p. ; in-8</td>
+<td style="text-align: left;">both</td>
+<td style="text-align: left;">https://catalogue.bnf.fr/ark:/12148/cb302486035</td>
+<td style="text-align: left;">5 p.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Condorcet</td>
+<td style="text-align: left;">https://gallica.bnf.fr/ark:/12148/bpt6k1509370v</td>
+<td style="text-align: left;">Bénissons le ministre bienfaisant qui nous délivre du double fléau des corvées, &amp; des exacteurs de corvées...</td>
+<td style="text-align: left;">1775</td>
+<td style="text-align: left;">Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte</td>
+<td style="text-align: left;">[S.l., 1775]</td>
+<td style="text-align: left;">12 p. ; in-8</td>
+<td style="text-align: left;">both</td>
+<td style="text-align: left;">https://catalogue.bnf.fr/ark:/12148/cb30263754j</td>
+<td style="text-align: left;">12 p.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">Condorcet</td>
+<td style="text-align: left;">https://gallica.bnf.fr/ark:/12148/bpt6k15093696</td>
+<td style="text-align: left;">Éloges des académiciens de l'Académie royale des sciences morts depuis 1666 jusqu'en 1699 , par le marquis de Condorcet,...</td>
+<td style="text-align: left;">1773</td>
+<td style="text-align: left;">Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte</td>
+<td style="text-align: left;">hôtel de Thou (Paris)</td>
+<td style="text-align: left;">168 p. ; in-12</td>
+<td style="text-align: left;">both</td>
+<td style="text-align: left;">https://catalogue.bnf.fr/ark:/12148/cb30263686w</td>
+<td style="text-align: left;">168 p.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">Condorcet</td>
+<td style="text-align: left;">https://gallica.bnf.fr/ark:/12148/bpt6k1509358d</td>
+<td style="text-align: left;">Lettres sur le commerce des grains , par M***</td>
+<td style="text-align: left;">1774</td>
+<td style="text-align: left;">Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte</td>
+<td style="text-align: left;">Couturier (Paris)</td>
+<td style="text-align: left;">In-8, 29 p.</td>
+<td style="text-align: left;">both</td>
+<td style="text-align: left;">https://catalogue.bnf.fr/ark:/12148/cb302637191</td>
+<td style="text-align: left;">29 p.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">Condorcet</td>
+<td style="text-align: left;">https://gallica.bnf.fr/ark:/12148/bpt6k73915n</td>
+<td style="text-align: left;">Lettre d'un laboureur de Picardie, à M. N***, auteur prohibitif, à Paris / [par Condorcet]</td>
+<td style="text-align: left;">1775</td>
+<td style="text-align: left;">Condorcet, Jean-Antoine-Nicolas de Caritat marquis de (1743-1794). Auteur du texte</td>
+<td style="text-align: left;">[s.n.]</td>
+<td style="text-align: left;">51 p. ; in-8</td>
+<td style="text-align: left;">both</td>
+<td style="text-align: left;">https://catalogue.bnf.fr/ark:/12148/cb30263706p</td>
+<td style="text-align: left;">51 p.</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">Desmoulins</td>
+<td style="text-align: left;">https://gallica.bnf.fr/ark:/12148/bpt6k1504858k</td>
+<td style="text-align: left;">Les aristocrates aux abois, ou Correspondance d'un patriote de France avec un patriote Brabançon</td>
+<td style="text-align: left;">1790</td>
+<td style="text-align: left;">Desmoulins, Camille (1760-1794). Auteur du texte</td>
+<td style="text-align: left;">[Paris, vers 1790]</td>
+<td style="text-align: left;">8 p. ; in-8</td>
+<td style="text-align: left;">both</td>
+<td style="text-align: left;">https://catalogue.bnf.fr/ark:/12148/cb39359260r</td>
+<td style="text-align: left;">8 p.</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>b <span class="sc">%&gt;%</span> </span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(author_short)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       author_short  n
+1           Brissot 24
+2          Clavière 15
+3         Condorcet 41
+4        Desmoulins 12
+5           Ducrest  5
+6            Laclos 11
+7            Manuel  6
+8             Marat 34
+9          Mirabeau 27
+10 Olympe de Gouges 53
+11           Pétion 28
+12           Sieyès  9</code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
