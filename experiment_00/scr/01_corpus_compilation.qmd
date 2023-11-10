@@ -9,14 +9,19 @@ editor: visual
 ```{r}
 library(tidyverse)
 library(tidytext)
-library(udpipe)
+#library(udpipe)
+
+library(stylo)
+library(seetrees)
+
+library(kableExtra)
 
 theme_set(theme_minimal())
 ```
 
 ## raw files
 
-```{r}
+```{r, eval = FALSE}
 # create a filelist
 lf <- list.files(path = "../corpus/", full.names = T)
 # head(lf)
@@ -32,7 +37,7 @@ tail(df)
 
 ### retrieve metadata
 
-```{r}
+```{r, eval = FALSE}
 df <- df %>% 
   # extract metadata from the textfiles
   mutate(author = str_extract(text,"\\n\\nAutor : .*? Auteur du texte"),
@@ -73,9 +78,9 @@ head(df)
 
 ### store ad rda & meta
 
-```{r}
-save(df, file = "../data/corpus_0709.rda")
-write.csv(df %>% select(-text), file = "../metadata.csv")
+```{r, eval=FALSE}
+# save(df, file = "../data/corpus_0709.rda")
+# write.csv(df %>% select(-text), file = "../metadata.csv")
 ```
 
 ## load data
@@ -111,15 +116,15 @@ tokens <- corpus %>%
   # remove digits 
   filter(!str_detect(word, "\\d+"))
 
-tokens %>% 
-  count(word, sort = T) %>% head(10)
+# tokens %>% 
+#   count(word, sort = T) %>% head(10)
 ```
 
 Most frequent words distribution
 
 ```{r}
 tokens %>% 
-  count(word, sort = T) 
+  count(word, sort = T) %>% head(50)
 
 tokens %>% 
   count(word, sort = T) %>% 
@@ -138,7 +143,7 @@ tokens %>%
 
 ```{r}
 tokens %>% 
-  count(author, sort = T)
+  count(author, sort = T) %>% kbl()
 ```
 
 ```{r}
@@ -155,27 +160,281 @@ corpus_cln <- tokens %>%
 str(corpus_cln)
 ```
 
-```{r}
-for (i in 1:nrow(corpus_cln)) {
-  write_file(x = corpus_cln$text[i], file = corpus_cln$path_new[i])
-}
+```{r, eval = FALSE}
+# for (i in 1:nrow(corpus_cln)) {
+#   write_file(x = corpus_cln$text[i], file = corpus_cln$path_new[i])
+# }
 ```
 
-### Lemmatisation
+### Load cleaned data
 
 ```{r}
-model <- udpipe_download_model(language = "french")
-fr_model <- udpipe_load_model(model)
+meta <- read.csv("../metadata.csv", sep = ";") %>% select(-X)
+
+lf <- list.files(path = "../corpus_cln/", full.names = T)
+
+# read texts and put them in a tibble
+df <- tibble(
+  path = lf,
+  text = sapply(path, read_file)
+)
+
+corpus <- meta %>% 
+  mutate(path = str_replace_all(path, "\\.\\./corpus/", "corpus_cln/")) %>% 
+  left_join(df, by = "path")
 ```
 
 ```{r}
-x <- udpipe_annotate(fr_model,
-                     x = corpus_cln$text,
-                     tagger = "default")
-
-as.data.frame(x)
+glimpse(corpus)
 ```
 
-# Stylo()
+Number of tokens in each text
 
-Fast exploration with existing files how clusters
+```{r}
+corpus %>% 
+  unnest_tokens(input = text, output = word, token = "words") %>% 
+  count(path, sort = T) %>% kbl()
+```
+
+## Stylo
+
+Fast exploration
+
+```{r}
+library(stylo)
+library(seetrees)
+```
+
+#### Simple clustering
+
+```{r}
+test1 <- stylo(gui = F,
+               corpus.dir = "../corpus_test/",
+               corpus.lang = "Other",
+               distance.measure = "wurzburg",
+               mfw.min = 200,
+               mfw.max = 200)
+```
+
+```{r}
+test2 <- stylo(gui = F,
+               corpus.dir = "../corpus_test/",
+               corpus.lang = "Other",
+               distance.measure = "wurzburg",
+               mfw.min = 200,
+               mfw.max = 200,
+               
+               analysis.type = "MDS")
+```
+
+```{r}
+summary(test1)
+```
+
+```{r}
+test1$features.actually.used
+```
+
+```{r}
+test1$table.with.all.zscores[1:9,1:9]
+```
+
+```{r}
+view_tree(test1, k = 2)
+```
+
+### Sampling
+
+#### normal sampling
+
+```{r}
+test_norm_sampling <- stylo(
+  gui = F,
+  corpus.dir = "../corpus_test/",
+  analysed.features = "w",
+  mfw.min = 200,
+  mfw.max = 200,
+  sampling = "normal.sampling",
+  sample.size = 10000,
+  distance.measure = "wurzburg",
+  corpus.lang = "Other",
+  analysis.type = "CA"
+)
+```
+
+```{r}
+view_tree(test_norm_sampling, k = 2, label_size = 3)
+```
+
+#### random sampling
+
+```{r}
+test_random_sampling <- stylo(
+  gui = F,
+  corpus.dir = "../corpus_test/",
+  analysed.features = "w",
+  mfw.min = 100,
+  mfw.max = 100,
+  sampling = "random.sampling",
+  sample.size = 3000,
+  number.of.samples = 3,
+  distance.measure = "wurzburg",
+  corpus.lang = "Other",
+  analysis.type = "CA"
+)
+```
+
+```{r}
+view_tree(test_random_sampling, k = 2, label_size = 3)
+```
+
+MDS
+
+```{r}
+test_random_sampling <- stylo(
+  gui = F,
+  corpus.dir = "../corpus_test/",
+  analysed.features = "w",
+  mfw.min = 100,
+  mfw.max = 100,
+  sampling = "random.sampling",
+  sample.size = 3000,
+  number.of.samples = 50,
+  distance.measure = "wurzburg",
+  corpus.lang = "Other",
+  
+  analysis.type = "MDS",
+  text.id.on.graphs = "points",
+  dump.samples = T
+)
+```
+
+### Distances distributions
+
+#### Mercier vs Goudar
+
+```{r}
+summary(test_random_sampling)
+```
+
+```{r}
+dists <- test_random_sampling$distance.table 
+dim(dists)
+
+dists[1:3, 1:3]
+
+class(dists)
+```
+
+```{r}
+merc <- grep("^Mercier", rownames(dists)) 
+goud <- grep("^Goudar", rownames(dists))
+
+d_m <- dists[merc, merc]
+d_g <- dists[goud, goud]
+
+d_other <- dists[merc, goud]
+```
+
+Matrix flattening
+
+```{r}
+d_m[1:3,1:3]
+c(d_m[1:3])
+
+dim(d_m)
+dim(d_g)
+```
+
+```{r}
+dat <- tibble(
+       x = 1:10000,
+       dm = c(d_m),
+       dg = c(d_g),
+       dmg = c(d_other)) %>% 
+  pivot_longer(!x, names_to = "group", values_to = "distance") %>% 
+  select(-x)# %>% 
+  #mutate(group = ifelse(group == "dmg", "others", "same"))
+
+head(dat)
+
+dat %>% 
+  ggplot(aes(x = distance, group = group, fill = group)) + geom_histogram()
+```
+
+#### Mercier vs Hébert
+
+```{r}
+merc <- grep("^Mercier", rownames(dists)) 
+heb <- grep("^H", rownames(dists))
+
+d_m <- dists[sample(merc, 50), sample(merc, 50)]
+d_h <- dists[heb, heb]
+
+dmh <- dists[sample(merc, 50), heb]
+
+length(c(dmh))
+
+tibble(
+       x = 1:2500,
+       dm = c(d_m),
+       dh = c(d_h),
+       dmh = c(dmh)) %>% 
+  pivot_longer(!x, names_to = "group", values_to = "distance") %>% 
+  select(-x) %>% 
+  #mutate(group = ifelse(group == "dmg", "others", "same"))
+  ggplot(aes(x = distance, group = group, fill = group)) + geom_histogram()
+```
+
+```{r}
+# brissot to brissot & pseudobrissot
+brissot <- grep("^Brissot", rownames(dists)) 
+psbrissot <- grep("^Pseudo", rownames(dists))
+
+d_b <- dists[brissot, brissot]
+d_p <- dists[psbrissot, psbrissot]
+
+dbp <- dists[brissot, psbrissot]
+
+length(c(dbp))
+
+tibble(
+       x = 1:2500,
+       dist_brissot = c(d_b),
+       dist_psBrissot = c(d_p),
+       dist_mixed = c(dbp)) %>% 
+  pivot_longer(!x, names_to = "group", values_to = "distance") %>% 
+  select(-x) %>% 
+  #mutate(group = ifelse(group == "dmg", "others", "same"))
+  ggplot(aes(x = distance, group = group, fill = group)) + geom_histogram()
+```
+
+```{r}
+# brissot to brissot & pseudobrissot
+brissot <- grep("^Brissot", rownames(dists)) 
+psbrissot <- grep("^Pseudo", rownames(dists))
+
+d_b <- dists[brissot, brissot]
+d_p <- dists[psbrissot, psbrissot]
+
+dbp <- dists[brissot, psbrissot]
+dbh <- dists[brissot, heb]
+dbp <- dists[heb, psbrissot]
+
+length(c(dbh))
+
+tibble(
+       x = 1:2500,
+       dist_brissot = c(d_b),
+       dist_psBrissot = c(d_p),
+       dist_hebert = c(d_h),
+       dist_Brissot_to_Hebert = c(dbh) ,
+       dist_Brissot_PseudoBrissot = c(dbp) ,
+       dist_Pseudobrissot_to_Hebert = c(dbp)
+       ) %>% 
+  pivot_longer(!x, names_to = "group", values_to = "distance") %>% 
+  select(-x) %>% 
+  #mutate(group = ifelse(group == "dmg", "others", "same"))
+  ggplot(aes(x = distance, group = group, fill = group), aplha = 0.5) + 
+  geom_histogram()
+```

@@ -1,0 +1,49 @@
+CLUSTER 1
+==============
+TEXTS
+Hébert_1789-1790_Almanach parisien_3
+Hébert_1789-1790_Almanach parisien_1
+Hébert_1789-1790_Almanach parisien_2
+PseudoBrissot_1789_Plan de Municipalité_2
+PseudoBrissot_1789_Plan de Municipalité_1
+PseudoBrissot_1789_Plan de Municipalité_3
+==============
+FEATURES associated (p<0.05)
+
+du de deux fera ville paris au ou par la le des grand après tous
+
+
+
+
+CLUSTER 2
+==============
+TEXTS
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_2
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_1
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_3
+Linguet_1783_Mémoires sur la Bastille_1
+Linguet_1783_Mémoires sur la Bastille_2
+Linguet_1783_Mémoires sur la Bastille_3
+Goudar_1757_La paix de l'Europe_1
+Goudar_1757_La paix de l'Europe_2
+Goudar_1757_La paix de l'Europe_3
+Goudar_1757_L'histoire des Grecs_2
+Goudar_1757_L'histoire des Grecs_1
+Goudar_1757_L'histoire des Grecs_3
+Brissot_1780_Recherches philosophiques sur le droit de propriété_1
+Brissot_1780_Recherches philosophiques sur le droit de propriété_2
+Brissot_1780_Recherches philosophiques sur le droit de propriété_3
+Mercier_1771_L'an 2440_3
+Mercier_1771_L'an 2440_1
+Mercier_1771_L'an 2440_2
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_3
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_1
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_2
+==============
+FEATURES associated (p<0.05)
+
+qu ne n point pas que mais lui je comme fait s y étoit ont ils peut a il avoit est homme j vous bien c me un ni faire leur moins si ai son même avoir
+
+
+
+

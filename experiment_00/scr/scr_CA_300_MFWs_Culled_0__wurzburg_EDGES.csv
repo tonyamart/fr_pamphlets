@@ -1,0 +1,31 @@
+Source,Target,Weight,Type
+Brissot_1780_Recherches philosophiques sur le droit de propriété,Brissot_1789_Plan de Municipalité,1,undirected
+Brissot_1780_Recherches philosophiques sur le droit de propriété,Goudar_1757_La paix de l'Europe,2,undirected
+Brissot_1780_Recherches philosophiques sur le droit de propriété,Mercier_1771_L'an 2440,5,undirected
+Brissot_1780_Recherches philosophiques sur le droit de propriété,Mercier_1782-1788_Tableau Paris - 2e ed t 2,3,undirected
+Brissot_1789_Plan de Municipalité,Brissot_1780_Recherches philosophiques sur le droit de propriété,1,undirected
+Brissot_1789_Plan de Municipalité,Goudar_1757_La paix de l'Europe,4,undirected
+Brissot_1789_Plan de Municipalité,Hébert_1789-1790_Almanach parisien,6,undirected
+Goudar_1757_L'histoire des Grecs,Goudar_1757_La paix de l'Europe,6,undirected
+Goudar_1757_L'histoire des Grecs,Hébert_1789-1790_Almanach parisien,2,undirected
+Goudar_1757_L'histoire des Grecs,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon,4,undirected
+Goudar_1757_La paix de l'Europe,Brissot_1780_Recherches philosophiques sur le droit de propriété,2,undirected
+Goudar_1757_La paix de l'Europe,Brissot_1789_Plan de Municipalité,4,undirected
+Goudar_1757_La paix de l'Europe,Goudar_1757_L'histoire des Grecs,6,undirected
+Hébert_1789-1790_Almanach parisien,Brissot_1789_Plan de Municipalité,6,undirected
+Hébert_1789-1790_Almanach parisien,Goudar_1757_L'histoire des Grecs,2,undirected
+Hébert_1789-1790_Almanach parisien,Mercier_1782-1788_Tableau Paris - 2e ed t 2,2,undirected
+Linguet_1783_Mémoires sur la Bastille,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon,6,undirected
+Linguet_1783_Mémoires sur la Bastille,Mercier_1771_L'an 2440,2,undirected
+Linguet_1783_Mémoires sur la Bastille,Mercier_1782-1788_Tableau Paris - 2e ed t 2,4,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon,Goudar_1757_L'histoire des Grecs,4,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon,Linguet_1783_Mémoires sur la Bastille,6,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon,Mercier_1771_L'an 2440,1,undirected
+Mercier_1771_L'an 2440,Brissot_1780_Recherches philosophiques sur le droit de propriété,5,undirected
+Mercier_1771_L'an 2440,Linguet_1783_Mémoires sur la Bastille,2,undirected
+Mercier_1771_L'an 2440,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon,1,undirected
+Mercier_1771_L'an 2440,Mercier_1782-1788_Tableau Paris - 2e ed t 2,6,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2,Brissot_1780_Recherches philosophiques sur le droit de propriété,3,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2,Hébert_1789-1790_Almanach parisien,2,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2,Linguet_1783_Mémoires sur la Bastille,4,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2,Mercier_1771_L'an 2440,6,undirected

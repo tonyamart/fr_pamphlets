@@ -1,0 +1,207 @@
+Source,Target,Weight,Type
+Brissot_1780_Recherches philosophiques sur le droit de propriété_1,Mercier_1771_L'an 2440_3,2,undirected
+Brissot_1780_Recherches philosophiques sur le droit de propriété_1,Mercier_1771_L'an 2440_4,1,undirected
+Brissot_1780_Recherches philosophiques sur le droit de propriété_1,Mercier_1782-1788_Tableau Paris - 2e ed t 2_1,3,undirected
+Goudar_1757_L'histoire des Grecs_1,Goudar_1757_L'histoire des Grecs_2,4,undirected
+Goudar_1757_L'histoire des Grecs_1,Goudar_1757_L'histoire des Grecs_3,5,undirected
+Goudar_1757_L'histoire des Grecs_1,Goudar_1757_L'histoire des Grecs_4,2,undirected
+Goudar_1757_L'histoire des Grecs_1,Goudar_1757_La paix de l'Europe_1,1,undirected
+Goudar_1757_L'histoire des Grecs_1,Goudar_1757_La paix de l'Europe_3,1,undirected
+Goudar_1757_L'histoire des Grecs_2,Goudar_1757_L'histoire des Grecs_1,4,undirected
+Goudar_1757_L'histoire des Grecs_2,Goudar_1757_L'histoire des Grecs_3,6,undirected
+Goudar_1757_L'histoire des Grecs_2,Goudar_1757_L'histoire des Grecs_4,1,undirected
+Goudar_1757_L'histoire des Grecs_2,Goudar_1757_L'histoire des Grecs_5,1,undirected
+Goudar_1757_L'histoire des Grecs_3,Goudar_1757_L'histoire des Grecs_1,5,undirected
+Goudar_1757_L'histoire des Grecs_3,Goudar_1757_L'histoire des Grecs_2,6,undirected
+Goudar_1757_L'histoire des Grecs_3,Goudar_1757_L'histoire des Grecs_4,3,undirected
+Goudar_1757_L'histoire des Grecs_3,Goudar_1757_L'histoire des Grecs_5,2,undirected
+Goudar_1757_L'histoire des Grecs_3,Goudar_1757_La paix de l'Europe_2,1,undirected
+Goudar_1757_L'histoire des Grecs_4,Goudar_1757_L'histoire des Grecs_1,2,undirected
+Goudar_1757_L'histoire des Grecs_4,Goudar_1757_L'histoire des Grecs_2,1,undirected
+Goudar_1757_L'histoire des Grecs_4,Goudar_1757_L'histoire des Grecs_3,3,undirected
+Goudar_1757_L'histoire des Grecs_4,Goudar_1757_L'histoire des Grecs_5,6,undirected
+Goudar_1757_L'histoire des Grecs_5,Goudar_1757_L'histoire des Grecs_2,1,undirected
+Goudar_1757_L'histoire des Grecs_5,Goudar_1757_L'histoire des Grecs_3,2,undirected
+Goudar_1757_L'histoire des Grecs_5,Goudar_1757_L'histoire des Grecs_4,6,undirected
+Goudar_1757_La paix de l'Europe_1,Goudar_1757_L'histoire des Grecs_1,1,undirected
+Goudar_1757_La paix de l'Europe_1,Goudar_1757_La paix de l'Europe_2,6,undirected
+Goudar_1757_La paix de l'Europe_1,Goudar_1757_La paix de l'Europe_3,4,undirected
+Goudar_1757_La paix de l'Europe_1,PseudoBrissot_1789_Plan de Municipalité_1,1,undirected
+Goudar_1757_La paix de l'Europe_2,Goudar_1757_L'histoire des Grecs_3,1,undirected
+Goudar_1757_La paix de l'Europe_2,Goudar_1757_La paix de l'Europe_1,6,undirected
+Goudar_1757_La paix de l'Europe_2,Goudar_1757_La paix de l'Europe_3,5,undirected
+Goudar_1757_La paix de l'Europe_3,Goudar_1757_L'histoire des Grecs_1,1,undirected
+Goudar_1757_La paix de l'Europe_3,Goudar_1757_La paix de l'Europe_1,4,undirected
+Goudar_1757_La paix de l'Europe_3,Goudar_1757_La paix de l'Europe_2,5,undirected
+Goudar_1757_La paix de l'Europe_3,PseudoBrissot_1789_Plan de Municipalité_1,2,undirected
+Hébert_1789-1790_Almanach parisien_1,Hébert_1789-1790_Almanach parisien_2,1,undirected
+Hébert_1789-1790_Almanach parisien_1,Hébert_1789-1790_Almanach parisien_9,6,undirected
+Hébert_1789-1790_Almanach parisien_1,Hébert_1789-1790_Almanach parisien_10,3,undirected
+Hébert_1789-1790_Almanach parisien_2,Hébert_1789-1790_Almanach parisien_1,1,undirected
+Hébert_1789-1790_Almanach parisien_2,Hébert_1789-1790_Almanach parisien_9,3,undirected
+Hébert_1789-1790_Almanach parisien_2,Hébert_1789-1790_Almanach parisien_10,6,undirected
+Hébert_1789-1790_Almanach parisien_2,Hébert_1789-1790_Almanach parisien_11,2,undirected
+Hébert_1789-1790_Almanach parisien_3,Hébert_1789-1790_Almanach parisien_4,2,undirected
+Hébert_1789-1790_Almanach parisien_3,Hébert_1789-1790_Almanach parisien_6,2,undirected
+Hébert_1789-1790_Almanach parisien_3,Hébert_1789-1790_Almanach parisien_11,6,undirected
+Hébert_1789-1790_Almanach parisien_3,Hébert_1789-1790_Almanach parisien_12,2,undirected
+Hébert_1789-1790_Almanach parisien_3,Hébert_1789-1790_Almanach parisien_14,2,undirected
+Hébert_1789-1790_Almanach parisien_4,Hébert_1789-1790_Almanach parisien_3,2,undirected
+Hébert_1789-1790_Almanach parisien_4,Hébert_1789-1790_Almanach parisien_6,1,undirected
+Hébert_1789-1790_Almanach parisien_4,Hébert_1789-1790_Almanach parisien_12,6,undirected
+Hébert_1789-1790_Almanach parisien_5,Hébert_1789-1790_Almanach parisien_6,1,undirected
+Hébert_1789-1790_Almanach parisien_5,Hébert_1789-1790_Almanach parisien_13,6,undirected
+Hébert_1789-1790_Almanach parisien_5,Hébert_1789-1790_Almanach parisien_14,4,undirected
+Hébert_1789-1790_Almanach parisien_6,Hébert_1789-1790_Almanach parisien_3,2,undirected
+Hébert_1789-1790_Almanach parisien_6,Hébert_1789-1790_Almanach parisien_4,1,undirected
+Hébert_1789-1790_Almanach parisien_6,Hébert_1789-1790_Almanach parisien_5,1,undirected
+Hébert_1789-1790_Almanach parisien_6,Hébert_1789-1790_Almanach parisien_7,1,undirected
+Hébert_1789-1790_Almanach parisien_6,Hébert_1789-1790_Almanach parisien_11,1,undirected
+Hébert_1789-1790_Almanach parisien_6,Hébert_1789-1790_Almanach parisien_12,1,undirected
+Hébert_1789-1790_Almanach parisien_6,Hébert_1789-1790_Almanach parisien_13,1,undirected
+Hébert_1789-1790_Almanach parisien_6,Hébert_1789-1790_Almanach parisien_14,6,undirected
+Hébert_1789-1790_Almanach parisien_6,Hébert_1789-1790_Almanach parisien_15,4,undirected
+Hébert_1789-1790_Almanach parisien_7,Hébert_1789-1790_Almanach parisien_6,1,undirected
+Hébert_1789-1790_Almanach parisien_7,Hébert_1789-1790_Almanach parisien_13,3,undirected
+Hébert_1789-1790_Almanach parisien_7,Hébert_1789-1790_Almanach parisien_15,6,undirected
+Hébert_1789-1790_Almanach parisien_8,Hébert_1789-1790_Almanach parisien_9,2,undirected
+Hébert_1789-1790_Almanach parisien_8,Hébert_1789-1790_Almanach parisien_10,1,undirected
+Hébert_1789-1790_Almanach parisien_8,Hébert_1789-1790_Almanach parisien_16,6,undirected
+Hébert_1789-1790_Almanach parisien_9,Hébert_1789-1790_Almanach parisien_1,6,undirected
+Hébert_1789-1790_Almanach parisien_9,Hébert_1789-1790_Almanach parisien_2,3,undirected
+Hébert_1789-1790_Almanach parisien_9,Hébert_1789-1790_Almanach parisien_8,2,undirected
+Hébert_1789-1790_Almanach parisien_9,Hébert_1789-1790_Almanach parisien_10,1,undirected
+Hébert_1789-1790_Almanach parisien_9,Hébert_1789-1790_Almanach parisien_16,1,undirected
+Hébert_1789-1790_Almanach parisien_10,Hébert_1789-1790_Almanach parisien_1,3,undirected
+Hébert_1789-1790_Almanach parisien_10,Hébert_1789-1790_Almanach parisien_2,6,undirected
+Hébert_1789-1790_Almanach parisien_10,Hébert_1789-1790_Almanach parisien_8,1,undirected
+Hébert_1789-1790_Almanach parisien_10,Hébert_1789-1790_Almanach parisien_9,1,undirected
+Hébert_1789-1790_Almanach parisien_10,Hébert_1789-1790_Almanach parisien_11,2,undirected
+Hébert_1789-1790_Almanach parisien_10,Hébert_1789-1790_Almanach parisien_16,2,undirected
+Hébert_1789-1790_Almanach parisien_11,Hébert_1789-1790_Almanach parisien_2,2,undirected
+Hébert_1789-1790_Almanach parisien_11,Hébert_1789-1790_Almanach parisien_3,6,undirected
+Hébert_1789-1790_Almanach parisien_11,Hébert_1789-1790_Almanach parisien_6,1,undirected
+Hébert_1789-1790_Almanach parisien_11,Hébert_1789-1790_Almanach parisien_10,2,undirected
+Hébert_1789-1790_Almanach parisien_11,Hébert_1789-1790_Almanach parisien_14,2,undirected
+Hébert_1789-1790_Almanach parisien_12,Hébert_1789-1790_Almanach parisien_3,2,undirected
+Hébert_1789-1790_Almanach parisien_12,Hébert_1789-1790_Almanach parisien_4,6,undirected
+Hébert_1789-1790_Almanach parisien_12,Hébert_1789-1790_Almanach parisien_6,1,undirected
+Hébert_1789-1790_Almanach parisien_13,Hébert_1789-1790_Almanach parisien_5,6,undirected
+Hébert_1789-1790_Almanach parisien_13,Hébert_1789-1790_Almanach parisien_6,1,undirected
+Hébert_1789-1790_Almanach parisien_13,Hébert_1789-1790_Almanach parisien_7,3,undirected
+Hébert_1789-1790_Almanach parisien_13,Hébert_1789-1790_Almanach parisien_15,3,undirected
+Hébert_1789-1790_Almanach parisien_14,Hébert_1789-1790_Almanach parisien_3,2,undirected
+Hébert_1789-1790_Almanach parisien_14,Hébert_1789-1790_Almanach parisien_5,4,undirected
+Hébert_1789-1790_Almanach parisien_14,Hébert_1789-1790_Almanach parisien_6,6,undirected
+Hébert_1789-1790_Almanach parisien_14,Hébert_1789-1790_Almanach parisien_11,2,undirected
+Hébert_1789-1790_Almanach parisien_15,Hébert_1789-1790_Almanach parisien_6,4,undirected
+Hébert_1789-1790_Almanach parisien_15,Hébert_1789-1790_Almanach parisien_7,6,undirected
+Hébert_1789-1790_Almanach parisien_15,Hébert_1789-1790_Almanach parisien_13,3,undirected
+Hébert_1789-1790_Almanach parisien_16,Hébert_1789-1790_Almanach parisien_8,6,undirected
+Hébert_1789-1790_Almanach parisien_16,Hébert_1789-1790_Almanach parisien_9,1,undirected
+Hébert_1789-1790_Almanach parisien_16,Hébert_1789-1790_Almanach parisien_10,2,undirected
+Linguet_1783_Mémoires sur la Bastille_1,Linguet_1783_Mémoires sur la Bastille_2,1,undirected
+Linguet_1783_Mémoires sur la Bastille_1,Linguet_1783_Mémoires sur la Bastille_3,1,undirected
+Linguet_1783_Mémoires sur la Bastille_1,Linguet_1783_Mémoires sur la Bastille_4,3,undirected
+Linguet_1783_Mémoires sur la Bastille_1,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_2,3,undirected
+Linguet_1783_Mémoires sur la Bastille_1,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_3,1,undirected
+Linguet_1783_Mémoires sur la Bastille_2,Linguet_1783_Mémoires sur la Bastille_1,1,undirected
+Linguet_1783_Mémoires sur la Bastille_2,Linguet_1783_Mémoires sur la Bastille_3,6,undirected
+Linguet_1783_Mémoires sur la Bastille_2,Linguet_1783_Mémoires sur la Bastille_4,4,undirected
+Linguet_1783_Mémoires sur la Bastille_3,Linguet_1783_Mémoires sur la Bastille_1,1,undirected
+Linguet_1783_Mémoires sur la Bastille_3,Linguet_1783_Mémoires sur la Bastille_2,6,undirected
+Linguet_1783_Mémoires sur la Bastille_3,Linguet_1783_Mémoires sur la Bastille_4,5,undirected
+Linguet_1783_Mémoires sur la Bastille_4,Linguet_1783_Mémoires sur la Bastille_1,3,undirected
+Linguet_1783_Mémoires sur la Bastille_4,Linguet_1783_Mémoires sur la Bastille_2,4,undirected
+Linguet_1783_Mémoires sur la Bastille_4,Linguet_1783_Mémoires sur la Bastille_3,5,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_1,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_2,2,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_1,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_5,4,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_1,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_6,3,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_2,Linguet_1783_Mémoires sur la Bastille_1,3,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_2,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_1,2,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_2,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_3,4,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_2,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_4,5,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_2,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_5,4,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_2,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_6,1,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_3,Linguet_1783_Mémoires sur la Bastille_1,1,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_3,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_2,4,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_3,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_4,3,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_3,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_5,1,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_4,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_2,5,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_4,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_3,3,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_4,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_5,6,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_5,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_1,4,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_5,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_2,4,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_5,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_3,1,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_5,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_4,6,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_5,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_6,3,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_6,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_1,3,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_6,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_2,1,undirected
+Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_6,Linguet_1787_Playdoyer pour Linguet dans sa discussion Aiguillon_5,3,undirected
+Mercier_1771_L'an 2440_1,Mercier_1771_L'an 2440_2,3,undirected
+Mercier_1771_L'an 2440_1,Mercier_1771_L'an 2440_6,2,undirected
+Mercier_1771_L'an 2440_1,Mercier_1771_L'an 2440_9,1,undirected
+Mercier_1771_L'an 2440_1,Mercier_1782-1788_Tableau Paris - 2e ed t 2_4,1,undirected
+Mercier_1771_L'an 2440_2,Mercier_1771_L'an 2440_1,3,undirected
+Mercier_1771_L'an 2440_2,Mercier_1771_L'an 2440_3,6,undirected
+Mercier_1771_L'an 2440_2,Mercier_1771_L'an 2440_4,4,undirected
+Mercier_1771_L'an 2440_2,Mercier_1771_L'an 2440_5,3,undirected
+Mercier_1771_L'an 2440_2,Mercier_1771_L'an 2440_6,3,undirected
+Mercier_1771_L'an 2440_2,Mercier_1771_L'an 2440_8,4,undirected
+Mercier_1771_L'an 2440_2,Mercier_1771_L'an 2440_9,1,undirected
+Mercier_1771_L'an 2440_2,Mercier_1782-1788_Tableau Paris - 2e ed t 2_3,1,undirected
+Mercier_1771_L'an 2440_3,Brissot_1780_Recherches philosophiques sur le droit de propriété_1,2,undirected
+Mercier_1771_L'an 2440_3,Mercier_1771_L'an 2440_2,6,undirected
+Mercier_1771_L'an 2440_3,Mercier_1771_L'an 2440_4,1,undirected
+Mercier_1771_L'an 2440_3,Mercier_1771_L'an 2440_8,5,undirected
+Mercier_1771_L'an 2440_4,Brissot_1780_Recherches philosophiques sur le droit de propriété_1,1,undirected
+Mercier_1771_L'an 2440_4,Mercier_1771_L'an 2440_2,4,undirected
+Mercier_1771_L'an 2440_4,Mercier_1771_L'an 2440_3,1,undirected
+Mercier_1771_L'an 2440_4,Mercier_1771_L'an 2440_5,4,undirected
+Mercier_1771_L'an 2440_4,Mercier_1771_L'an 2440_7,3,undirected
+Mercier_1771_L'an 2440_4,Mercier_1771_L'an 2440_8,1,undirected
+Mercier_1771_L'an 2440_4,Mercier_1771_L'an 2440_9,2,undirected
+Mercier_1771_L'an 2440_5,Mercier_1771_L'an 2440_2,3,undirected
+Mercier_1771_L'an 2440_5,Mercier_1771_L'an 2440_4,4,undirected
+Mercier_1771_L'an 2440_5,Mercier_1771_L'an 2440_6,3,undirected
+Mercier_1771_L'an 2440_5,Mercier_1771_L'an 2440_7,1,undirected
+Mercier_1771_L'an 2440_5,Mercier_1782-1788_Tableau Paris - 2e ed t 2_5,1,undirected
+Mercier_1771_L'an 2440_6,Mercier_1771_L'an 2440_1,2,undirected
+Mercier_1771_L'an 2440_6,Mercier_1771_L'an 2440_2,3,undirected
+Mercier_1771_L'an 2440_6,Mercier_1771_L'an 2440_5,3,undirected
+Mercier_1771_L'an 2440_6,Mercier_1771_L'an 2440_7,3,undirected
+Mercier_1771_L'an 2440_7,Mercier_1771_L'an 2440_4,3,undirected
+Mercier_1771_L'an 2440_7,Mercier_1771_L'an 2440_5,1,undirected
+Mercier_1771_L'an 2440_7,Mercier_1771_L'an 2440_6,3,undirected
+Mercier_1771_L'an 2440_8,Mercier_1771_L'an 2440_2,4,undirected
+Mercier_1771_L'an 2440_8,Mercier_1771_L'an 2440_3,5,undirected
+Mercier_1771_L'an 2440_8,Mercier_1771_L'an 2440_4,1,undirected
+Mercier_1771_L'an 2440_8,Mercier_1771_L'an 2440_9,4,undirected
+Mercier_1771_L'an 2440_9,Mercier_1771_L'an 2440_1,1,undirected
+Mercier_1771_L'an 2440_9,Mercier_1771_L'an 2440_2,1,undirected
+Mercier_1771_L'an 2440_9,Mercier_1771_L'an 2440_4,2,undirected
+Mercier_1771_L'an 2440_9,Mercier_1771_L'an 2440_8,4,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_1,Brissot_1780_Recherches philosophiques sur le droit de propriété_1,3,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_1,Mercier_1782-1788_Tableau Paris - 2e ed t 2_2,6,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_1,Mercier_1782-1788_Tableau Paris - 2e ed t 2_3,5,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_1,Mercier_1782-1788_Tableau Paris - 2e ed t 2_5,1,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_1,PseudoBrissot_1789_Plan de Municipalité_1,3,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_2,Mercier_1782-1788_Tableau Paris - 2e ed t 2_1,6,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_2,Mercier_1782-1788_Tableau Paris - 2e ed t 2_3,4,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_2,Mercier_1782-1788_Tableau Paris - 2e ed t 2_5,1,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_3,Mercier_1771_L'an 2440_2,1,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_3,Mercier_1782-1788_Tableau Paris - 2e ed t 2_1,5,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_3,Mercier_1782-1788_Tableau Paris - 2e ed t 2_2,4,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_3,Mercier_1782-1788_Tableau Paris - 2e ed t 2_4,3,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_3,Mercier_1782-1788_Tableau Paris - 2e ed t 2_5,3,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_4,Mercier_1771_L'an 2440_1,1,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_4,Mercier_1782-1788_Tableau Paris - 2e ed t 2_3,3,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_4,Mercier_1782-1788_Tableau Paris - 2e ed t 2_5,4,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_5,Mercier_1771_L'an 2440_5,1,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_5,Mercier_1782-1788_Tableau Paris - 2e ed t 2_1,1,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_5,Mercier_1782-1788_Tableau Paris - 2e ed t 2_2,1,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_5,Mercier_1782-1788_Tableau Paris - 2e ed t 2_3,3,undirected
+Mercier_1782-1788_Tableau Paris - 2e ed t 2_5,Mercier_1782-1788_Tableau Paris - 2e ed t 2_4,4,undirected
+PseudoBrissot_1789_Plan de Municipalité_1,Goudar_1757_La paix de l'Europe_1,1,undirected
+PseudoBrissot_1789_Plan de Municipalité_1,Goudar_1757_La paix de l'Europe_3,2,undirected
+PseudoBrissot_1789_Plan de Municipalité_1,Mercier_1782-1788_Tableau Paris - 2e ed t 2_1,3,undirected
