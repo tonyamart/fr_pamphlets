@@ -1,6 +1,6 @@
 ---
 title: "00_metadata_selection"
-format: html
+format: md
 editor: visual
 ---
 

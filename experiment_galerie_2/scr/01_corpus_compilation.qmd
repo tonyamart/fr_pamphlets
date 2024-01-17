@@ -1,6 +1,6 @@
 ---
 title: "Corpus compilation"
-format: html
+format: md
 editor: visual
 ---
 

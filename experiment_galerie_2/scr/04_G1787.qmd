@@ -1,6 +1,6 @@
 ---
 title: "G1787"
-format: html
+format: md
 editor: visual
 ---
 
@@ -301,11 +301,11 @@ for (i in 1:5) {
   op_list_w[[i]] <- imposters.optimize(data[-c(35, 36), ]) # remove target
 }
 
-saveRDS(op_list_w, "G1787-5_GI_op_list.rds")
+saveRDS(op_list_w, "exp_res/G1787-5_GI_op_list.rds")
 ```
 
 ```{r}
-op_list_w <- readRDS("G1787-5_GI_op_list.rds")
+op_list_w <- readRDS("exp_res/G1787-5_GI_op_list.rds")
 
 # op_list_w[[1]][1]
 
@@ -369,12 +369,12 @@ for (i in 1:50) {
   
 }
 
-saveRDS(imp_res, "G1787_5_imp_res.rds")
+saveRDS(imp_res, "exp_res/G1787_5_imp_res.rds")
 ```
 
 ```{r}
 # load saved data
-imp_res <- readRDS("G1787_5_imp_res.rds")
+imp_res <- readRDS("exp_res/G1787_5_imp_res.rds")
 
 # plot
 imp_res %>% 
@@ -423,11 +423,11 @@ for (i in 1:3) {
   op_list_w[[i]] <- imposters.optimize(data[-c(37, 38), ]) # remove target
 }
 
-saveRDS(op_list_w, "G1787-6_GI_op_list.rds")
+saveRDS(op_list_w, "exp_res/G1787-6_GI_op_list.rds")
 ```
 
 ```{r, include=FALSE}
-op_list_w <- readRDS("G1787-6_GI_op_list.rds")
+op_list_w <- readRDS("exp_res/G1787-6_GI_op_list.rds")
 
 # op_list_w[[1]][1]
 
@@ -491,12 +491,12 @@ for (i in 1:50) {
   
 }
 
-saveRDS(imp_res, "G1787_6_imp_res.rds")
+saveRDS(imp_res, "exp_res/G1787_6_imp_res.rds")
 ```
 
 ```{r, include=TRUE, echo=FALSE}
 # load saved data
-imp_res <- readRDS("G1787_6_imp_res.rds")
+imp_res <- readRDS("exp_res/G1787_6_imp_res.rds")
 
 # plot
 imp_res %>% 
@@ -545,11 +545,11 @@ for (i in 1:3) {
   op_list_w[[i]] <- imposters.optimize(data[-c(39, 40), ]) # remove target
 }
 
-saveRDS(op_list_w, "G1787-7_GI_op_list.rds")
+saveRDS(op_list_w, "exp_res/G1787-7_GI_op_list.rds")
 ```
 
 ```{r, include=TRUE, echo=FALSE}
-op_list_w <- readRDS("G1787-7_GI_op_list.rds")
+op_list_w <- readRDS("exp_res/G1787-7_GI_op_list.rds")
 
 # op_list_w[[1]][1]
 
@@ -613,12 +613,12 @@ for (i in 1:50) {
   
 }
 
-saveRDS(imp_res, "G1787_7_imp_res.rds")
+saveRDS(imp_res, "exp_res/G1787_7_imp_res.rds")
 ```
 
 ```{r, include=TRUE, echo=FALSE}
 # load saved data
-imp_res <- readRDS("G1787_7_imp_res.rds")
+imp_res <- readRDS("exp_res/G1787_7_imp_res.rds")
 
 # plot
 imp_res %>% 
@@ -667,11 +667,11 @@ for (i in 1:3) {
   op_list_w[[i]] <- imposters.optimize(data[-c(41, 42), ]) # remove target
 }
 
-saveRDS(op_list_w, "G1787-8_GI_op_list.rds")
+saveRDS(op_list_w, "exp_res/G1787-8_GI_op_list.rds")
 ```
 
 ```{r, include=TRUE, echo=FALSE}
-op_list_w <- readRDS("G1787-8_GI_op_list.rds")
+op_list_w <- readRDS("exp_res/G1787-8_GI_op_list.rds")
 
 # op_list_w[[1]][1]
 
@@ -735,12 +735,12 @@ for (i in 1:50) {
   
 }
 
-saveRDS(imp_res, "G1787_8_imp_res.rds")
+saveRDS(imp_res, "exp_res/G1787_8_imp_res.rds")
 ```
 
 ```{r, include=TRUE, echo=FALSE}
 # load saved data
-imp_res <- readRDS("G1787_8_imp_res.rds")
+imp_res <- readRDS("exp_res/G1787_8_imp_res.rds")
 
 # plot
 imp_res %>% 
