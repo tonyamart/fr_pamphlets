@@ -1205,7 +1205,7 @@ imp_res %>%
              linetype = 2,
              color = "cadetblue3") + 
   labs(x = "Author", 
-       subtitle = "Proportion of cases where a sample from an author wasthe closest one\nto Galerie_1785 Préface") + 
+       subtitle = "Proportion of cases where a sample from an author was the closest one\nto Galerie_1785 Préface") + 
   theme(axis.text.x = element_text(angle = 25, vjust = 0.5))
 ```
 
@@ -1335,7 +1335,7 @@ imp_res %>%
              linetype = 2,
              color = "cadetblue3") + 
   labs(x = "Author", 
-       subtitle = "Proportion of cases where a sample from an author wasthe closest one\nto Galerie_1785 Préface") + 
+       subtitle = "Proportion of cases where a sample from an author was the closest one\nto Galerie_1785 3eme tableau") + 
   theme(axis.text.x = element_text(angle = 25, vjust = 0.5))
 ```
 
