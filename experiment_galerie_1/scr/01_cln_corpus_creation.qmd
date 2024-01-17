@@ -1,6 +1,6 @@
 ---
 title: "01_cln_corpus_creation"
-format: html
+format: md
 editor: visual
 ---
 

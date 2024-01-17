@@ -1,6 +1,6 @@
 ---
 title: "00_authors"
-format: html
+format: md
 editor: visual
 ---
 

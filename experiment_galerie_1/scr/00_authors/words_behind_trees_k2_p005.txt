@@ -1,26 +1,26 @@
 CLUSTER 1
 ==============
 TEXTS
-Sieyes_8
-Sieyes_9
 Sieyes_11
-Sieyes_7
+Sieyes_2
+Sieyes_3
+Sieyes_4
+La-Harpe_1
 La-Harpe_9
-La-Harpe_5
+La-Harpe_4
 La-Harpe_6
-La-Harpe_7
-Gouges_3
-Gouges_1
-Gouges_2
+Gouges_4
 Gouges_5
+Gouges_2
+Gouges_3
+Brissot_4
 Brissot_8
-Brissot_6
-Brissot_1
-Brissot_5
+Brissot_2
+Brissot_9
 ==============
 FEATURES associated (p<0.05)
 
-et loi esprit citoyens est cette publique doivent non droits liberté toute tout pas sera tous donc droit intérêt ils opinion public sont nation aussi françois ne veut vous bien doit soit elle là pour pouvoir
+et est loi assemblée tous pas citoyens droit esprit ils droits sont publique sera cause aussi faut ne doit tout donc liberté ceux là intérêt ordre public raison toute rien nation françois non bien doivent vous car les auroit eux opinion veut
 
 
 
@@ -28,38 +28,38 @@ et loi esprit citoyens est cette publique doivent non droits liberté toute tout
 CLUSTER 2
 ==============
 TEXTS
-Bergasse_6
-Bergasse_5
-Bergasse_3
-Bergasse_7
-Villar_2
-Villar_6
-Villar_1
-Villar_4
-Marmontel_10
+Marmontel_18
+Marmontel_17
 Marmontel_14
-Marmontel_2
-Marmontel_6
-Garat_8
-Garat_9
-Garat_10
-Garat_3
-Condorcet_7
-Condorcet_4
-Condorcet_11
-Condorcet_14
-D'Alembert_5
-D'Alembert_3
-D'Alembert_1
-D'Alembert_11
+Marmontel_15
+Villar_2
+Villar_4
+Villar_3
+Villar_6
+Bergasse_10
+Bergasse_11
+Bergasse_2
+Bergasse_6
+Delisle-de-Sales_6
 Delisle-de-Sales_7
-Delisle-de-Sales_14
-Delisle-de-Sales_13
+Delisle-de-Sales_11
 Delisle-de-Sales_18
+D'Alembert_10
+D'Alembert_12
+D'Alembert_13
+D'Alembert_3
+Garat_8
+Garat_10
+Garat_4
+Garat_5
+Condorcet_11
+Condorcet_8
+Condorcet_2
+Condorcet_7
 ==============
 FEATURES associated (p<0.05)
 
-étoit fut de ses ii lui fait grand gloire sa dont avoit eu du son quelques après grands avec le
+avoit fut de ses dont lui sa étoit ii du grand toujours gloire vie ces partie au avec terre
 
 
 
