@@ -1,0 +1,99 @@
+Source,Target,Weight,Type
+Bergasse_1,Bergasse_2,6,undirected
+Bergasse_1,Delisle-de-Sales_1,3,undirected
+Bergasse_1,Delisle-de-Sales_2,2,undirected
+Bergasse_1,Gouges_2,1,undirected
+Bergasse_1,Marmontel_1,1,undirected
+Bergasse_1,Marmontel_2,4,undirected
+Bergasse_2,Bergasse_1,6,undirected
+Bergasse_2,Gouges_1,2,undirected
+Bergasse_2,Marmontel_1,1,undirected
+Bergasse_2,Marmontel_2,3,undirected
+Brissot_1,Brissot_2,6,undirected
+Brissot_1,G1785_0_Préface_1,2,undirected
+Brissot_1,Sieyes_1,2,undirected
+Brissot_2,Brissot_1,6,undirected
+Brissot_2,Sieyes_1,4,undirected
+Brissot_2,Sieyes_2,1,undirected
+Condorcet_1,Condorcet_2,6,undirected
+Condorcet_1,Garat_1,3,undirected
+Condorcet_1,Sieyes_2,2,undirected
+Condorcet_2,Condorcet_1,6,undirected
+Condorcet_2,Delisle-de-Sales_2,1,undirected
+Condorcet_2,G1785_0_Préface_2,4,undirected
+Condorcet_2,Garat_2,2,undirected
+D'Alembert_1,D'Alembert_2,6,undirected
+D'Alembert_1,La-Harpe_1,2,undirected
+D'Alembert_1,La-Harpe_2,1,undirected
+D'Alembert_1,Villar_2,5,undirected
+D'Alembert_2,D'Alembert_1,6,undirected
+D'Alembert_2,Garat_1,4,undirected
+D'Alembert_2,Sieyes_1,1,undirected
+Delisle-de-Sales_1,Bergasse_1,3,undirected
+Delisle-de-Sales_1,Delisle-de-Sales_2,6,undirected
+Delisle-de-Sales_1,G1785_0_Préface_1,3,undirected
+Delisle-de-Sales_2,Bergasse_1,2,undirected
+Delisle-de-Sales_2,Condorcet_2,1,undirected
+Delisle-de-Sales_2,Delisle-de-Sales_1,6,undirected
+Delisle-de-Sales_2,Gouges_2,3,undirected
+G1785_0_Préface_1,Brissot_1,2,undirected
+G1785_0_Préface_1,Delisle-de-Sales_1,3,undirected
+G1785_0_Préface_1,G1785_0_Préface_2,6,undirected
+G1785_0_Préface_2,Condorcet_2,4,undirected
+G1785_0_Préface_2,G1785_0_Préface_1,6,undirected
+G1785_0_Préface_2,G1785_4_Discours préliminaire_1,1,undirected
+G1785_0_Préface_2,G1785_4_Discours préliminaire_2,2,undirected
+G1785_4_Discours préliminaire_1,G1785_0_Préface_2,1,undirected
+G1785_4_Discours préliminaire_1,G1785_4_Discours préliminaire_2,6,undirected
+G1785_4_Discours préliminaire_1,Garat_2,2,undirected
+G1785_4_Discours préliminaire_2,G1785_0_Préface_2,2,undirected
+G1785_4_Discours préliminaire_2,G1785_4_Discours préliminaire_1,6,undirected
+G1785_4_Discours préliminaire_2,La-Harpe_1,4,undirected
+Garat_1,Condorcet_1,3,undirected
+Garat_1,D'Alembert_2,4,undirected
+Garat_1,Garat_2,6,undirected
+Garat_2,Condorcet_2,2,undirected
+Garat_2,G1785_4_Discours préliminaire_1,2,undirected
+Garat_2,Garat_1,6,undirected
+Garat_2,Villar_2,1,undirected
+Gouges_1,Bergasse_2,2,undirected
+Gouges_1,Gouges_2,6,undirected
+Gouges_1,Sieyes_1,1,undirected
+Gouges_2,Bergasse_1,1,undirected
+Gouges_2,Delisle-de-Sales_2,3,undirected
+Gouges_2,Gouges_1,6,undirected
+La-Harpe_1,D'Alembert_1,2,undirected
+La-Harpe_1,G1785_4_Discours préliminaire_2,4,undirected
+La-Harpe_1,La-Harpe_2,6,undirected
+La-Harpe_1,Villar_1,1,undirected
+La-Harpe_2,D'Alembert_1,1,undirected
+La-Harpe_2,La-Harpe_1,6,undirected
+La-Harpe_2,Sieyes_1,3,undirected
+La-Harpe_2,Sieyes_2,2,undirected
+Marmontel_1,Bergasse_1,1,undirected
+Marmontel_1,Bergasse_2,1,undirected
+Marmontel_1,Marmontel_2,6,undirected
+Marmontel_1,Villar_1,4,undirected
+Marmontel_1,Villar_2,1,undirected
+Marmontel_2,Bergasse_1,4,undirected
+Marmontel_2,Bergasse_2,3,undirected
+Marmontel_2,Marmontel_1,6,undirected
+Marmontel_2,Villar_1,3,undirected
+Marmontel_2,Villar_2,2,undirected
+Sieyes_1,Brissot_1,2,undirected
+Sieyes_1,Brissot_2,4,undirected
+Sieyes_1,D'Alembert_2,1,undirected
+Sieyes_1,Gouges_1,1,undirected
+Sieyes_1,La-Harpe_2,3,undirected
+Sieyes_1,Sieyes_2,6,undirected
+Sieyes_2,Brissot_2,1,undirected
+Sieyes_2,Condorcet_1,2,undirected
+Sieyes_2,La-Harpe_2,2,undirected
+Sieyes_2,Sieyes_1,6,undirected
+Villar_1,La-Harpe_1,1,undirected
+Villar_1,Marmontel_1,4,undirected
+Villar_1,Marmontel_2,3,undirected
+Villar_2,D'Alembert_1,5,undirected
+Villar_2,Garat_2,1,undirected
+Villar_2,Marmontel_1,1,undirected
+Villar_2,Marmontel_2,2,undirected

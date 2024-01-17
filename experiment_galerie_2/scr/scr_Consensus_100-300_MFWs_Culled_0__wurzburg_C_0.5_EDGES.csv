@@ -1,0 +1,759 @@
+Source,Target,Weight,Type
+Bancal des Issarts_1,Bancal des Issarts_2,1206,undirected
+Bancal des Issarts_1,Barère_1,602,undirected
+Bancal des Issarts_1,Barère_2,242,undirected
+Bancal des Issarts_1,Bonneville_2,138,undirected
+Bancal des Issarts_1,Fauchet_1,309,undirected
+Bancal des Issarts_1,Fauchet_2,358,undirected
+Bancal des Issarts_1,Garat_1,14,undirected
+Bancal des Issarts_1,Garat_2,7,undirected
+Bancal des Issarts_2,Bancal des Issarts_1,1206,undirected
+Bancal des Issarts_2,Barère_1,852,undirected
+Bancal des Issarts_2,Barère_2,332,undirected
+Bancal des Issarts_2,Baudeau_1,3,undirected
+Bancal des Issarts_2,Bonneville_1,15,undirected
+Bancal des Issarts_2,Fauchet_1,509,undirected
+Bancal des Issarts_2,Fauchet_2,3,undirected
+Bancal des Issarts_2,Garat_1,17,undirected
+Bancal des Issarts_2,Mirabeau_2,2,undirected
+Barère_1,Bancal des Issarts_1,602,undirected
+Barère_1,Bancal des Issarts_2,852,undirected
+Barère_1,Barère_2,1149,undirected
+Barère_1,Bonneville_1,14,undirected
+Barère_1,Danton_1,102,undirected
+Barère_1,Danton_2,65,undirected
+Barère_1,Delisle de Sales_2,44,undirected
+Barère_1,Garat_1,215,undirected
+Barère_1,Marat_2,97,undirected
+Barère_2,Bancal des Issarts_1,242,undirected
+Barère_2,Bancal des Issarts_2,332,undirected
+Barère_2,Barère_1,1149,undirected
+Barère_2,Baudeau_2,14,undirected
+Barère_2,Clavière_1,1,undirected
+Barère_2,Danton_2,163,undirected
+Barère_2,Gouges_1,14,undirected
+Baudeau_1,Bancal des Issarts_2,3,undirected
+Baudeau_1,Baudeau_2,1206,undirected
+Baudeau_1,Clavière_2,620,undirected
+Baudeau_1,Ducrest_1,22,undirected
+Baudeau_1,Ducrest_2,4,undirected
+Baudeau_1,Dupaty_1,85,undirected
+Baudeau_1,Lacretelle_1,1,undirected
+Baudeau_1,Lacretelle_2,280,undirected
+Baudeau_1,Mirabeau_2,22,undirected
+Baudeau_1,Sieyès_1,23,undirected
+Baudeau_2,Barère_2,14,undirected
+Baudeau_2,Baudeau_1,1206,undirected
+Baudeau_2,Clavière_1,30,undirected
+Baudeau_2,Clavière_2,115,undirected
+Baudeau_2,Condorcet_2,324,undirected
+Baudeau_2,D'Alembert_2,103,undirected
+Baudeau_2,Dusaulx_2,4,undirected
+Baudeau_2,G1785_1_Tableau_2,3,undirected
+Baudeau_2,G1785_3_Troisième_1,60,undirected
+Baudeau_2,Mirabeau_1,167,undirected
+Bergasse_1,Bergasse_2,1206,undirected
+Bergasse_1,Bonneville_1,9,undirected
+Bergasse_1,Brissot_1,72,undirected
+Bergasse_1,Brissot_2,23,undirected
+Bergasse_1,Delisle de Sales_1,3,undirected
+Bergasse_1,Dusaulx_1,11,undirected
+Bergasse_1,Laclos_1,58,undirected
+Bergasse_1,Lacretelle_1,59,undirected
+Bergasse_1,Mercier_2,123,undirected
+Bergasse_1,Rabaut Saint-Étienne_2,226,undirected
+Bergasse_1,Sabatier de Castres_1,52,undirected
+Bergasse_1,Sieyès_2,44,undirected
+Bergasse_2,Bergasse_1,1206,undirected
+Bergasse_2,Clavière_1,7,undirected
+Bergasse_2,D'Alembert_1,71,undirected
+Bergasse_2,Ducrest_2,309,undirected
+Bergasse_2,Dupaty_2,1,undirected
+Bergasse_2,Laclos_1,556,undirected
+Bergasse_2,Sabatier de Castres_2,88,undirected
+Bergasse_2,Sieyès_1,13,undirected
+Bonneville_1,Bancal des Issarts_2,15,undirected
+Bonneville_1,Barère_1,14,undirected
+Bonneville_1,Bergasse_1,9,undirected
+Bonneville_1,Bonneville_2,1206,undirected
+Bonneville_1,Delisle de Sales_2,1,undirected
+Bonneville_1,Dupaty_1,8,undirected
+Bonneville_1,Fauchet_1,45,undirected
+Bonneville_1,Fauchet_2,5,undirected
+Bonneville_1,Gouges_1,17,undirected
+Bonneville_1,Lacretelle_1,5,undirected
+Bonneville_1,Mercier_1,60,undirected
+Bonneville_1,Mercier_2,424,undirected
+Bonneville_1,Mme Genlis_2,111,undirected
+Bonneville_1,Petion_1,1,undirected
+Bonneville_1,Talleyrand_1,106,undirected
+Bonneville_2,Bancal des Issarts_1,138,undirected
+Bonneville_2,Bonneville_1,1206,undirected
+Bonneville_2,Fauchet_1,218,undirected
+Bonneville_2,Fauchet_2,122,undirected
+Bonneville_2,Mercier_1,336,undirected
+Bonneville_2,Mirabeau_2,85,undirected
+Bonneville_2,Mme Genlis_1,4,undirected
+Bonneville_2,Talleyrand_1,68,undirected
+Brissot_1,Bergasse_1,72,undirected
+Brissot_1,Brissot_2,1206,undirected
+Brissot_1,D'Alembert_1,47,undirected
+Brissot_1,D'Alembert_2,136,undirected
+Brissot_1,Dupaty_1,616,undirected
+Brissot_1,Dupaty_2,336,undirected
+Brissot_1,Dusaulx_1,105,undirected
+Brissot_1,Petion_1,256,undirected
+Brissot_1,Petion_2,291,undirected
+Brissot_1,Rabaut Saint-Étienne_1,151,undirected
+Brissot_2,Bergasse_1,23,undirected
+Brissot_2,Brissot_1,1206,undirected
+Brissot_2,Clavière_1,24,undirected
+Brissot_2,D'Alembert_1,641,undirected
+Brissot_2,D'Alembert_2,705,undirected
+Brissot_2,Dupaty_1,21,undirected
+Brissot_2,Dupaty_2,17,undirected
+Brissot_2,Dusaulx_1,4,undirected
+Brissot_2,Petion_1,33,undirected
+Brissot_2,Petion_2,110,undirected
+Brissot_2,Rabaut Saint-Étienne_1,129,undirected
+Brissot_2,Talleyrand_1,32,undirected
+Carra_1,Carra_2,1206,undirected
+Carra_1,Desmoulins_1,293,undirected
+Carra_1,Desmoulins_2,5,undirected
+Carra_1,La Salle_1,200,undirected
+Carra_1,La Salle_2,506,undirected
+Carra_1,Manuel_1,662,undirected
+Carra_1,Manuel_2,83,undirected
+Carra_1,Rabaut Saint-Étienne_1,164,undirected
+Carra_1,Rabaut Saint-Étienne_2,56,undirected
+Carra_1,Sabatier de Castres_2,81,undirected
+Carra_1,Sillery (Genlis Ch)_2,23,undirected
+Carra_1,Talleyrand_1,14,undirected
+Carra_1,Talleyrand_2,6,undirected
+Carra_1,Target_1,111,undirected
+Carra_1,Target_2,419,undirected
+Carra_2,Carra_1,1206,undirected
+Carra_2,Desmoulins_1,5,undirected
+Carra_2,La Salle_1,512,undirected
+Carra_2,La Salle_2,109,undirected
+Carra_2,Manuel_1,714,undirected
+Carra_2,Manuel_2,203,undirected
+Carra_2,Rabaut Saint-Étienne_1,11,undirected
+Carra_2,Rabaut Saint-Étienne_2,342,undirected
+Carra_2,Sillery (Genlis Ch)_1,103,undirected
+Carra_2,Sillery (Genlis Ch)_2,13,undirected
+Carra_2,Talleyrand_1,140,undirected
+Carra_2,Talleyrand_2,319,undirected
+Carra_2,Target_1,77,undirected
+Carra_2,Target_2,7,undirected
+Clavière_1,Barère_2,1,undirected
+Clavière_1,Baudeau_2,30,undirected
+Clavière_1,Bergasse_2,7,undirected
+Clavière_1,Brissot_2,24,undirected
+Clavière_1,Clavière_2,1206,undirected
+Clavière_1,Ducrest_1,137,undirected
+Clavière_1,Ducrest_2,138,undirected
+Clavière_1,Lacretelle_1,164,undirected
+Clavière_1,Mirabeau_1,70,undirected
+Clavière_1,Mirabeau_2,29,undirected
+Clavière_1,Sieyès_1,47,undirected
+Clavière_2,Baudeau_1,620,undirected
+Clavière_2,Baudeau_2,115,undirected
+Clavière_2,Clavière_1,1206,undirected
+Clavière_2,Danton_1,7,undirected
+Clavière_2,Ducrest_1,300,undirected
+Clavière_2,Ducrest_2,15,undirected
+Clavière_2,Gouges_2,4,undirected
+Clavière_2,Mirabeau_1,194,undirected
+Clavière_2,Petion_1,6,undirected
+Clavière_2,Sieyès_1,37,undirected
+Condorcet_1,Condorcet_2,1206,undirected
+Condorcet_1,Fauchet_1,104,undirected
+Condorcet_1,G1785_0_Preface_1,44,undirected
+Condorcet_1,G1785_1_Tableau_1,79,undirected
+Condorcet_1,Garat_2,89,undirected
+Condorcet_1,Laclos_2,84,undirected
+Condorcet_1,Petion_2,212,undirected
+Condorcet_1,Sillery (Genlis Ch)_1,23,undirected
+Condorcet_1,Target_2,42,undirected
+Condorcet_2,Baudeau_2,324,undirected
+Condorcet_2,Condorcet_1,1206,undirected
+Condorcet_2,Fauchet_1,2,undirected
+Condorcet_2,G1785_0_Preface_2,4,undirected
+Condorcet_2,G1785_1_Tableau_2,47,undirected
+Condorcet_2,Garat_1,9,undirected
+Condorcet_2,Garat_2,62,undirected
+Condorcet_2,Laclos_2,2,undirected
+Condorcet_2,Marat_1,241,undirected
+Condorcet_2,Mercier_2,1,undirected
+Condorcet_2,Pastoret_2,32,undirected
+Condorcet_2,Rabaut Saint-Étienne_2,196,undirected
+Condorcet_2,Sillery (Genlis Ch)_1,16,undirected
+D'Alembert_1,Bergasse_2,71,undirected
+D'Alembert_1,Brissot_1,47,undirected
+D'Alembert_1,Brissot_2,641,undirected
+D'Alembert_1,D'Alembert_2,1206,undirected
+D'Alembert_1,Delisle de Sales_1,180,undirected
+D'Alembert_1,Delisle de Sales_2,190,undirected
+D'Alembert_1,Dupaty_2,4,undirected
+D'Alembert_1,Laclos_2,231,undirected
+D'Alembert_2,Baudeau_2,103,undirected
+D'Alembert_2,Brissot_1,136,undirected
+D'Alembert_2,Brissot_2,705,undirected
+D'Alembert_2,D'Alembert_1,1206,undirected
+D'Alembert_2,Delisle de Sales_2,6,undirected
+D'Alembert_2,Dupaty_1,6,undirected
+D'Alembert_2,Dupaty_2,29,undirected
+D'Alembert_2,Sieyès_1,324,undirected
+Danton_1,Barère_1,102,undirected
+Danton_1,Clavière_2,7,undirected
+Danton_1,Danton_2,1206,undirected
+Danton_1,Delisle de Sales_1,34,undirected
+Danton_1,Delisle de Sales_2,236,undirected
+Danton_1,Desmoulins_1,10,undirected
+Danton_1,Desmoulins_2,799,undirected
+Danton_1,Manuel_2,27,undirected
+Danton_1,Sabatier de Castres_2,175,undirected
+Danton_2,Barère_1,65,undirected
+Danton_2,Barère_2,163,undirected
+Danton_2,Danton_1,1206,undirected
+Danton_2,Desmoulins_2,371,undirected
+Danton_2,Dusaulx_1,39,undirected
+Danton_2,La Salle_2,58,undirected
+Delisle de Sales_1,Bergasse_1,3,undirected
+Delisle de Sales_1,D'Alembert_1,180,undirected
+Delisle de Sales_1,Danton_1,34,undirected
+Delisle de Sales_1,Delisle de Sales_2,1206,undirected
+Delisle de Sales_1,Ducrest_1,47,undirected
+Delisle de Sales_1,Ducrest_2,201,undirected
+Delisle de Sales_1,G1785_0_Preface_1,25,undirected
+Delisle de Sales_1,Lacretelle_2,59,undirected
+Delisle de Sales_1,Sabatier de Castres_2,169,undirected
+Delisle de Sales_1,Sillery (Genlis Ch)_1,2,undirected
+Delisle de Sales_2,Barère_1,44,undirected
+Delisle de Sales_2,Bonneville_1,1,undirected
+Delisle de Sales_2,D'Alembert_1,190,undirected
+Delisle de Sales_2,D'Alembert_2,6,undirected
+Delisle de Sales_2,Danton_1,236,undirected
+Delisle de Sales_2,Delisle de Sales_1,1206,undirected
+Delisle de Sales_2,Desmoulins_2,21,undirected
+Delisle de Sales_2,Ducrest_1,211,undirected
+Delisle de Sales_2,Sabatier de Castres_2,56,undirected
+Delisle de Sales_2,Sillery (Genlis Ch)_2,8,undirected
+Desmoulins_1,Carra_1,293,undirected
+Desmoulins_1,Carra_2,5,undirected
+Desmoulins_1,Danton_1,10,undirected
+Desmoulins_1,Desmoulins_2,1206,undirected
+Desmoulins_1,Dusaulx_1,38,undirected
+Desmoulins_1,La Salle_2,74,undirected
+Desmoulins_1,Manuel_1,239,undirected
+Desmoulins_2,Carra_1,5,undirected
+Desmoulins_2,Danton_1,799,undirected
+Desmoulins_2,Danton_2,371,undirected
+Desmoulins_2,Delisle de Sales_2,21,undirected
+Desmoulins_2,Desmoulins_1,1206,undirected
+Desmoulins_2,La Salle_2,153,undirected
+Desmoulins_2,Manuel_2,54,undirected
+Desmoulins_2,Sillery (Genlis Ch)_1,93,undirected
+Desmoulins_2,Sillery (Genlis Ch)_2,70,undirected
+Ducrest_1,Baudeau_1,22,undirected
+Ducrest_1,Clavière_1,137,undirected
+Ducrest_1,Clavière_2,300,undirected
+Ducrest_1,Delisle de Sales_1,47,undirected
+Ducrest_1,Delisle de Sales_2,211,undirected
+Ducrest_1,Ducrest_2,1206,undirected
+Ducrest_1,Lacretelle_1,5,undirected
+Ducrest_1,Mirabeau_2,439,undirected
+Ducrest_1,Pastoret_1,90,undirected
+Ducrest_1,Sieyès_1,13,undirected
+Ducrest_1,Sieyès_2,629,undirected
+Ducrest_2,Baudeau_1,4,undirected
+Ducrest_2,Bergasse_2,309,undirected
+Ducrest_2,Clavière_1,138,undirected
+Ducrest_2,Clavière_2,15,undirected
+Ducrest_2,Delisle de Sales_1,201,undirected
+Ducrest_2,Ducrest_1,1206,undirected
+Ducrest_2,Gouges_1,2,undirected
+Ducrest_2,Laclos_1,12,undirected
+Ducrest_2,Lacretelle_1,2,undirected
+Ducrest_2,Mme Genlis_2,10,undirected
+Ducrest_2,Sieyès_1,475,undirected
+Ducrest_2,Sieyès_2,734,undirected
+Dupaty_1,Baudeau_1,85,undirected
+Dupaty_1,Bonneville_1,8,undirected
+Dupaty_1,Brissot_1,616,undirected
+Dupaty_1,Brissot_2,21,undirected
+Dupaty_1,D'Alembert_2,6,undirected
+Dupaty_1,Dupaty_2,1206,undirected
+Dupaty_1,Dusaulx_1,14,undirected
+Dupaty_1,Laclos_1,39,undirected
+Dupaty_1,Manuel_1,7,undirected
+Dupaty_1,Manuel_2,27,undirected
+Dupaty_1,Sieyès_1,3,undirected
+Dupaty_1,Talleyrand_1,47,undirected
+Dupaty_1,Target_1,130,undirected
+Dupaty_1,Target_2,3,undirected
+Dupaty_2,Bergasse_2,1,undirected
+Dupaty_2,Brissot_1,336,undirected
+Dupaty_2,Brissot_2,17,undirected
+Dupaty_2,D'Alembert_1,4,undirected
+Dupaty_2,D'Alembert_2,29,undirected
+Dupaty_2,Dupaty_1,1206,undirected
+Dupaty_2,Pastoret_1,108,undirected
+Dupaty_2,Pastoret_2,239,undirected
+Dupaty_2,Target_2,494,undirected
+Dusaulx_1,Bergasse_1,11,undirected
+Dusaulx_1,Brissot_1,105,undirected
+Dusaulx_1,Brissot_2,4,undirected
+Dusaulx_1,Danton_2,39,undirected
+Dusaulx_1,Desmoulins_1,38,undirected
+Dusaulx_1,Dupaty_1,14,undirected
+Dusaulx_1,Dusaulx_2,1206,undirected
+Dusaulx_1,G1785_2_Second_2,36,undirected
+Dusaulx_1,Talleyrand_1,406,undirected
+Dusaulx_2,Baudeau_2,4,undirected
+Dusaulx_2,Dusaulx_1,1206,undirected
+Dusaulx_2,G1785_0_Preface_1,13,undirected
+Dusaulx_2,G1785_0_Preface_2,342,undirected
+Dusaulx_2,G1785_3_Troisième_1,9,undirected
+Dusaulx_2,G1785_3_Troisième_2,13,undirected
+Dusaulx_2,Talleyrand_1,285,undirected
+Dusaulx_2,Talleyrand_2,39,undirected
+Fauchet_1,Bancal des Issarts_1,309,undirected
+Fauchet_1,Bancal des Issarts_2,509,undirected
+Fauchet_1,Bonneville_1,45,undirected
+Fauchet_1,Bonneville_2,218,undirected
+Fauchet_1,Condorcet_1,104,undirected
+Fauchet_1,Condorcet_2,2,undirected
+Fauchet_1,Fauchet_2,1205,undirected
+Fauchet_1,Garat_1,48,undirected
+Fauchet_1,Garat_2,12,undirected
+Fauchet_1,Gouges_1,5,undirected
+Fauchet_1,Sillery (Genlis Ch)_2,385,undirected
+Fauchet_2,Bancal des Issarts_1,358,undirected
+Fauchet_2,Bancal des Issarts_2,3,undirected
+Fauchet_2,Bonneville_1,5,undirected
+Fauchet_2,Bonneville_2,122,undirected
+Fauchet_2,Fauchet_1,1205,undirected
+Fauchet_2,G1785_0_Preface_2,22,undirected
+Fauchet_2,Garat_1,4,undirected
+Fauchet_2,Garat_2,2,undirected
+Fauchet_2,Gouges_1,179,undirected
+Fauchet_2,Mercier_1,213,undirected
+Fauchet_2,Mercier_2,1,undirected
+Fauchet_2,Petion_1,63,undirected
+Fauchet_2,Sillery (Genlis Ch)_2,4,undirected
+G1785_0_Preface_1,Condorcet_1,44,undirected
+G1785_0_Preface_1,Delisle de Sales_1,25,undirected
+G1785_0_Preface_1,Dusaulx_2,13,undirected
+G1785_0_Preface_1,G1785_0_Preface_2,1206,undirected
+G1785_0_Preface_1,G1785_1_Tableau_1,105,undirected
+G1785_0_Preface_1,G1785_1_Tableau_2,270,undirected
+G1785_0_Preface_1,G1785_2_Second_1,111,undirected
+G1785_0_Preface_1,G1785_2_Second_2,6,undirected
+G1785_0_Preface_1,G1785_3_Troisième_2,70,undirected
+G1785_0_Preface_1,Mirabeau_2,1,undirected
+G1785_0_Preface_1,Mme Genlis_2,23,undirected
+G1785_0_Preface_1,Sillery (Genlis Ch)_1,37,undirected
+G1785_0_Preface_2,Condorcet_2,4,undirected
+G1785_0_Preface_2,Dusaulx_2,342,undirected
+G1785_0_Preface_2,Fauchet_2,22,undirected
+G1785_0_Preface_2,G1785_0_Preface_1,1206,undirected
+G1785_0_Preface_2,G1785_1_Tableau_1,368,undirected
+G1785_0_Preface_2,G1785_1_Tableau_2,138,undirected
+G1785_0_Preface_2,Lacretelle_2,21,undirected
+G1785_0_Preface_2,Mirabeau_2,91,undirected
+G1785_0_Preface_2,Sillery (Genlis Ch)_1,22,undirected
+G1785_1_Tableau_1,Condorcet_1,79,undirected
+G1785_1_Tableau_1,G1785_0_Preface_1,105,undirected
+G1785_1_Tableau_1,G1785_0_Preface_2,368,undirected
+G1785_1_Tableau_1,G1785_1_Tableau_2,1206,undirected
+G1785_1_Tableau_1,G1785_2_Second_1,48,undirected
+G1785_1_Tableau_1,G1785_3_Troisième_1,139,undirected
+G1785_1_Tableau_1,G1785_3_Troisième_2,402,undirected
+G1785_1_Tableau_1,Rabaut Saint-Étienne_2,47,undirected
+G1785_1_Tableau_2,Baudeau_2,3,undirected
+G1785_1_Tableau_2,Condorcet_2,47,undirected
+G1785_1_Tableau_2,G1785_0_Preface_1,270,undirected
+G1785_1_Tableau_2,G1785_0_Preface_2,138,undirected
+G1785_1_Tableau_2,G1785_1_Tableau_1,1206,undirected
+G1785_1_Tableau_2,G1785_2_Second_1,180,undirected
+G1785_1_Tableau_2,G1785_2_Second_2,216,undirected
+G1785_1_Tableau_2,G1785_3_Troisième_1,105,undirected
+G1785_1_Tableau_2,G1785_3_Troisième_2,102,undirected
+G1785_1_Tableau_2,Rabaut Saint-Étienne_1,125,undirected
+G1785_2_Second_1,G1785_0_Preface_1,111,undirected
+G1785_2_Second_1,G1785_1_Tableau_1,48,undirected
+G1785_2_Second_1,G1785_1_Tableau_2,180,undirected
+G1785_2_Second_1,G1785_2_Second_2,1206,undirected
+G1785_2_Second_1,G1785_3_Troisième_1,593,undirected
+G1785_2_Second_1,G1785_3_Troisième_2,440,undirected
+G1785_2_Second_2,Dusaulx_1,36,undirected
+G1785_2_Second_2,G1785_0_Preface_1,6,undirected
+G1785_2_Second_2,G1785_1_Tableau_2,216,undirected
+G1785_2_Second_2,G1785_2_Second_1,1206,undirected
+G1785_2_Second_2,G1785_3_Troisième_1,696,undirected
+G1785_2_Second_2,G1785_3_Troisième_2,714,undirected
+G1785_3_Troisième_1,Baudeau_2,60,undirected
+G1785_3_Troisième_1,Dusaulx_2,9,undirected
+G1785_3_Troisième_1,G1785_1_Tableau_1,139,undirected
+G1785_3_Troisième_1,G1785_1_Tableau_2,105,undirected
+G1785_3_Troisième_1,G1785_2_Second_1,593,undirected
+G1785_3_Troisième_1,G1785_2_Second_2,696,undirected
+G1785_3_Troisième_1,G1785_3_Troisième_2,1175,undirected
+G1785_3_Troisième_1,Rabaut Saint-Étienne_1,6,undirected
+G1785_3_Troisième_2,Dusaulx_2,13,undirected
+G1785_3_Troisième_2,G1785_0_Preface_1,70,undirected
+G1785_3_Troisième_2,G1785_1_Tableau_1,402,undirected
+G1785_3_Troisième_2,G1785_1_Tableau_2,102,undirected
+G1785_3_Troisième_2,G1785_2_Second_1,440,undirected
+G1785_3_Troisième_2,G1785_2_Second_2,714,undirected
+G1785_3_Troisième_2,G1785_3_Troisième_1,1175,undirected
+Garat_1,Bancal des Issarts_1,14,undirected
+Garat_1,Bancal des Issarts_2,17,undirected
+Garat_1,Barère_1,215,undirected
+Garat_1,Condorcet_2,9,undirected
+Garat_1,Fauchet_1,48,undirected
+Garat_1,Fauchet_2,4,undirected
+Garat_1,Garat_2,1206,undirected
+Garat_1,Gouges_2,8,undirected
+Garat_1,Marat_1,332,undirected
+Garat_1,Marat_2,11,undirected
+Garat_1,Mme Genlis_2,356,undirected
+Garat_2,Bancal des Issarts_1,7,undirected
+Garat_2,Condorcet_1,89,undirected
+Garat_2,Condorcet_2,62,undirected
+Garat_2,Fauchet_1,12,undirected
+Garat_2,Fauchet_2,2,undirected
+Garat_2,Garat_1,1206,undirected
+Garat_2,Lacretelle_1,239,undirected
+Garat_2,Marat_1,205,undirected
+Garat_2,Marat_2,687,undirected
+Garat_2,Mme Genlis_1,265,undirected
+Garat_2,Mme Genlis_2,2,undirected
+Gouges_1,Barère_2,14,undirected
+Gouges_1,Bonneville_1,17,undirected
+Gouges_1,Ducrest_2,2,undirected
+Gouges_1,Fauchet_1,5,undirected
+Gouges_1,Fauchet_2,179,undirected
+Gouges_1,Gouges_2,1206,undirected
+Gouges_1,Mercier_1,187,undirected
+Gouges_1,Mme Genlis_2,92,undirected
+Gouges_1,Petion_2,47,undirected
+Gouges_1,Sabatier de Castres_2,69,undirected
+Gouges_1,Sieyès_2,263,undirected
+Gouges_2,Clavière_2,4,undirected
+Gouges_2,Garat_1,8,undirected
+Gouges_2,Gouges_1,1206,undirected
+Gouges_2,Mercier_1,153,undirected
+Gouges_2,Mercier_2,63,undirected
+Gouges_2,Mme Genlis_2,658,undirected
+Gouges_2,Petion_1,144,undirected
+Gouges_2,Petion_2,3,undirected
+Gouges_2,Sabatier de Castres_1,309,undirected
+Gouges_2,Sabatier de Castres_2,6,undirected
+Gouges_2,Sieyès_2,29,undirected
+La Salle_1,Carra_1,200,undirected
+La Salle_1,Carra_2,512,undirected
+La Salle_1,La Salle_2,1206,undirected
+La Salle_1,Manuel_2,60,undirected
+La Salle_1,Petion_2,133,undirected
+La Salle_1,Rabaut Saint-Étienne_1,3,undirected
+La Salle_1,Sillery (Genlis Ch)_1,23,undirected
+La Salle_1,Sillery (Genlis Ch)_2,6,undirected
+La Salle_2,Carra_1,506,undirected
+La Salle_2,Carra_2,109,undirected
+La Salle_2,Danton_2,58,undirected
+La Salle_2,Desmoulins_1,74,undirected
+La Salle_2,Desmoulins_2,153,undirected
+La Salle_2,La Salle_1,1206,undirected
+La Salle_2,Rabaut Saint-Étienne_1,8,undirected
+La Salle_2,Sillery (Genlis Ch)_1,572,undirected
+La Salle_2,Sillery (Genlis Ch)_2,318,undirected
+Laclos_1,Bergasse_1,58,undirected
+Laclos_1,Bergasse_2,556,undirected
+Laclos_1,Ducrest_2,12,undirected
+Laclos_1,Dupaty_1,39,undirected
+Laclos_1,Laclos_2,1071,undirected
+Laclos_1,Pastoret_1,349,undirected
+Laclos_1,Pastoret_2,307,undirected
+Laclos_1,Sieyès_1,8,undirected
+Laclos_1,Sieyès_2,8,undirected
+Laclos_2,Condorcet_1,84,undirected
+Laclos_2,Condorcet_2,2,undirected
+Laclos_2,D'Alembert_1,231,undirected
+Laclos_2,Laclos_1,1071,undirected
+Laclos_2,Marat_1,106,undirected
+Laclos_2,Marat_2,302,undirected
+Laclos_2,Pastoret_2,5,undirected
+Laclos_2,Sieyès_2,4,undirected
+Laclos_2,Target_2,211,undirected
+Lacretelle_1,Baudeau_1,1,undirected
+Lacretelle_1,Bergasse_1,59,undirected
+Lacretelle_1,Bonneville_1,5,undirected
+Lacretelle_1,Clavière_1,164,undirected
+Lacretelle_1,Ducrest_1,5,undirected
+Lacretelle_1,Ducrest_2,2,undirected
+Lacretelle_1,Garat_2,239,undirected
+Lacretelle_1,Lacretelle_2,1206,undirected
+Lacretelle_1,Marat_1,103,undirected
+Lacretelle_1,Mirabeau_1,839,undirected
+Lacretelle_1,Mirabeau_2,6,undirected
+Lacretelle_1,Sieyès_1,195,undirected
+Lacretelle_1,Sieyès_2,42,undirected
+Lacretelle_2,Baudeau_1,280,undirected
+Lacretelle_2,Delisle de Sales_1,59,undirected
+Lacretelle_2,G1785_0_Preface_2,21,undirected
+Lacretelle_2,Lacretelle_1,1206,undirected
+Lacretelle_2,Mirabeau_1,52,undirected
+Lacretelle_2,Mirabeau_2,415,undirected
+Lacretelle_2,Sieyès_2,41,undirected
+Manuel_1,Carra_1,662,undirected
+Manuel_1,Carra_2,714,undirected
+Manuel_1,Desmoulins_1,239,undirected
+Manuel_1,Dupaty_1,7,undirected
+Manuel_1,Manuel_2,1206,undirected
+Manuel_1,Rabaut Saint-Étienne_1,9,undirected
+Manuel_1,Sabatier de Castres_1,140,undirected
+Manuel_1,Talleyrand_2,24,undirected
+Manuel_1,Target_1,348,undirected
+Manuel_2,Carra_1,83,undirected
+Manuel_2,Carra_2,203,undirected
+Manuel_2,Danton_1,27,undirected
+Manuel_2,Desmoulins_2,54,undirected
+Manuel_2,Dupaty_1,27,undirected
+Manuel_2,La Salle_1,60,undirected
+Manuel_2,Manuel_1,1206,undirected
+Manuel_2,Sabatier de Castres_2,28,undirected
+Manuel_2,Talleyrand_1,154,undirected
+Manuel_2,Talleyrand_2,458,undirected
+Marat_1,Condorcet_2,241,undirected
+Marat_1,Garat_1,332,undirected
+Marat_1,Garat_2,205,undirected
+Marat_1,Laclos_2,106,undirected
+Marat_1,Lacretelle_1,103,undirected
+Marat_1,Marat_2,1206,undirected
+Marat_1,Mercier_2,376,undirected
+Marat_1,Sabatier de Castres_1,2,undirected
+Marat_1,Sabatier de Castres_2,71,undirected
+Marat_2,Barère_1,97,undirected
+Marat_2,Garat_1,11,undirected
+Marat_2,Garat_2,687,undirected
+Marat_2,Laclos_2,302,undirected
+Marat_2,Marat_1,1206,undirected
+Mercier_1,Bonneville_1,60,undirected
+Mercier_1,Bonneville_2,336,undirected
+Mercier_1,Fauchet_2,213,undirected
+Mercier_1,Gouges_1,187,undirected
+Mercier_1,Gouges_2,153,undirected
+Mercier_1,Mercier_2,1206,undirected
+Mercier_1,Mme Genlis_1,11,undirected
+Mercier_1,Petion_1,112,undirected
+Mercier_1,Sabatier de Castres_1,173,undirected
+Mercier_1,Talleyrand_2,6,undirected
+Mercier_2,Bergasse_1,123,undirected
+Mercier_2,Bonneville_1,424,undirected
+Mercier_2,Condorcet_2,1,undirected
+Mercier_2,Fauchet_2,1,undirected
+Mercier_2,Gouges_2,63,undirected
+Mercier_2,Marat_1,376,undirected
+Mercier_2,Mercier_1,1206,undirected
+Mercier_2,Mme Genlis_1,36,undirected
+Mercier_2,Petion_1,30,undirected
+Mercier_2,Petion_2,68,undirected
+Mercier_2,Rabaut Saint-Étienne_2,4,undirected
+Mercier_2,Sabatier de Castres_1,5,undirected
+Mirabeau_1,Baudeau_2,167,undirected
+Mirabeau_1,Clavière_1,70,undirected
+Mirabeau_1,Clavière_2,194,undirected
+Mirabeau_1,Lacretelle_1,839,undirected
+Mirabeau_1,Lacretelle_2,52,undirected
+Mirabeau_1,Mirabeau_2,1120,undirected
+Mirabeau_1,Sieyès_2,83,undirected
+Mirabeau_2,Bancal des Issarts_2,2,undirected
+Mirabeau_2,Baudeau_1,22,undirected
+Mirabeau_2,Bonneville_2,85,undirected
+Mirabeau_2,Clavière_1,29,undirected
+Mirabeau_2,Ducrest_1,439,undirected
+Mirabeau_2,G1785_0_Preface_1,1,undirected
+Mirabeau_2,G1785_0_Preface_2,91,undirected
+Mirabeau_2,Lacretelle_1,6,undirected
+Mirabeau_2,Lacretelle_2,415,undirected
+Mirabeau_2,Mirabeau_1,1120,undirected
+Mirabeau_2,Pastoret_2,29,undirected
+Mme Genlis_1,Bonneville_2,4,undirected
+Mme Genlis_1,Garat_2,265,undirected
+Mme Genlis_1,Mercier_1,11,undirected
+Mme Genlis_1,Mercier_2,36,undirected
+Mme Genlis_1,Mme Genlis_2,1149,undirected
+Mme Genlis_1,Pastoret_1,208,undirected
+Mme Genlis_1,Pastoret_2,505,undirected
+Mme Genlis_2,Bonneville_1,111,undirected
+Mme Genlis_2,Ducrest_2,10,undirected
+Mme Genlis_2,G1785_0_Preface_1,23,undirected
+Mme Genlis_2,Garat_1,356,undirected
+Mme Genlis_2,Garat_2,2,undirected
+Mme Genlis_2,Gouges_1,92,undirected
+Mme Genlis_2,Gouges_2,658,undirected
+Mme Genlis_2,Mme Genlis_1,1149,undirected
+Mme Genlis_2,Pastoret_1,14,undirected
+Mme Genlis_2,Pastoret_2,15,undirected
+Pastoret_1,Ducrest_1,90,undirected
+Pastoret_1,Dupaty_2,108,undirected
+Pastoret_1,Laclos_1,349,undirected
+Pastoret_1,Mme Genlis_1,208,undirected
+Pastoret_1,Mme Genlis_2,14,undirected
+Pastoret_1,Pastoret_2,1206,undirected
+Pastoret_1,Sabatier de Castres_1,76,undirected
+Pastoret_1,Sieyès_2,5,undirected
+Pastoret_2,Condorcet_2,32,undirected
+Pastoret_2,Dupaty_2,239,undirected
+Pastoret_2,Laclos_1,307,undirected
+Pastoret_2,Laclos_2,5,undirected
+Pastoret_2,Mirabeau_2,29,undirected
+Pastoret_2,Mme Genlis_1,505,undirected
+Pastoret_2,Mme Genlis_2,15,undirected
+Pastoret_2,Pastoret_1,1206,undirected
+Petion_1,Bonneville_1,1,undirected
+Petion_1,Brissot_1,256,undirected
+Petion_1,Brissot_2,33,undirected
+Petion_1,Clavière_2,6,undirected
+Petion_1,Fauchet_2,63,undirected
+Petion_1,Gouges_2,144,undirected
+Petion_1,Mercier_1,112,undirected
+Petion_1,Mercier_2,30,undirected
+Petion_1,Petion_2,1206,undirected
+Petion_1,Rabaut Saint-Étienne_2,11,undirected
+Petion_1,Sieyès_2,59,undirected
+Petion_2,Brissot_1,291,undirected
+Petion_2,Brissot_2,110,undirected
+Petion_2,Condorcet_1,212,undirected
+Petion_2,Gouges_1,47,undirected
+Petion_2,Gouges_2,3,undirected
+Petion_2,La Salle_1,133,undirected
+Petion_2,Mercier_2,68,undirected
+Petion_2,Petion_1,1206,undirected
+Rabaut Saint-Étienne_1,Brissot_1,151,undirected
+Rabaut Saint-Étienne_1,Brissot_2,129,undirected
+Rabaut Saint-Étienne_1,Carra_1,164,undirected
+Rabaut Saint-Étienne_1,Carra_2,11,undirected
+Rabaut Saint-Étienne_1,G1785_1_Tableau_2,125,undirected
+Rabaut Saint-Étienne_1,G1785_3_Troisième_1,6,undirected
+Rabaut Saint-Étienne_1,La Salle_1,3,undirected
+Rabaut Saint-Étienne_1,La Salle_2,8,undirected
+Rabaut Saint-Étienne_1,Manuel_1,9,undirected
+Rabaut Saint-Étienne_1,Rabaut Saint-Étienne_2,1206,undirected
+Rabaut Saint-Étienne_1,Sabatier de Castres_1,8,undirected
+Rabaut Saint-Étienne_1,Target_2,4,undirected
+Rabaut Saint-Étienne_2,Bergasse_1,226,undirected
+Rabaut Saint-Étienne_2,Carra_1,56,undirected
+Rabaut Saint-Étienne_2,Carra_2,342,undirected
+Rabaut Saint-Étienne_2,Condorcet_2,196,undirected
+Rabaut Saint-Étienne_2,G1785_1_Tableau_1,47,undirected
+Rabaut Saint-Étienne_2,Mercier_2,4,undirected
+Rabaut Saint-Étienne_2,Petion_1,11,undirected
+Rabaut Saint-Étienne_2,Rabaut Saint-Étienne_1,1206,undirected
+Rabaut Saint-Étienne_2,Sillery (Genlis Ch)_2,8,undirected
+Sabatier de Castres_1,Bergasse_1,52,undirected
+Sabatier de Castres_1,Gouges_2,309,undirected
+Sabatier de Castres_1,Manuel_1,140,undirected
+Sabatier de Castres_1,Marat_1,2,undirected
+Sabatier de Castres_1,Mercier_1,173,undirected
+Sabatier de Castres_1,Mercier_2,5,undirected
+Sabatier de Castres_1,Pastoret_1,76,undirected
+Sabatier de Castres_1,Rabaut Saint-Étienne_1,8,undirected
+Sabatier de Castres_1,Sabatier de Castres_2,1206,undirected
+Sabatier de Castres_1,Talleyrand_1,383,undirected
+Sabatier de Castres_1,Talleyrand_2,3,undirected
+Sabatier de Castres_2,Bergasse_2,88,undirected
+Sabatier de Castres_2,Carra_1,81,undirected
+Sabatier de Castres_2,Danton_1,175,undirected
+Sabatier de Castres_2,Delisle de Sales_1,169,undirected
+Sabatier de Castres_2,Delisle de Sales_2,56,undirected
+Sabatier de Castres_2,Gouges_1,69,undirected
+Sabatier de Castres_2,Gouges_2,6,undirected
+Sabatier de Castres_2,Manuel_2,28,undirected
+Sabatier de Castres_2,Marat_1,71,undirected
+Sabatier de Castres_2,Sabatier de Castres_1,1206,undirected
+Sabatier de Castres_2,Talleyrand_2,11,undirected
+Sieyès_1,Baudeau_1,23,undirected
+Sieyès_1,Bergasse_2,13,undirected
+Sieyès_1,Clavière_1,47,undirected
+Sieyès_1,Clavière_2,37,undirected
+Sieyès_1,D'Alembert_2,324,undirected
+Sieyès_1,Ducrest_1,13,undirected
+Sieyès_1,Ducrest_2,475,undirected
+Sieyès_1,Dupaty_1,3,undirected
+Sieyès_1,Laclos_1,8,undirected
+Sieyès_1,Lacretelle_1,195,undirected
+Sieyès_1,Sieyès_2,1195,undirected
+Sieyès_2,Bergasse_1,44,undirected
+Sieyès_2,Ducrest_1,629,undirected
+Sieyès_2,Ducrest_2,734,undirected
+Sieyès_2,Gouges_1,263,undirected
+Sieyès_2,Gouges_2,29,undirected
+Sieyès_2,Laclos_1,8,undirected
+Sieyès_2,Laclos_2,4,undirected
+Sieyès_2,Lacretelle_1,42,undirected
+Sieyès_2,Lacretelle_2,41,undirected
+Sieyès_2,Mirabeau_1,83,undirected
+Sieyès_2,Pastoret_1,5,undirected
+Sieyès_2,Petion_1,59,undirected
+Sieyès_2,Sieyès_1,1195,undirected
+Sillery (Genlis Ch)_1,Carra_2,103,undirected
+Sillery (Genlis Ch)_1,Condorcet_1,23,undirected
+Sillery (Genlis Ch)_1,Condorcet_2,16,undirected
+Sillery (Genlis Ch)_1,Delisle de Sales_1,2,undirected
+Sillery (Genlis Ch)_1,Desmoulins_2,93,undirected
+Sillery (Genlis Ch)_1,G1785_0_Preface_1,37,undirected
+Sillery (Genlis Ch)_1,G1785_0_Preface_2,22,undirected
+Sillery (Genlis Ch)_1,La Salle_1,23,undirected
+Sillery (Genlis Ch)_1,La Salle_2,572,undirected
+Sillery (Genlis Ch)_1,Sillery (Genlis Ch)_2,1206,undirected
+Sillery (Genlis Ch)_2,Carra_1,23,undirected
+Sillery (Genlis Ch)_2,Carra_2,13,undirected
+Sillery (Genlis Ch)_2,Delisle de Sales_2,8,undirected
+Sillery (Genlis Ch)_2,Desmoulins_2,70,undirected
+Sillery (Genlis Ch)_2,Fauchet_1,385,undirected
+Sillery (Genlis Ch)_2,Fauchet_2,4,undirected
+Sillery (Genlis Ch)_2,La Salle_1,6,undirected
+Sillery (Genlis Ch)_2,La Salle_2,318,undirected
+Sillery (Genlis Ch)_2,Rabaut Saint-Étienne_2,8,undirected
+Sillery (Genlis Ch)_2,Sillery (Genlis Ch)_1,1206,undirected
+Talleyrand_1,Bonneville_1,106,undirected
+Talleyrand_1,Bonneville_2,68,undirected
+Talleyrand_1,Brissot_2,32,undirected
+Talleyrand_1,Carra_1,14,undirected
+Talleyrand_1,Carra_2,140,undirected
+Talleyrand_1,Dupaty_1,47,undirected
+Talleyrand_1,Dusaulx_1,406,undirected
+Talleyrand_1,Dusaulx_2,285,undirected
+Talleyrand_1,Manuel_2,154,undirected
+Talleyrand_1,Sabatier de Castres_1,383,undirected
+Talleyrand_1,Talleyrand_2,1206,undirected
+Talleyrand_1,Target_1,57,undirected
+Talleyrand_1,Target_2,111,undirected
+Talleyrand_2,Carra_1,6,undirected
+Talleyrand_2,Carra_2,319,undirected
+Talleyrand_2,Dusaulx_2,39,undirected
+Talleyrand_2,Manuel_1,24,undirected
+Talleyrand_2,Manuel_2,458,undirected
+Talleyrand_2,Mercier_1,6,undirected
+Talleyrand_2,Sabatier de Castres_1,3,undirected
+Talleyrand_2,Sabatier de Castres_2,11,undirected
+Talleyrand_2,Talleyrand_1,1206,undirected
+Target_1,Carra_1,111,undirected
+Target_1,Carra_2,77,undirected
+Target_1,Dupaty_1,130,undirected
+Target_1,Manuel_1,348,undirected
+Target_1,Talleyrand_1,57,undirected
+Target_1,Target_2,1206,undirected
+Target_2,Carra_1,419,undirected
+Target_2,Carra_2,7,undirected
+Target_2,Condorcet_1,42,undirected
+Target_2,Dupaty_1,3,undirected
+Target_2,Dupaty_2,494,undirected
+Target_2,Laclos_2,211,undirected
+Target_2,Rabaut Saint-Étienne_1,4,undirected
+Target_2,Talleyrand_1,111,undirected
+Target_2,Target_1,1206,undirected

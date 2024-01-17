@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.361">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>02_corpus_preparation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="02_corpus_preparation_files/libs/clipboard/clipboard.min.js"></script>
+<script src="02_corpus_preparation_files/libs/quarto-html/quarto.js"></script>
+<script src="02_corpus_preparation_files/libs/quarto-html/popper.min.js"></script>
+<script src="02_corpus_preparation_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="02_corpus_preparation_files/libs/quarto-html/anchor.min.js"></script>
+<link href="02_corpus_preparation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="02_corpus_preparation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="02_corpus_preparation_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="02_corpus_preparation_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="02_corpus_preparation_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">02_corpus_preparation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="load-pckg" class="level2">
+<h2 class="anchored" data-anchor-id="load-pckg">load pckg</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stylo)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(seetrees)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="load-raw-data" class="level1">
+<h1>load raw data</h1>
+<p>Load raw txt files downloaded from Gallica</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fh <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">"../corpus_raw/"</span>,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">full.names =</span> T,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">.txt"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>corpus <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">path =</span> fh,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">text =</span> <span class="fu">sapply</span>(path, read_file)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">path =</span> <span class="fu">str_replace_all</span>(path, <span class="st">"é"</span>, <span class="st">"e"</span>),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">path =</span> <span class="fu">str_replace_all</span>(path, <span class="st">"é"</span>, <span class="st">"e"</span>))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(corpus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [192 × 2] (S3: tbl_df/tbl/data.frame)
+ $ path: chr [1:192] "../corpus_raw//Bancal des Issarts_1.txt" "../corpus_raw//Bancal des Issarts_2.txt" "../corpus_raw//Bancal des Issarts_3.txt" "../corpus_raw//Bancal des Issarts_4.txt" ...
+ $ text: Named chr [1:192] "Rappel de votre demande:\n\nFormat de téléchargement: : Texte\n\nVues 1 à 57 sur 57\n\nNombre de pages: 57\n\nN"| __truncated__ "Rappel de votre demande:\n\nFormat de téléchargement: : Texte\n\nVues 1 à 52 sur 52\n\nNombre de pages: 52\n\nN"| __truncated__ "Rappel de votre demande:\n\nFormat de téléchargement: : Texte\n\nVues 1 à 28 sur 28\n\nNombre de pages: 28\n\nN"| __truncated__ "Rappel de votre demande:\n\nFormat de téléchargement: : Texte\n\nVues 1 à 16 sur 16\n\nNombre de pages: 16\n\nN"| __truncated__ ...
+  ..- attr(*, "names")= chr [1:192] "../corpus_raw//Bancal des Issarts_1.txt" "../corpus_raw//Bancal des Issarts_2.txt" "../corpus_raw//Bancal des Issarts_3.txt" "../corpus_raw//Bancal des Issarts_4.txt" ...</code></pre>
+</div>
+</div>
+<p>Load metadata</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>meta <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"../metadata/metadata_selected.tsv"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>X)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(meta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 434
+Columns: 16
+$ id                   &lt;int&gt; 1, 2, 3, 4, 5, 9, 10, 14, 16, 17, 18, 19, 20, 21,…
+$ link_bnf             &lt;chr&gt; "http://catalogue.bnf.fr/ark:/12148/cb37236775k",…
+$ link_gallica         &lt;chr&gt; "https://gallica.bnf.fr/ark:/12148/bpt6k42803h", …
+$ author_short         &lt;chr&gt; "Bancal des Issarts", "Bancal des Issarts", "Banc…
+$ selected_for_galerie &lt;chr&gt; "yes", "yes", "", "", "", "", "", "yes", "", "yes…
+$ title                &lt;chr&gt; "Opinion sur le divorce, prononcée au Conseil des…
+$ date                 &lt;chr&gt; "1797", "1792", "1792", "1793-1794", "1798", "179…
+$ format               &lt;chr&gt; "57p___1 microfiche ; 105*148 mm", "52p___1 micro…
+$ author               &lt;chr&gt; "Bancal Desissarts, Jean-Henri (1750-1826). Auteu…
+$ contributors         &lt;chr&gt; "", "", "France. Convention nationale. Éditeur sc…
+$ editors              &lt;chr&gt; "Micro Graphix", "Hachette (Paris)", "Impr. natio…
+$ description          &lt;chr&gt; "Collection : Les archives de la Révolution franç…
+$ subject              &lt;chr&gt; "Divorce -- Droit -- France", "", "", "", "", "",…
+$ notes                &lt;chr&gt; "", "", "", "", "", "", "", "", "", "", "", "doub…
+$ title_short          &lt;chr&gt; "Opinion sur le divorce, prononcée au", "Du nouve…
+$ filename             &lt;chr&gt; "../corpus_raw/Bancal des Issarts_1.txt", "../cor…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>meta_target <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"../metadata/metadata_target.tsv"</span>, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>) </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(meta_target)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 9
+Columns: 16
+$ id                   &lt;chr&gt; "G1785_0", "G1785_1", "G1785_2", "G1785_3", "G178…
+$ link_bnf             &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA
+$ link_gallica         &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA
+$ author_short         &lt;chr&gt; "G1785_0", "G1785_1", "G1785_2", "G1785_3", "G178…
+$ selected_for_galerie &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA
+$ title                &lt;chr&gt; "Préface", "Tableau général de la littérature", "…
+$ date                 &lt;int&gt; 1785, 1785, 1785, 1785, 1785, 1787, 1787, 1787, 1…
+$ format               &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA
+$ author               &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA
+$ contributors         &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA
+$ editors              &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA
+$ description          &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA
+$ subject              &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA
+$ notes                &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA
+$ title_short          &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA
+$ filename             &lt;chr&gt; "../corpus_raw/G1785_0_Préface.txt", "../corpus_r…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># join target &amp; ref metadata</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>meta <span class="ot">&lt;-</span> <span class="fu">rbind</span>(meta, meta_target)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># join corpus with metadata</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>corpus_m <span class="ot">&lt;-</span> meta <span class="sc">%&gt;%</span> </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">path =</span> <span class="fu">str_replace</span>(filename, <span class="st">"corpus_raw/"</span>, <span class="st">"corpus_raw//"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#filename mistakes</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">path =</span> <span class="fu">str_replace_all</span>(path, <span class="st">"é"</span>, <span class="st">"e"</span>),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">path =</span> <span class="fu">str_replace_all</span>(path, <span class="st">"é"</span>, <span class="st">"e"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(corpus, <span class="at">by =</span> <span class="st">"path"</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(corpus_m)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   443 obs. of  18 variables:
+ $ id                  : chr  "1" "2" "3" "4" ...
+ $ link_bnf            : chr  "http://catalogue.bnf.fr/ark:/12148/cb37236775k" "http://catalogue.bnf.fr/ark:/12148/cb346933758" "http://catalogue.bnf.fr/ark:/12148/cb30051725x" "http://catalogue.bnf.fr/ark:/12148/cb300517148" ...
+ $ link_gallica        : chr  "https://gallica.bnf.fr/ark:/12148/bpt6k42803h" "https://gallica.bnf.fr/ark:/12148/bpt6k85298x" "https://gallica.bnf.fr/ark:/12148/bpt6k42324856" "https://gallica.bnf.fr/ark:/12148/bpt6k853041" ...
+ $ author_short        : chr  "Bancal des Issarts" "Bancal des Issarts" "Bancal des Issarts" "Bancal des Issarts" ...
+ $ selected_for_galerie: chr  "yes" "yes" "" "" ...
+ $ title               : chr  "Opinion sur le divorce, prononcée au Conseil des Cinq-cents, le 12 pluviôse an 5 ([Reprod.]) par Jean-Henry Bancal,..." "Du nouvel ordre social ([Reprod.]) par Henry Bancal,..." "Convention nationale. Discours et projet de décret sur l'éducation nationale, prononcés à la Convention nationa"| __truncated__ "Henri Bancal, député à la Convention, à Anacharsis Clootz, son collègue" ...
+ $ date                : chr  "1797" "1792" "1792" "1793-1794" ...
+ $ format              : chr  "57p___1 microfiche ; 105*148 mm" "52p___1 microfiche acétate de 98 images, diazoïque ; 105 * 148 mm" "In-8° , 28 p." "16 p. ; in-8" ...
+ $ author              : chr  "Bancal Desissarts, Jean-Henri (1750-1826). Auteur du texte" "Bancal Desissarts, Jean-Henri (1750-1826). Auteur du texte" "Bancal Desissarts, Jean-Henri (1750-1826). Auteur du texte" "Bancal Desissarts, Jean-Henri (1750-1826). Auteur du texte" ...
+ $ contributors        : chr  "" "" "France. Convention nationale. Éditeur scientifique" "" ...
+ $ editors             : chr  "Micro Graphix" "Hachette (Paris)" "Impr. nationale (Paris)" "Impr. du Cercle social (Paris)" ...
+ $ description         : chr  "Collection : Les archives de la Révolution française ; 9.4.338" "" "" "" ...
+ $ subject             : chr  "Divorce -- Droit -- France" "" "" "" ...
+ $ notes               : chr  "" "" "" "" ...
+ $ title_short         : chr  "Opinion sur le divorce, prononcée au" "Du nouvel ordre social ([Reprod.]) par" "Convention nationale. Discours et projet de" "Henri Bancal, député à la Convention," ...
+ $ filename            : chr  "../corpus_raw/Bancal des Issarts_1.txt" "../corpus_raw/Bancal des Issarts_2.txt" "../corpus_raw/Bancal des Issarts_3.txt" "../corpus_raw/Bancal des Issarts_4.txt" ...
+ $ path                : chr  "../corpus_raw//Bancal des Issarts_1.txt" "../corpus_raw//Bancal des Issarts_2.txt" "../corpus_raw//Bancal des Issarts_3.txt" "../corpus_raw//Bancal des Issarts_4.txt" ...
+ $ text                : Named chr  "Rappel de votre demande:\n\nFormat de téléchargement: : Texte\n\nVues 1 à 57 sur 57\n\nNombre de pages: 57\n\nN"| __truncated__ "Rappel de votre demande:\n\nFormat de téléchargement: : Texte\n\nVues 1 à 52 sur 52\n\nNombre de pages: 52\n\nN"| __truncated__ "Rappel de votre demande:\n\nFormat de téléchargement: : Texte\n\nVues 1 à 28 sur 28\n\nNombre de pages: 28\n\nN"| __truncated__ "Rappel de votre demande:\n\nFormat de téléchargement: : Texte\n\nVues 1 à 16 sur 16\n\nNombre de pages: 16\n\nN"| __truncated__ ...
+  ..- attr(*, "names")= chr [1:443] "../corpus_raw//Bancal des Issarts_1.txt" "../corpus_raw//Bancal des Issarts_2.txt" "../corpus_raw//Bancal des Issarts_3.txt" "../corpus_raw//Bancal des Issarts_4.txt" ...</code></pre>
+</div>
+</div>
+<p>Number of documents for each author</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>corpus_m <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(text)) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(author_short, <span class="at">sort =</span> T) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  author_short  n
+1      Baudeau 25
+2     Bergasse 18
+3     Clavière 17
+4      Mercier  8
+5    Condorcet  7
+6       Barère  6</code></pre>
+</div>
+</div>
+<section id="headers-cleaning" class="level3">
+<h3 class="anchored" data-anchor-id="headers-cleaning">headers cleaning</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> corpus_m <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(text)) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># headers cleaning</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># remove all new lines as it's not easy to manipulate with sep strings</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">text_cln =</span> <span class="fu">str_replace_all</span>(text, <span class="st">"</span><span class="sc">\\</span><span class="st">n</span><span class="sc">\\</span><span class="st">n|</span><span class="sc">\\</span><span class="st">n"</span>, <span class="st">" "</span>),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">text_cln =</span> <span class="fu">str_replace_all</span>(text_cln, <span class="st">"</span><span class="sc">\\</span><span class="st">r</span><span class="sc">\\</span><span class="st">n"</span>, <span class="st">" "</span>),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>         <span class="co"># remove everything before % and first separator ----</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">text_cln =</span> <span class="fu">str_remove_all</span>(text_cln, <span class="st">"^.*?%</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">s?----------"</span>),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>         <span class="co"># replace ' with space for cleaner tokenization (qu'il =&gt; qu il )</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">text_cln =</span> <span class="fu">str_replace_all</span>(text_cln, <span class="st">"'"</span>, <span class="st">" "</span>), </span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">text_cln =</span> <span class="fu">str_replace_all</span>(text_cln , <span class="st">"’"</span>, <span class="st">" "</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># OCR accuracy extraction</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ocr_acc =</span> <span class="fu">str_extract</span>(text, <span class="st">"Le taux de reconnaissance estimé pour ce document est de </span><span class="sc">\\</span><span class="st">d+%"</span>),</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">ocr_acc =</span> <span class="fu">str_extract</span>(ocr_acc, <span class="st">"est de </span><span class="sc">\\</span><span class="st">d+%"</span>),</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">ocr_acc =</span> <span class="fu">str_remove_all</span>(ocr_acc, <span class="st">"est de |%"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add sth for the added manually texts (Epremesnil &amp; Talleyrand), otherwise NA will be removed with filter</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">ocr_acc =</span> <span class="fu">ifelse</span>(<span class="fu">is.na</span>(ocr_acc), <span class="dv">1</span>, ocr_acc))</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co"># leave only existing texts (OCR is 0 for no OCR)</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>corpus_texts <span class="ot">&lt;-</span> t <span class="sc">%&gt;%</span> </span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ocr_acc <span class="sc">!=</span> <span class="st">"0"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="corpus-overview" class="level3">
+<h3 class="anchored" data-anchor-id="corpus-overview">corpus overview</h3>
+<p>Number of text for each author</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>corpus_texts <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(author_short, <span class="at">sort =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           author_short  n
+1              Bergasse 15
+2               Baudeau 11
+3              Clavière 10
+4               Mercier  7
+5            Desmoulins  6
+6            Eprémesnil  6
+7                Barère  5
+8                Manuel  5
+9                Pétion  4
+10  Silléry (Genlis Ch)  4
+11           Talleyrand  4
+12   Bancal des Issarts  3
+13           Bonneville  3
+14               Danton  3
+15              Dusaulx  3
+16              Fauchet  3
+17               Gouges  3
+18               Laclos  3
+19           Lacretelle  3
+20             Mirabeau  3
+21           Mme Genlis  3
+22             Pastoret  3
+23              Brissot  2
+24                Carra  2
+25            Condorcet  2
+26           D'Alembert  2
+27     Delisle de Sales  2
+28               Dupaty  2
+29                Garat  2
+30  Sabatier de Castres  2
+31               Sieyès  2
+32              Ducrest  1
+33              G1785_0  1
+34              G1785_1  1
+35              G1785_2  1
+36              G1785_3  1
+37              G1785_4  1
+38              G1787_5  1
+39              G1787_6  1
+40              G1787_7  1
+41              G1787_8  1
+42          La Platière  1
+43             La Salle  1
+44                Marat  1
+45 Rabaut Saint-Étienne  1
+46               Target  1</code></pre>
+</div>
+</div>
+</section>
+<section id="tokenization" class="level2">
+<h2 class="anchored" data-anchor-id="tokenization">tokenization</h2>
+<p>Count number of tokens</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>corpus_tokenized <span class="ot">&lt;-</span> corpus_texts <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(<span class="at">input =</span> text_cln, <span class="at">output =</span> word, <span class="at">token =</span> <span class="st">"words"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>corpus_tokenized <span class="sc">%&gt;%</span> </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(author_short, <span class="at">sort =</span> T) <span class="sc">%&gt;%</span> <span class="fu">tail</span>(<span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           author_short     n
+27                Marat 30066
+28 Rabaut Saint-Étienne 28485
+29           Mme Genlis 28342
+30   Bancal des Issarts 25183
+31              Fauchet 23275
+32               Gouges 17347
+33             La Salle 16508
+34              G1785_1 14951
+35  Silléry (Genlis Ch) 13129
+36            Condorcet 12989
+37              G1787_7 12306
+38              G1787_5 11926
+39              G1787_6 11741
+40              G1785_3  9208
+41              G1787_8  8836
+42              G1785_0  8395
+43              G1785_2  7103
+44           Eprémesnil  6205
+45              G1785_4  4054
+46          La Platière   954</code></pre>
+</div>
+</div>
+<p>Target texts sizes</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>corpus_tokenized <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(author_short, <span class="at">sort =</span> F) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(author_short, <span class="st">"G17"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  author_short     n
+1      G1785_0  8395
+2      G1785_1 14951
+3      G1785_2  7103
+4      G1785_3  9208
+5      G1785_4  4054
+6      G1787_5 11926
+7      G1787_6 11741
+8      G1787_7 12306
+9      G1787_8  8836</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="features-cln" class="level1">
+<h1>features cln</h1>
+<p>MFW in the corpus</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>mfw <span class="ot">&lt;-</span> corpus_tokenized <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(word) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(<span class="at">sort =</span> T) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">2000</span>) </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>mfw <span class="co"># just a look at the table and the curve</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2,000 × 2
+# Groups:   word [2,000]
+   word       n
+   &lt;chr&gt;  &lt;int&gt;
+ 1 de    136904
+ 2 la     80999
+ 3 les    67821
+ 4 le     57629
+ 5 l      55286
+ 6 à      49281
+ 7 des    45837
+ 8 que    45093
+ 9 il     39968
+10 d      37451
+# ℹ 1,990 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>mfw <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(word, <span class="sc">-</span>n), <span class="at">y =</span> n)) <span class="sc">+</span> </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="02_corpus_preparation_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>MFW 1000</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> mfw <span class="sc">%&gt;%</span> <span class="fu">pull</span>(word)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co">#x[1000:2000]</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "de"       "la"       "les"      "le"       "l"        "à"       
+  [7] "des"      "que"      "il"       "d"        "et"       "qui"     
+ [13] "en"       "qu"       "un"       "dans"     "a"        "ne"      
+ [19] "du"       "est"      "une"      "pour"     "n"        "on"      
+ [25] "plus"     "ce"       "par"      "s"        "pas"      "au"      
+ [31] "je"       "c"        "nous"     "vous"     "se"       "m"       
+ [37] "y"        "cette"    "ou"       "ces"      "ils"      "sur"     
+ [43] "mais"     "elle"     "lui"      "leur"     "j"        "tout"    
+ [49] "avec"     "même"     "son"      "aux"      "tous"     "ses"     
+ [55] "t"        "si"       "être"     "comme"    "i"        "ont"     
+ [61] "e"        "bien"     "sa"       "dont"     "fait"     "leurs"   
+ [67] "1"        "sont"     "faire"    "peut"     "où"       "sans"    
+ [73] "point"    "me"       "eft"      "encore"   "toutes"   "étoit"   
+ [79] "avoir"    "deux"     "été"      "nos"      "font"     "moins"   
+ [85] "hommes"   "homme"    "avoit"    "autres"   "ai"       "ceux"    
+ [91] "cet"      "donc"     "autre"    "toujours" "faut"     "peuple"  
+ [97] "r"        "p"        "fur"      "elles"   </code></pre>
+</div>
+</div>
+<p>Cleaning based on the 2000 MFW</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># vector of errors from 1000 MFW</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>errors <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">strsplit</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"i e r sc p ii v o u z h g re in b k iii iv x i liv ï st é q tion eh pro ut vi ks fl ré sor er ah ie ft w mi î nt xiv di 8c 6c ion ôcq mr it do ï iv tt ea î pa us w iii net tems hui fol x li ôc mm ark ia gré er cc vol co da entr ki tome ja xvi pag ad no ns po ue of col ex ri im at em ix ô ju ti tre the if vo to ot ar ur oc mo ë ies al mt oit res ç http is ke catalogue.bnf.fr id ij vii supplicei e r sc p ii v o u z h g re in b k iii iv x i liv ï st é q tion eh pro ut vi ks fl ré sor er ah ie ft w mi î nt xiv di 8c 6c п ion ôcq mr it do ï é iv tt ea î pa us w iii net font fous"</span>),</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">" "</span>  )</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>corpus_tokenized <span class="ot">&lt;-</span> corpus_tokenized <span class="sc">%&gt;%</span> </span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># remove digits</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_detect</span>(word, <span class="st">"</span><span class="sc">\\</span><span class="st">d+"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># remove noisy characters</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>word <span class="sc">%in%</span> errors) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># long s replacements</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^f$"</span>, <span class="st">"s"</span>),</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^fe$"</span>, <span class="st">"se"</span>),</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^fa$"</span>, <span class="st">"sa"</span>),</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^eft$"</span>, <span class="st">"est"</span>),</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^efl$"</span>, <span class="st">"est"</span>),</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^dé$"</span>, <span class="st">"de"</span>),</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^fon$"</span>, <span class="st">"son"</span>),</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^fes$"</span>, <span class="st">"ses"</span>),</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^fi$"</span>, <span class="st">"si"</span>),</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^ame$"</span>, <span class="st">"âme"</span>),</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^lés$"</span>, <span class="st">"les"</span>),</span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^lé$"</span>, <span class="st">"le"</span>),</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^ainfi$"</span>, <span class="st">"ainsi"</span>),</span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^efprit$"</span>, <span class="st">"esprit"</span>),</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^fans$"</span>, <span class="st">"sans"</span>),</span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^efi$"</span>, <span class="st">"est"</span>),</span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^eff$"</span>, <span class="st">"est"</span>),</span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^fu$"</span>, <span class="st">"su"</span>),</span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^lés$"</span>, <span class="st">"les"</span>),</span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^foin$"</span>, <span class="st">"soin"</span>),</span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^chofes$"</span>, <span class="st">"choses"</span>),</span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^chofe$"</span>, <span class="st">"chose"</span>),</span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^prefque$"</span>, <span class="st">"presque"</span>),</span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^ufage$"</span>, <span class="st">"usage"</span>),</span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^caufe$"</span>, <span class="st">"cause"</span>),</span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^fera$"</span>, <span class="st">"sera"</span>),</span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^fur$"</span>, <span class="st">"sur"</span>),</span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^fang$"</span>, <span class="st">"sang"</span>),</span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^hiftoire$"</span>, <span class="st">"histoire"</span>),</span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^fage$"</span>, <span class="st">"sage"</span>),</span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^foient$"</span>, <span class="st">"soient"</span>),</span>
+<span id="cb24-46"><a href="#cb24-46" aria-hidden="true" tabindex="-1"></a>         <span class="at">word =</span> <span class="fu">str_replace</span>(word, <span class="st">"^feule$"</span>, <span class="st">"seule"</span>))</span>
+<span id="cb24-47"><a href="#cb24-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-48"><a href="#cb24-48" aria-hidden="true" tabindex="-1"></a><span class="co"># proper names to remove (?)</span></span>
+<span id="cb24-49"><a href="#cb24-49" aria-hidden="true" tabindex="-1"></a><span class="co"># rousseau izerben kornmann mesmer mefmer orléans montagne beaumarchais descartes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Fast check MFW</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>corpus_tokenized <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(word) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word, <span class="at">sort =</span> T) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 2
+# Groups:   word [10]
+   word       n
+   &lt;chr&gt;  &lt;int&gt;
+ 1 de    137732
+ 2 la     80999
+ 3 les    68015
+ 4 le     57883
+ 5 l      55286
+ 6 à      49281
+ 7 des    45837
+ 8 que    45093
+ 9 il     39968
+10 d      37451</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>corpus_tokenized <span class="sc">%&gt;%</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(word) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word, <span class="at">sort =</span> T) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">100</span>) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(word) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "de"       "la"       "les"      "le"       "l"        "à"       
+  [7] "des"      "que"      "il"       "d"        "et"       "qui"     
+ [13] "en"       "qu"       "un"       "est"      "dans"     "a"       
+ [19] "ne"       "du"       "une"      "pour"     "n"        "on"      
+ [25] "plus"     "ce"       "par"      "s"        "pas"      "au"      
+ [31] "se"       "je"       "sur"      "c"        "nous"     "vous"    
+ [37] "son"      "m"        "y"        "cette"    "ses"      "ou"      
+ [43] "ces"      "ils"      "si"       "mais"     "elle"     "lui"     
+ [49] "leur"     "j"        "sa"       "tout"     "avec"     "même"    
+ [55] "aux"      "tous"     "t"        "être"     "comme"    "ont"     
+ [61] "sans"     "bien"     "dont"     "fait"     "leurs"    "sont"    
+ [67] "faire"    "peut"     "où"       "point"    "me"       "encore"  
+ [73] "toutes"   "étoit"    "avoir"    "deux"     "été"      "nos"     
+ [79] "moins"    "hommes"   "homme"    "avoit"    "autres"   "ai"      
+ [85] "ceux"     "cet"      "donc"     "autre"    "toujours" "faut"    
+ [91] "peuple"   "elles"    "liberté"  "contre"   "doit"     "toute"   
+ [97] "notre"    "grand"    "ni"       "dit"     </code></pre>
+</div>
+</div>
+<section id="save" class="level2">
+<h2 class="anchored" data-anchor-id="save">save</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(corpus_tokenized)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 2,901,987
+Columns: 20
+$ id                   &lt;chr&gt; "1", "1", "1", "1", "1", "1", "1", "1", "1", "1",…
+$ link_bnf             &lt;chr&gt; "http://catalogue.bnf.fr/ark:/12148/cb37236775k",…
+$ link_gallica         &lt;chr&gt; "https://gallica.bnf.fr/ark:/12148/bpt6k42803h", …
+$ author_short         &lt;chr&gt; "Bancal des Issarts", "Bancal des Issarts", "Banc…
+$ selected_for_galerie &lt;chr&gt; "yes", "yes", "yes", "yes", "yes", "yes", "yes", …
+$ title                &lt;chr&gt; "Opinion sur le divorce, prononcée au Conseil des…
+$ date                 &lt;chr&gt; "1797", "1797", "1797", "1797", "1797", "1797", "…
+$ format               &lt;chr&gt; "57p___1 microfiche ; 105*148 mm", "57p___1 micro…
+$ author               &lt;chr&gt; "Bancal Desissarts, Jean-Henri (1750-1826). Auteu…
+$ contributors         &lt;chr&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ editors              &lt;chr&gt; "Micro Graphix", "Micro Graphix", "Micro Graphix"…
+$ description          &lt;chr&gt; "Collection : Les archives de la Révolution franç…
+$ subject              &lt;chr&gt; "Divorce -- Droit -- France", "Divorce -- Droit -…
+$ notes                &lt;chr&gt; "", "", "", "", "", "", "", "", "", "", "", "", "…
+$ title_short          &lt;chr&gt; "Opinion sur le divorce, prononcée au", "Opinion …
+$ filename             &lt;chr&gt; "../corpus_raw/Bancal des Issarts_1.txt", "../cor…
+$ path                 &lt;chr&gt; "../corpus_raw//Bancal des Issarts_1.txt", "../co…
+$ text                 &lt;chr&gt; "Rappel de votre demande:\n\nFormat de télécharge…
+$ ocr_acc              &lt;chr&gt; "94", "94", "94", "94", "94", "94", "94", "94", "…
+$ word                 &lt;chr&gt; "microcopy", "resotution", "test", "chart", "nbs"…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>corpus_tokenized <span class="sc">%&gt;%</span> </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(author_short, <span class="at">sort =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           author_short      n
+1               Baudeau 325247
+2               Mercier 233148
+3              Bergasse 220122
+4                Danton 193382
+5               Dusaulx 186027
+6   Sabatier de Castres 140730
+7                Barère 113645
+8              Clavière 103202
+9            D'Alembert  92850
+10           Bonneville  88185
+11           Lacretelle  87104
+12                Carra  84919
+13               Manuel  82187
+14     Delisle de Sales  68854
+15               Dupaty  68485
+16              Ducrest  67193
+17             Mirabeau  55538
+18               Pétion  50763
+19             Pastoret  50463
+20                Garat  48693
+21           Desmoulins  47160
+22               Laclos  44625
+23               Target  44483
+24              Brissot  43161
+25               Sieyès  42714
+26           Talleyrand  36734
+27                Marat  29652
+28           Mme Genlis  27570
+29 Rabaut Saint-Étienne  26624
+30   Bancal des Issarts  24455
+31              Fauchet  22813
+32               Gouges  17063
+33             La Salle  16210
+34              G1785_1  14447
+35  Silléry (Genlis Ch)  12750
+36            Condorcet  12729
+37              G1787_7  11891
+38              G1787_5  11616
+39              G1787_6  11392
+40              G1785_3   8935
+41              G1787_8   8558
+42              G1785_0   8112
+43              G1785_2   6830
+44           Eprémesnil   5874
+45              G1785_4   3950
+46          La Platière    902</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>corpus_tokenized <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(author_short) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(author_short, <span class="st">"G17"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  author_short     n
+1      G1785_0  8112
+2      G1785_1 14447
+3      G1785_2  6830
+4      G1785_3  8935
+5      G1785_4  3950
+6      G1787_5 11616
+7      G1787_6 11392
+8      G1787_7 11891
+9      G1787_8  8558</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>corpus_joined <span class="ot">&lt;-</span> corpus_tokenized <span class="sc">%&gt;%</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(path) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">text =</span> <span class="fu">paste</span>(word, <span class="at">collapse =</span> <span class="st">" "</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>word) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># create new path</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">path =</span> <span class="fu">str_replace</span>(path, <span class="st">"corpus_raw"</span>, <span class="st">"corpus_cln"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(corpus_joined)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 19
+# Groups:   path [6]
+  id    link_bnf      link_gallica author_short selected_for_galerie title date 
+  &lt;chr&gt; &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;                &lt;chr&gt; &lt;chr&gt;
+1 1     http://catal… https://gal… Bancal des … "yes"                Opin… 1797 
+2 3     http://catal… https://gal… Bancal des … ""                   Conv… 1792 
+3 5     http://catal… https://gal… Bancal des … ""                   Des … 1798 
+4 9     http://catal… https://gal… Barère       ""                   Rapp… 1794…
+5 10    http://catal… https://gal… Barère       ""                   Obse… 1789 
+6 14    http://catal… https://gal… Barère       "yes"                Mont… 1796…
+# ℹ 12 more variables: format &lt;chr&gt;, author &lt;chr&gt;, contributors &lt;chr&gt;,
+#   editors &lt;chr&gt;, description &lt;chr&gt;, subject &lt;chr&gt;, notes &lt;chr&gt;,
+#   title_short &lt;chr&gt;, filename &lt;chr&gt;, path &lt;chr&gt;, text &lt;chr&gt;, ocr_acc &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>Write cleaned files to a folder</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>fh <span class="ot">&lt;-</span> corpus_joined<span class="sc">$</span>path</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>texts <span class="ot">&lt;-</span> corpus_joined<span class="sc">$</span>text</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(fh)) {</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_file</span>(texts[i], <span class="at">file =</span> fh[i])</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

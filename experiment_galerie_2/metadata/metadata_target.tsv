@@ -1,0 +1,10 @@
+id	link_bnf	link_gallica	author_short	selected_for_galerie	title	date	format	author	contributors	editors	description	subject	notes	title_short	filename
+G1785_0			G1785_0		Préface	1785									../corpus_raw/G1785_0_Préface.txt
+G1785_1			G1785_1		Tableau général de la littérature	1785									../corpus_raw/G1785_1_Tableau général de la littérature.txt
+G1785_2			G1785_2		Second tableau	1785									../corpus_raw/G1785_2_Second tableau.txt
+G1785_3			G1785_3		Troisième tableau	1785									../corpus_raw/G1785_3_Troisième tableau.txt
+G1785_4			G1785_4		Discours préliminaire	1785									../corpus_raw/G1785_4_Discours préliminaire.txt
+G1787_5			G1787_5		Philippe duc d'Orleans	1787									../corpus_raw/G1787_5_V4_seg_7_240-296__Philippe-duc-d'Orleans.txt
+G1787_6			G1787_6		Le Chancelier de l'Hôpital	1787									../corpus_raw/G1787_6_V8_seg_2_12-64__Le Chancelier de l'Hôpital.txt
+G1787_7			G1787_7		Lally de Tollendal	1787									../corpus_raw/G1787_7_V8_seg_3_66-125__Le comte Lally de Tollendal.txt
+G1787_8			G1787_8		Colbert	1787									../corpus_raw/G1787_8_V8_seg_6_244-286__Colbert.txt

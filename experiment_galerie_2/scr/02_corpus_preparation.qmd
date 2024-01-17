@@ -1,0 +1,258 @@
+---
+title: "02_corpus_preparation"
+format: html
+editor: visual
+---
+
+## load pckg
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(tidytext)
+
+library(stylo)
+library(seetrees)
+
+theme_set(theme_bw())
+```
+
+# load raw data
+
+Load raw txt files downloaded from Gallica
+
+```{r}
+fh <- list.files(path = "../corpus_raw/",
+                 full.names = T,
+                 pattern = "\\.txt")
+
+corpus <- tibble(
+  path = fh,
+  text = sapply(path, read_file)
+) %>% 
+  mutate(path = str_replace_all(path, "é", "e"),
+         path = str_replace_all(path, "é", "e"))
+
+str(corpus)
+```
+
+Load metadata
+
+```{r}
+meta <- read.delim("../metadata/metadata_selected.tsv", sep = "\t") %>% 
+  select(-X)
+glimpse(meta)
+
+meta_target <- read.delim("../metadata/metadata_target.tsv", sep = "\t") 
+glimpse(meta_target)
+
+# join target & ref metadata
+meta <- rbind(meta, meta_target)
+
+# join corpus with metadata
+corpus_m <- meta %>% 
+  mutate(path = str_replace(filename, "corpus_raw/", "corpus_raw//")) %>% 
+  #filename mistakes
+  mutate(path = str_replace_all(path, "é", "e"),
+         path = str_replace_all(path, "é", "e")) %>% 
+  left_join(corpus, by = "path")
+
+str(corpus_m)
+```
+
+Number of documents for each author
+
+```{r}
+corpus_m %>% 
+  filter(!is.na(text)) %>% 
+  count(author_short, sort = T) %>% head()
+```
+
+### headers cleaning
+
+```{r}
+t <- corpus_m %>% 
+  filter(!is.na(text)) %>% 
+  
+  # headers cleaning
+  # remove all new lines as it's not easy to manipulate with sep strings
+  mutate(text_cln = str_replace_all(text, "\\n\\n|\\n", " "),
+         text_cln = str_replace_all(text_cln, "\\r\\n", " "),
+         # remove everything before % and first separator ----
+         text_cln = str_remove_all(text_cln, "^.*?%\\.\\s?----------"),
+         
+         # replace ' with space for cleaner tokenization (qu'il => qu il )
+         text_cln = str_replace_all(text_cln, "'", " "), 
+         text_cln = str_replace_all(text_cln , "’", " ")) %>% 
+  
+  # OCR accuracy extraction
+  mutate(ocr_acc = str_extract(text, "Le taux de reconnaissance estimé pour ce document est de \\d+%"),
+         ocr_acc = str_extract(ocr_acc, "est de \\d+%"),
+         ocr_acc = str_remove_all(ocr_acc, "est de |%")) %>% 
+  
+  # add sth for the added manually texts (Epremesnil & Talleyrand), otherwise NA will be removed with filter
+  mutate(ocr_acc = ifelse(is.na(ocr_acc), 1, ocr_acc))
+
+# leave only existing texts (OCR is 0 for no OCR)
+corpus_texts <- t %>% 
+  filter(ocr_acc != "0")
+```
+
+### corpus overview
+
+Number of text for each author
+
+```{r}
+corpus_texts %>% 
+  count(author_short, sort = T)
+```
+
+## tokenization
+
+Count number of tokens
+
+```{r}
+corpus_tokenized <- corpus_texts %>% 
+  unnest_tokens(input = text_cln, output = word, token = "words")
+
+corpus_tokenized %>% 
+  count(author_short, sort = T) %>% tail(20)
+```
+
+Target texts sizes
+
+```{r}
+corpus_tokenized %>% 
+  count(author_short, sort = F) %>% 
+  filter(str_detect(author_short, "G17"))
+```
+
+# features cln
+
+MFW in the corpus
+
+```{r}
+mfw <- corpus_tokenized %>% 
+  group_by(word) %>% 
+  count(sort = T) %>% 
+  head(2000) 
+
+mfw # just a look at the table and the curve
+mfw %>% 
+  ggplot(aes(x = reorder(word, -n), y = n)) + 
+  geom_col() + 
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank())
+```
+
+MFW 1000
+
+```{r}
+x <- mfw %>% pull(word)
+#x[1000:2000]
+x[1:100]
+```
+
+Cleaning based on the 2000 MFW
+
+```{r}
+# vector of errors from 1000 MFW
+errors <- unlist(strsplit(
+  c("i e r sc p ii v o u z h g re in b k iii iv x i liv ï st é q tion eh pro ut vi ks fl ré sor er ah ie ft w mi î nt xiv di 8c 6c ion ôcq mr it do ï iv tt ea î pa us w iii net tems hui fol x li ôc mm ark ia gré er cc vol co da entr ki tome ja xvi pag ad no ns po ue of col ex ri im at em ix ô ju ti tre the if vo to ot ar ur oc mo ë ies al mt oit res ç http is ke catalogue.bnf.fr id ij vii supplicei e r sc p ii v o u z h g re in b k iii iv x i liv ï st é q tion eh pro ut vi ks fl ré sor er ah ie ft w mi î nt xiv di 8c 6c п ion ôcq mr it do ï é iv tt ea î pa us w iii net font fous"),
+  " "  )
+  )
+
+corpus_tokenized <- corpus_tokenized %>% 
+  # remove digits
+  filter(!str_detect(word, "\\d+")) %>% 
+  
+  # remove noisy characters
+  filter(!word %in% errors) %>% 
+  
+  # long s replacements
+  mutate(word = str_replace(word, "^f$", "s"),
+         word = str_replace(word, "^fe$", "se"),
+         word = str_replace(word, "^fa$", "sa"),
+         word = str_replace(word, "^eft$", "est"),
+         word = str_replace(word, "^efl$", "est"),
+         word = str_replace(word, "^dé$", "de"),
+         word = str_replace(word, "^fon$", "son"),
+         word = str_replace(word, "^fes$", "ses"),
+         word = str_replace(word, "^fi$", "si"),
+         word = str_replace(word, "^ame$", "âme"),
+         word = str_replace(word, "^lés$", "les"),
+         word = str_replace(word, "^lé$", "le"),
+         word = str_replace(word, "^ainfi$", "ainsi"),
+         word = str_replace(word, "^efprit$", "esprit"),
+         word = str_replace(word, "^fans$", "sans"),
+         word = str_replace(word, "^efi$", "est"),
+         word = str_replace(word, "^eff$", "est"),
+         word = str_replace(word, "^fu$", "su"),
+         word = str_replace(word, "^lés$", "les"),
+         word = str_replace(word, "^foin$", "soin"),
+         word = str_replace(word, "^chofes$", "choses"),
+         word = str_replace(word, "^chofe$", "chose"),
+         word = str_replace(word, "^prefque$", "presque"),
+         word = str_replace(word, "^ufage$", "usage"),
+         word = str_replace(word, "^caufe$", "cause"),
+         word = str_replace(word, "^fera$", "sera"),
+         word = str_replace(word, "^fur$", "sur"),
+         word = str_replace(word, "^fang$", "sang"),
+         word = str_replace(word, "^hiftoire$", "histoire"),
+         word = str_replace(word, "^fage$", "sage"),
+         word = str_replace(word, "^foient$", "soient"),
+         word = str_replace(word, "^feule$", "seule"))
+
+# proper names to remove (?)
+# rousseau izerben kornmann mesmer mefmer orléans montagne beaumarchais descartes
+```
+
+Fast check MFW
+
+```{r}
+corpus_tokenized %>% 
+  group_by(word) %>% 
+  count(word, sort = T) %>% head(10)
+
+corpus_tokenized %>% 
+  group_by(word) %>% 
+  count(word, sort = T) %>% head(100) %>% pull(word) 
+```
+
+## save
+
+```{r}
+glimpse(corpus_tokenized)
+
+corpus_tokenized %>% 
+  count(author_short, sort = T)
+
+corpus_tokenized %>% 
+  count(author_short) %>% 
+  filter(str_detect(author_short, "G17"))
+```
+
+```{r}
+corpus_joined <- corpus_tokenized %>% 
+  group_by(path) %>% 
+  mutate(text = paste(word, collapse = " ")) %>% 
+  select(-word) %>% 
+  distinct() %>% 
+  
+  # create new path
+  mutate(path = str_replace(path, "corpus_raw", "corpus_cln"))
+```
+
+```{r}
+head(corpus_joined)
+```
+
+Write cleaned files to a folder
+
+```{r}
+fh <- corpus_joined$path
+texts <- corpus_joined$text
+
+for (i in 1:length(fh)) {
+  write_file(texts[i], file = fh[i])
+}
+```

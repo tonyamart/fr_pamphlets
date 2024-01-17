@@ -1,0 +1,1349 @@
+---
+title: "G1785"
+format: html
+editor: visual
+---
+
+# Description
+
+This notebook uses the pipeline for authorship attribution using basic stylo() clustering, extracts features from it and apply authorship verification methods (GI). In addition the distances distribution between authors is checked.
+
+## Corpus
+
+The corpus is prepared using:
+
+-   an extended bibliography for \~40 authors from the short list;
+
+-   script to get links to gallica, given the catalogue links;
+
+-   script to download OCR texts from gallica, given the gallica links;
+
+-   script to download PDF files, given the gallica links (not fully used yet);
+
+-   script for texts cleaning (long s replacements, etc.)
+
+## Methods
+
+-   Independent text sampling
+
+-   Basic analysis with stylo() (mostly for features selection);
+
+-   Comparison of distances distribution
+
+-   General imposters
+
+Authors are splited in two sets
+
+### load pckg
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(tidytext)
+
+library(stylo)
+library(seetrees)
+
+theme_set(theme_bw())
+```
+
+### functions
+
+Helper functions from Artjoms:
+
+Sampling
+
+```{r}
+sample_independent_opt <- function(tokenized_df,
+                                   n_samples,
+                                   sample_size,
+                                   text_var = "word",
+                                   folder = "../corpus_sampled/",
+                                   overwrite=T) {
+  
+  dir.create(folder)
+  
+  if(overwrite) {
+    do.call(file.remove, list(list.files(folder, full.names = TRUE)))
+    }
+  
+  shuff <- tokenized_df %>%
+    group_by(author) %>% 
+  sample_n(n_samples * sample_size) %>% # sample tokens 
+  # to each sampled token assign randomly a sample number
+  mutate(sample_x = sample( # sample = reshuffle the numbers of samples repeated below
+    rep( # repeat
+    1:n_samples, # the numbers of samples (1, 2, 3...)
+    each = sample_size # each is sample_size times repeated
+    ))) %>% 
+  # create a column author_sampleX
+  unite(sample_id, c(author, sample_x), remove = F) %>% 
+  
+  # group and paste together by sample_id (some kind of special paste with !!sym() )
+  group_by(sample_id) %>% 
+  summarise(text = paste(!!sym(text_var), collapse = " ")) 
+  
+  # write samples
+  for(i in 1:nrow(shuff)) {
+      write_file(file=paste0(folder, shuff$sample_id[i],".txt"), shuff$text[i])
+  }
+}   
+```
+
+Stylo customization
+
+```{r}
+diy_stylo <- function(folder = "../corpus_sampled/",
+                      mfw = 200,
+                      drop_words = T,
+                      feature = "word",
+                      n_gram = 1) {
+  
+  # read the sampled texts from the folder corpus_sampled/
+  # the feature is either word or charaters prob
+  # the tokenizer returns lists of tokens for each text
+  tokenized.texts = load.corpus.and.parse(
+    files = list.files(folder, full.names = T),
+    features = feature,
+    ngram.size = n_gram
+    )
+
+  # computing a list of most frequent words (trimmed to top 2000 items):
+  features = make.frequency.list(tokenized.texts, head = 2000)
+  # producing a table of relative frequencies:
+  data = make.table.of.frequencies(tokenized.texts, features, relative = TRUE)#[,1:mfw]
+  
+  # --- cleaning ---
+  # remove stop words
+  s_words <- str_detect(colnames(data),paste(strong_words,collapse="|"))
+
+  if(drop_words) {
+  data <- data[,!s_words]
+  }
+  
+  # crop mfw 
+  data <- data[, 1:mfw]
+  
+  # clean document names
+  rownames(data) <- str_remove_all(rownames(data), "^.*?//") # clean rownames from full paths
+  
+  # output
+  return(data)
+}
+
+```
+
+### load data
+
+```{r}
+fh <- list.files(path = "../corpus_cln/", 
+                 full.names = T)
+
+# corpus compilation
+corpus <- tibble(
+  path = fh,
+  text = sapply(path, read_file)
+)
+
+# preparation for tokenisation
+corpus_t <- corpus %>% 
+  # remove G1787
+  filter(!str_detect(path, "G1787")) %>% 
+  
+  # extract authors
+  mutate(author = ifelse(str_detect(path, "G1785"), # keep G1785 names
+                         str_extract(path, "G1785_\\d+_\\w+"),
+                         # extract all others
+                         str_extract(path, "corpus_cln//.*?_")), 
+         # cleaning
+         author = str_remove_all(author, "corpus_cln//|_$")) %>% 
+  
+  # remove paths for individual files
+  select(-path)
+
+str(corpus_t)
+```
+
+Tokenization
+
+```{r}
+corpus_tokenized <- corpus_t %>% 
+  unnest_tokens(input = text, output = word, token = "words")
+
+sample_n(corpus_tokenized, 6)
+```
+
+## n tokens
+
+```{r}
+corpus_tokenized %>% 
+  filter(!str_detect(author, "^G1785")) %>% 
+  count(author, sort = T) %>% tail(10)
+
+corpus_tokenized %>% 
+  filter(str_detect(author, "^G1785")) %>% 
+  count(author, sort = F)
+```
+
+min size: 3972 (Discours preliminaire), La Platière - 904, Epremesnil - 5888
+
+```{r}
+corpus_tokenized <- corpus_tokenized %>% 
+  # too small sample
+  filter(author != "La Platière")
+
+short_samples <- corpus_tokenized %>% 
+  count(author) %>% 
+  filter(n < 6000) %>% 
+  pull(author)
+
+# store shortest in a variable for easier removal later
+short_samples
+```
+
+## authors to sets
+
+```{r}
+# all authors in the set
+authors <- unique(corpus_t$author)
+
+# all authors before the letter G 
+before_G <- grep("G1785", authors)[1]
+after_G <- grep("G1785", authors)[5]
+
+authors_1 <- authors[1:before_G-1]
+authors_2 <- authors[after_G+1:19]
+
+length(authors)
+authors_1
+authors_2
+
+target <- authors[grep("G1785", authors)]
+target
+```
+
+# SET 1
+
+## Sampling
+
+```{r}
+sample_independent_opt(
+  tokenized_df = corpus_tokenized %>% 
+    # select author set here!
+    filter(author %in% target | author %in% authors_1) %>% 
+    filter(!author %in% short_samples), 
+  n_samples = 2, 
+  sample_size = 3000)
+```
+
+## naive stylo()
+
+```{r}
+set.seed(567)
+```
+
+```{r, warning=FALSE, message=FALSE}
+test1 <- stylo(
+  gui = F,
+  corpus.dir = "../corpus_sampled/",
+  corpus.lang = "Other",
+  
+  mfw.min = 200,
+  mfw.max = 200,
+  analyzed.features = "w",
+  ngram.size = 1,
+  distance.measure = "wurzburg"
+)
+```
+
+Look into the MFW used
+
+```{r}
+test1$features.actually.used
+```
+
+```{r}
+view_tree(test1, k = 2, label_size = 4)
+```
+
+## bct
+
+```{r, warning=FALSE, message=FALSE}
+
+# take other samples
+sample_independent_opt(
+  tokenized_df = corpus_tokenized %>% # select author set here!
+    filter(author %in% target | author %in% authors_1) %>% 
+    filter(!author %in% short_samples), 
+  n_samples = 2, 
+  sample_size = 3000)
+
+# bootstrap consensus
+bct <- stylo(
+  gui = F,
+  corpus.dir = "../corpus_sampled/",
+  corpus.lang = "Other",
+  
+  analyzed.features = "w",
+  ngram.size = 1,
+  mfw.min = 50,
+  mfw.max = 250,
+  mfw.incr = 1,
+  distance.measure = "wurzburg",
+  
+  analysis.type = "BCT",
+  consensus.strength = 0.5
+  
+)
+```
+
+## strong words removal
+
+Based on the see_trees
+
+```{r}
+strong_words <- c("^peuples", "^louis", "^liberté", "^citoyens", 
+                  "^nation", "^aujourd", "^je", "^me", "^ma", "^j", "^mon")
+```
+
+## distances
+
+### functions
+
+Analysis from diy_stylo
+
+```{r}
+# stylo_res - distance.table from the stylo ouput stylo.data (list)
+
+process_distances <- function(stylo_res) {
+  dt <- stylo_res %>% as.matrix() # this is needed as native stylo matrix won't word with ggplot (?)
+  d_long <- dt %>% 
+  # transform the matrix to tibble object
+  as_tibble() %>% 
+  # create a column 'source' with the exact same names as the column names (back to matrix view)
+  mutate(source = colnames(dt)) %>% 
+  # transform to the long table with source - target pair and their distance
+  pivot_longer(#1:nrow(dt),
+              !source, # same as 1:nrow(dt) which basically mean 1:all_cols before the 'source' 
+               names_to = "target",
+               values_to = "distance") %>% 
+  # clean names
+  mutate(source = str_remove(source, "_[0-9]*$"),
+         target = str_remove(target, "_[0-9]*$")) %>% 
+  # remove the same author pairs
+  filter(distance != 0)
+  
+  return(d_long)
+}
+```
+
+Plot
+
+```{r}
+# df - table reaulted from the transformation of a distance matrix to the long table
+# required columns: source, target, distance + MEAN (calculated after multiple samples taken)
+
+lannister <- c("#5C0000", "#890000", "#C50000", "#FB7E00", "#FFA700")
+
+plot_distances <- function(df) {
+  df %>% 
+  ggplot(aes(distance, fill = mean)) + # density colour filled inside according to the xmean value
+    geom_density(alpha = 0.6) + # density plot
+    geom_vline(aes(xintercept = mean)) + # add a vertical line to explicitly show the mean
+    facet_grid(source ~ target,scales = "free_y") + # matrix of density plots
+    theme_bw() + 
+    # colours
+    scale_fill_gradient2(high=lannister[1],
+                         mid=lannister[3],
+                         low=lannister[5],
+                         midpoint=1.05)
+  
+}
+```
+
+### experiment
+
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
+iters = 50
+min_features = 50
+max_features = 200
+
+d_res_w = vector(mode = "list", length = iters)
+
+corpus_short <- corpus_tokenized %>% 
+    # select author set here!
+    filter(author %in% target | author %in% authors_1) %>% 
+    filter(!author %in% short_samples)
+
+for (i in 1:iters) { 
+  mfw <- sample( # sample sampling of X most freq words as features from a sequence of features
+    seq(min_features, max_features, by = 10),
+    1
+  )
+  
+  # write samples to the folder
+  sample_independent_opt(corpus_short,
+                         sample_size = 3000, 
+                         text_var = "word",
+                         n_samples = 2)
+  
+  # use stylo default functions to extract tokenized corpus form the directory
+  # this object is a list of chr vectors from each file
+  tokenized_texts <- load.corpus.and.parse(files = list.files("../corpus_sampled/",
+                                                              full.names = T))
+  
+  # word rank in the whole corpus (trimmed to top 2k)
+  features <- make.frequency.list(tokenized_texts, head = 2000) # output - just a chr vector of words in the rank order
+  
+  data <- make.table.of.frequencies(tokenized_texts, features, 
+                                    relative = TRUE # relative = true for calculating relative freq, F = raw freq
+                                    ) #[,1:mfw] # crop by the number of MFW
+  
+  # data is a dtm with rel freq of N mfw words in each sample as a doc
+  
+  s_words <- str_detect(colnames(data), # among the colnames - MFW words in the dtm
+                        paste(strong_words, collapse = "|") # find any of the strong words
+                        ) # output - logical vector
+  
+  # remove columns with the freqs of strong words
+  data <- data[, !s_words]
+  
+  # crop by the number of mfw (random) 
+  data <- data[, 1:mfw]
+  # clean the names of the samples
+  rownames(data) <- str_remove_all(rownames(data), "^.*?//")
+  
+  
+  # calculate distances based on the document-term matrix
+  dt <- dist.wurzburg(data) %>% as.dist(upper = T, diag = T)
+  
+  # str(dt) # dt is a distance matrix
+  # class(dt) # dist
+  
+  # transform to the long format with target, source and distance
+  d_long <- process_distances(dt) # custom function !
+  
+  # write to the list of distance tibbles to store
+  d_res_w[[i]] <- d_long
+
+} 
+
+saveRDS(d_res_w, file = "G1875_A1_d_res.rds")
+```
+
+```{r}
+d_res_w <- readRDS("G1875_A1_d_res.rds")
+
+# collapse list of distance tables into one table
+d_df <- d_res_w %>% 
+  bind_rows() %>% 
+  group_by(source, target) %>% 
+  mutate(mean = mean(distance))
+
+# unique(d_df$source)
+
+# -----------
+# pull means for target texts
+
+g1785_0_mean <- d_df %>% filter(source == "G1785_0_Preface" &
+                                  target == "G1785_0_Preface") %>% 
+  pull(mean) %>% unique()
+
+g1785_1_mean <- d_df %>% filter(source == "G1785_1_Tableau" &
+                                  target == "G1785_1_Tableau") %>% 
+  pull(mean) %>% unique()
+
+g1785_2_mean <- d_df %>% filter(source == "G1785_2_Second" &
+                                  target == "G1785_2_Second") %>% 
+  pull(mean) %>% unique()
+
+g1785_3_mean <- d_df %>% filter(source == "G1785_3_Troisième" &
+                                  target == "G1785_3_Troisième") %>% 
+  pull(mean) %>% unique()
+
+# --------------
+# plot
+
+d_df %>% 
+  plot_distances() +
+  geom_vline(data = . %>%  filter(target == "G1785_0_Preface"),
+             aes(xintercept = g1785_0_mean),
+             color = "red",
+             linewidth = 1) + 
+  geom_vline(data = . %>%  filter(target == "G1785_1_Tableau"),
+             aes(xintercept = g1785_1_mean),
+             color = "red",
+             linewidth = 1) + 
+  geom_vline(data = . %>%  filter(target == "G1785_2_Second"),
+             aes(xintercept = g1785_2_mean),
+             color = "red",
+             linewidth = 1) + 
+  geom_vline(data = . %>%  filter(target == "G1785_3_Troisième"),
+             aes(xintercept = g1785_0_mean),
+             color = "red",
+             linewidth = 1) 
+```
+
+Closer look
+
+```{r}
+unique(d_df$source)
+
+closest <- c("Condorcet", "Baudeau", "Carra", "Dusaulx", "Fauchet", "G1785_0_Preface", "G1785_1_Tableau", "G1785_2_Second", "G1785_3_Troisième")
+
+d_close <- d_df %>% 
+  filter(target %in% closest & source %in% closest) 
+  
+d_close %>%   
+  plot_distances() +
+  geom_vline(data = . %>%  filter(target == "G1785_0_Preface"),
+             aes(xintercept = g1785_0_mean),
+             color = "red",
+             linewidth = 1) + 
+  geom_vline(data = . %>%  filter(target == "G1785_1_Tableau"),
+             aes(xintercept = g1785_1_mean),
+             color = "red",
+             linewidth = 1) + 
+  geom_vline(data = . %>%  filter(target == "G1785_2_Second"),
+             aes(xintercept = g1785_2_mean),
+             color = "red",
+             linewidth = 1) + 
+  geom_vline(data = . %>%  filter(target == "G1785_3_Troisième"),
+             aes(xintercept = g1785_0_mean),
+             color = "red",
+             linewidth = 1) 
+```
+
+## imposters
+
+```{r}
+
+# sampling
+sample_independent_opt(
+  tokenized_df = corpus_tokenized %>% 
+    # select author set here!
+    filter(author %in% target | author %in% authors_1) %>% 
+    filter(!author %in% short_samples), 
+  n_samples = 2, 
+  sample_size = 3000)
+
+# turn data into the document-term matrix (strong words removed)
+data <- diy_stylo(#folder = "../corpus_sampled/",
+                  mfw = 200, 
+                  drop_words = T)
+
+str(data)
+
+# rownames(data)
+
+rownames(data) <- str_replace(rownames(data), "G1785_", "G1785-")
+
+grep("G1785-0_Preface", rownames(data))
+```
+
+test run:
+
+```{r}
+test_set <- data[c(35), ]
+ref_set <- data[-c(35, 36), ]
+
+imposters(reference.set = ref_set, test = test_set,
+  distance = "wurzburg")
+```
+
+### "CI" interval
+
+```{r, warning=FALSE, message=FALSE, eval = FALSE}
+# create an empty vector to store data
+op_list_w <- vector(mode = "list", length = 20)
+
+# loop for 20 runs of optimisation - THIS WILL TAKE TIME
+for (i in 1:20) {
+  
+  # in each run we rewrite the sampling folder & grab new samples
+  sample_independent_opt(
+    tokenized_df = corpus_tokenized %>% 
+      # select author set here!
+      filter(author %in% target | author %in% authors_1) %>% 
+      filter(!author %in% short_samples), 
+    n_samples = 2, 
+    sample_size = 3000)
+  
+  # take data from the corpus_sampled/ folder & turn it into a doc-term matrix
+  data = diy_stylo(mfw = 200,
+                   feature = "word",
+                   n_gram = 1)
+  
+  
+  rownames(data) <- str_replace(rownames(data), "G1785_", "G1785-")
+  
+  # use the data for calculation of the confidence interval and write in the list
+  op_list_w[[i]] <- imposters.optimize(data[-c(35, 36), ]) # remove target
+}
+
+saveRDS(op_list_w, "G1785-0_A1_GI_op_list.rds")
+```
+
+Load interval
+
+```{r}
+op_list_w <- readRDS("G1785-0_A1_GI_op_list.rds")
+
+# op_list_w[[1]][1]
+
+# extract the first element from each list & calculate mean
+min_mean_w <- map(op_list_w, 1) %>% # find the first elements
+  unlist() %>% # unlist them to one vector
+  mean() # calculate mean
+
+# min_mean_w
+
+# same for the upper border
+max_mean_w <- map(op_list_w, 2) %>% 
+  unlist() %>% mean()
+
+# max_mean_w
+
+print(paste0("The zone of 'I don't know': ", min_mean_w, " to ", max_mean_w))
+```
+
+### Experiment
+
+```{r, eval = FALSE}
+imp_res <- vector(mode = "list", length = 100)
+
+counter <- 0
+
+for (i in 1:50) {
+  
+  # create samples for each trial
+  sample_independent_opt(
+    tokenized_df = corpus_tokenized %>% 
+      # select author set here!
+      filter(author %in% target | author %in% authors_1) %>% 
+      filter(!author %in% short_samples), 
+    n_samples = 2, 
+    sample_size = 3000)
+  
+  # build doc-term matrix from the samples in the corpus_sampled folder
+  data <- diy_stylo(mfw = 200, 
+                    feature = "word",
+                    n_gram = 1)
+  
+  rownames(data) <- str_replace(rownames(data), "G1785_", "G1785-")
+  
+  # test each of the true navalny sets
+  for (s in c(35, 36)) {
+    
+    # run imposters test
+    r <- imposters(reference.set = data[-c(35:36),], # remove test data from the ref
+                   test = data[c(s),], # test one of the samples against the others
+                   features = 0.5, # test 50% of the features in each trial
+                   iterations = 100,
+                   distance = "wurzburg"
+                   )
+    
+    # count iterations
+    counter <- counter + 1
+    
+    # store results
+    
+    imp_res[[counter]] <- tibble(candidate = names(r),
+                                 proportion = r)
+    
+    print(counter)
+  }
+  
+}
+
+saveRDS(imp_res, "G1785_0_A1_imp_res.rds")
+```
+
+### results 0 préface
+
+```{r}
+# load saved data
+imp_res <- readRDS("G1785_0_A1_imp_res.rds")
+
+# plot
+imp_res %>% 
+  bind_rows() %>% #stack all the optained prop tables into one
+  ggplot(aes(x = reorder(candidate, - proportion), 
+             y = proportion)) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  # add horisontal lines to show the zone of uncertainty
+  geom_hline(aes(yintercept = min_mean_w), 
+             linewidth = 0.5, 
+             linetype = 2, 
+             color = "cadetblue3") + 
+  geom_hline(aes(yintercept = max_mean_w),
+             linewidth = 0.5,
+             linetype = 2,
+             color = "cadetblue3") + 
+  labs(x = "Author", 
+       subtitle = "Proportion of cases where a sample from an author wasthe closest one\nto Galerie_1785 Préface") + 
+  theme(axis.text.x = element_text(angle = 25, vjust = 0.5))
+```
+
+### results 3eme tableau
+
+```{r}
+rownames(data)
+grep("G1785-3_Troisième", rownames(data)) #positions of new target texts
+```
+
+Calculate CI
+
+```{r, eval = FALSE}
+op_list_w <- vector(mode = "list", length = 20)
+
+# loop for 5 runs of optimisation - THIS WILL TAKE TIME
+for (i in 1:5) {
+  
+  # in each run we rewrite the sampling folder & grab new samples
+  sample_independent_opt(
+    tokenized_df = corpus_tokenized %>% 
+      # select author set here!
+      filter(author %in% target | author %in% authors_1) %>% 
+      filter(!author %in% short_samples), 
+    n_samples = 2, 
+    sample_size = 3000)
+  
+  # take data from the corpus_sampled/ folder & turn it into a doc-term matrix
+  data = diy_stylo(mfw = 200,
+                   feature = "word",
+                   n_gram = 1)
+  
+  
+  rownames(data) <- str_replace(rownames(data), "G1785_", "G1785-")
+  
+  # use the data for calculation of the confidence interval and write in the list
+  op_list_w[[i]] <- imposters.optimize(data[-c(41, 42), ]) # remove target
+}
+
+saveRDS(op_list_w, "G1785-3_A1_GI_op_list.rds")
+```
+
+Load interval
+
+```{r}
+op_list_w <- readRDS("G1785-3_A1_GI_op_list.rds")
+
+# op_list_w[[1]][1]
+
+# extract the first element from each list & calculate mean
+min_mean_w <- map(op_list_w, 1) %>% # find the first elements
+  unlist() %>% # unlist them to one vector
+  mean() # calculate mean
+
+# min_mean_w
+
+# same for the upper border
+max_mean_w <- map(op_list_w, 2) %>% 
+  unlist() %>% mean()
+
+# max_mean_w
+
+print(paste0("The zone of 'I don't know': ", min_mean_w, " to ", max_mean_w))
+```
+
+Calculate GI
+
+```{r, eval = FALSE}
+imp_res <- vector(mode = "list", length = 100)
+
+counter <- 0
+
+for (i in 1:50) {
+  
+  # create samples for each trial
+  sample_independent_opt(
+    tokenized_df = corpus_tokenized %>% 
+      # select author set here!
+      filter(author %in% target | author %in% authors_1) %>% 
+      filter(!author %in% short_samples), 
+    n_samples = 2, 
+    sample_size = 3000)
+  
+  # build doc-term matrix from the samples in the corpus_sampled folder
+  data <- diy_stylo(mfw = 200, 
+                    feature = "word",
+                    n_gram = 1)
+  
+  rownames(data) <- str_replace(rownames(data), "G1785_", "G1785-")
+  
+  # test each of the true navalny sets
+  for (s in c(41, 42)) {
+    
+    # run imposters test
+    r <- imposters(reference.set = data[-c(41:42),], # remove test data from the ref
+                   test = data[c(s),], # test one of the samples against the others
+                   features = 0.5, # test 50% of the features in each trial
+                   iterations = 100,
+                   distance = "wurzburg"
+                   )
+    
+    # count iterations
+    counter <- counter + 1
+    
+    # store results
+    
+    imp_res[[counter]] <- tibble(candidate = names(r),
+                                 proportion = r)
+    
+    print(counter)
+  }
+  
+}
+
+saveRDS(imp_res, "G1785_3_A1_imp_res.rds")
+```
+
+Results
+
+```{r}
+# load saved data
+imp_res <- readRDS("G1785_3_A1_imp_res.rds")
+
+# plot
+imp_res %>% 
+  bind_rows() %>% #stack all the optained prop tables into one
+  ggplot(aes(x = reorder(candidate, - proportion), 
+             y = proportion)) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  # add horisontal lines to show the zone of uncertainty
+  geom_hline(aes(yintercept = min_mean_w), 
+             linewidth = 0.5, 
+             linetype = 2, 
+             color = "cadetblue3") + 
+  geom_hline(aes(yintercept = max_mean_w),
+             linewidth = 0.5,
+             linetype = 2,
+             color = "cadetblue3") + 
+  labs(x = "Author", 
+       subtitle = "Proportion of cases where a sample from an author wasthe closest one\nto Galerie_1785 Troisième tableau") + 
+  theme(axis.text.x = element_text(angle = 25, vjust = 0.5))
+```
+
+# SET 2
+
+Sampling
+
+```{r}
+sample_independent_opt(
+  tokenized_df = corpus_tokenized %>% 
+    # select author set here!
+    filter(author %in% target | author %in% authors_2) %>% 
+    filter(!author %in% short_samples), 
+  n_samples = 2, 
+  sample_size = 3000)
+```
+
+### 200 mfw stylo
+
+```{r}
+test1 <- stylo(
+  gui = F,
+  corpus.dir = "../corpus_sampled/",
+  corpus.lang = "Other",
+  
+  mfw.min = 200,
+  mfw.max = 200,
+  analyzed.features = "w",
+  ngram.size = 1,
+  distance.measure = "wurzburg"
+)
+```
+
+### features
+
+```{r}
+test1$features.actually.used
+```
+
+```{r}
+view_tree(test1, k = 2, label_size = 5)
+```
+
+### strong words
+
+```{r}
+strong_words <- c("^peuple", "^louis$", "^liberté", "^citoyen", 
+                  "^nation", "^aujourd", "^je$", "^me$", "^ma$", "^j$", "^mon$",
+                  "^mes$", "^lois$")
+```
+
+### bct
+
+```{r, warning=FALSE, message=FALSE}
+# take other samples
+sample_independent_opt(
+  tokenized_df = corpus_tokenized %>% # select author set here!
+    filter(author %in% target | author %in% authors_2) %>% 
+    filter(!author %in% short_samples), 
+  n_samples = 2, 
+  sample_size = 3000)
+
+# bootstrap consensus
+bct <- stylo(
+  gui = F,
+  corpus.dir = "../corpus_sampled/",
+  corpus.lang = "Other",
+  
+  analyzed.features = "w",
+  ngram.size = 1,
+  mfw.min = 50,
+  mfw.max = 250,
+  mfw.incr = 1,
+  distance.measure = "wurzburg",
+  
+  analysis.type = "BCT",
+  consensus.strength = 0.5
+  
+)
+```
+
+### distances
+
+```{r, warning=FALSE, message=FALSE, eval=FALSE}
+iters = 50
+min_features = 50
+max_features = 200
+
+d_res_w = vector(mode = "list", length = iters)
+
+corpus_short <- corpus_tokenized %>% 
+    # select author set here!
+    filter(author %in% target | author %in% authors_2) %>% 
+    filter(!author %in% short_samples)
+
+for (i in 1:iters) { 
+  mfw <- sample( # sample sampling of X most freq words as features from a sequence of features
+    seq(min_features, max_features, by = 10),
+    1
+  )
+  
+  # write samples to the folder
+  sample_independent_opt(corpus_short,
+                         sample_size = 3000, 
+                         text_var = "word",
+                         n_samples = 2)
+  
+  # use stylo default functions to extract tokenized corpus form the directory
+  # this object is a list of chr vectors from each file
+  tokenized_texts <- load.corpus.and.parse(files = list.files("../corpus_sampled/",
+                                                              full.names = T))
+  
+  # word rank in the whole corpus (trimmed to top 2k)
+  features <- make.frequency.list(tokenized_texts, head = 2000) # output - just a chr vector of words in the rank order
+  
+  data <- make.table.of.frequencies(tokenized_texts, features, 
+                                    relative = TRUE # relative = true for calculating relative freq, F = raw freq
+                                    ) #[,1:mfw] # crop by the number of MFW
+  
+  # data is a dtm with rel freq of N mfw words in each sample as a doc
+  
+  s_words <- str_detect(colnames(data), # among the colnames - MFW words in the dtm
+                        paste(strong_words, collapse = "|") # find any of the strong words
+                        ) # output - logical vector
+  
+  # remove columns with the freqs of strong words
+  data <- data[, !s_words]
+  
+  # crop by the number of mfw (random) 
+  data <- data[, 1:mfw]
+  # clean the names of the samples
+  rownames(data) <- str_remove_all(rownames(data), "^.*?//")
+  
+  
+  # calculate distances based on the document-term matrix
+  dt <- dist.wurzburg(data) %>% as.dist(upper = T, diag = T)
+  
+  # str(dt) # dt is a distance matrix
+  # class(dt) # dist
+  
+  # transform to the long format with target, source and distance
+  d_long <- process_distances(dt) # custom function !
+  
+  # write to the list of distance tibbles to store
+  d_res_w[[i]] <- d_long
+
+} 
+
+saveRDS(d_res_w, file = "G1785_A2_d_res.rds")
+```
+
+```{r}
+d_res_w <- readRDS("G1785_A2_d_res.rds")
+
+# collapse list of distance tables into one table
+d_df <- d_res_w %>% 
+  bind_rows() %>% 
+  group_by(source, target) %>% 
+  mutate(mean = mean(distance))
+
+# unique(d_df$source)
+
+# -----------
+# pull means for target texts
+
+g1785_0_mean <- d_df %>% filter(source == "G1785_0_Preface" &
+                                  target == "G1785_0_Preface") %>% 
+  pull(mean) %>% unique()
+
+g1785_1_mean <- d_df %>% filter(source == "G1785_1_Tableau" &
+                                  target == "G1785_1_Tableau") %>% 
+  pull(mean) %>% unique()
+
+g1785_2_mean <- d_df %>% filter(source == "G1785_2_Second" &
+                                  target == "G1785_2_Second") %>% 
+  pull(mean) %>% unique()
+
+g1785_3_mean <- d_df %>% filter(source == "G1785_3_Troisième" &
+                                  target == "G1785_3_Troisième") %>% 
+  pull(mean) %>% unique()
+
+# --------------
+# plot
+
+d_df %>% 
+  plot_distances() +
+  geom_vline(data = . %>%  filter(target == "G1785_0_Preface"),
+             aes(xintercept = g1785_0_mean),
+             color = "red",
+             linewidth = 1) + 
+  geom_vline(data = . %>%  filter(target == "G1785_1_Tableau"),
+             aes(xintercept = g1785_1_mean),
+             color = "red",
+             linewidth = 1) + 
+  geom_vline(data = . %>%  filter(target == "G1785_2_Second"),
+             aes(xintercept = g1785_2_mean),
+             color = "red",
+             linewidth = 1) + 
+  geom_vline(data = . %>%  filter(target == "G1785_3_Troisième"),
+             aes(xintercept = g1785_0_mean),
+             color = "red",
+             linewidth = 1) 
+```
+
+Closer look
+
+```{r}
+unique(d_df$source)
+
+closest <- c("Mirabeau", "Sillery (Genlis Ch)", "La Salle", "Marat", "Laclos", "G1785_0_Preface", "G1785_1_Tableau", "G1785_2_Second", "G1785_3_Troisième")
+
+d_close <- d_df %>% 
+  filter(target %in% closest & source %in% closest) 
+  
+d_close %>%   
+  plot_distances() +
+  geom_vline(data = . %>%  filter(target == "G1785_0_Preface"),
+             aes(xintercept = g1785_0_mean),
+             color = "red",
+             linewidth = 1) + 
+  geom_vline(data = . %>%  filter(target == "G1785_1_Tableau"),
+             aes(xintercept = g1785_1_mean),
+             color = "red",
+             linewidth = 1) + 
+  geom_vline(data = . %>%  filter(target == "G1785_2_Second"),
+             aes(xintercept = g1785_2_mean),
+             color = "red",
+             linewidth = 1) + 
+  geom_vline(data = . %>%  filter(target == "G1785_3_Troisième"),
+             aes(xintercept = g1785_0_mean),
+             color = "red",
+             linewidth = 1) 
+```
+
+## GI
+
+```{r, warning=FALSE, message=FALSE}
+data <- diy_stylo(#folder = "../corpus_sampled/",
+                  mfw = 200, 
+                  drop_words = T)
+
+str(data)
+
+# rownames(data)
+
+rownames(data) <- str_replace(rownames(data), "G1785_", "G1785-")
+
+grep("G1785-0_Preface", rownames(data))
+grep("G1785-3", rownames(data))
+```
+
+### Preface
+
+```{r, eval = FALSE}
+op_list_w <- vector(mode = "list", length = 20)
+
+# loop for 5 runs of optimisation - THIS WILL TAKE TIME
+for (i in 1:5) {
+  
+  # in each run we rewrite the sampling folder & grab new samples
+  sample_independent_opt(
+    tokenized_df = corpus_tokenized %>% 
+      # select author set here!
+      filter(author %in% target | author %in% authors_2) %>% 
+      filter(!author %in% short_samples), 
+    n_samples = 2, 
+    sample_size = 3000)
+  
+  # take data from the corpus_sampled/ folder & turn it into a doc-term matrix
+  data = diy_stylo(mfw = 200,
+                   feature = "word",
+                   n_gram = 1)
+  
+  
+  rownames(data) <- str_replace(rownames(data), "G1785_", "G1785-")
+  
+  # use the data for calculation of the confidence interval and write in the list
+  op_list_w[[i]] <- imposters.optimize(data[-c(1, 2), ]) # remove target
+}
+
+saveRDS(op_list_w, "G1785-0_A2_GI_op_list.rds")
+```
+
+Load CI
+
+```{r}
+op_list_w <- readRDS("G1785-0_A2_GI_op_list.rds")
+
+# op_list_w[[1]][1]
+
+# extract the first element from each list & calculate mean
+min_mean_w <- map(op_list_w, 1) %>% # find the first elements
+  unlist() %>% # unlist them to one vector
+  mean() # calculate mean
+
+min_mean_w
+
+# same for the upper border
+max_mean_w <- map(op_list_w, 2) %>% 
+  unlist() %>% mean()
+
+max_mean_w
+
+print(paste0("The zone of 'I don't know': ", min_mean_w, " to ", max_mean_w))
+```
+
+Calculate GI
+
+```{r, eval = FALSE}
+imp_res <- vector(mode = "list", length = 100)
+
+counter <- 0
+
+corpus_short <- corpus_tokenized %>% 
+      # select author set here!
+      filter(author %in% target | author %in% authors_2) %>% 
+      filter(!author %in% short_samples)
+
+for (i in 1:50) {
+  
+  # create samples for each trial
+  sample_independent_opt(
+    tokenized_df = corpus_short, 
+    n_samples = 2, 
+    sample_size = 3000)
+  
+  # build doc-term matrix from the samples in the corpus_sampled folder
+  data <- diy_stylo(mfw = 200, 
+                    feature = "word",
+                    n_gram = 1)
+  
+  rownames(data) <- str_replace(rownames(data), "G1785_", "G1785-")
+  
+  # test each of the true navalny sets
+  for (s in c(1, 2)) {
+    
+    # run imposters test
+    r <- imposters(reference.set = data[-c(1:2),], # remove test data from the ref
+                   test = data[c(s),], # test one of the samples against the others
+                   features = 0.5, # test 50% of the features in each trial
+                   iterations = 100,
+                   distance = "wurzburg"
+                   )
+    
+    # count iterations
+    counter <- counter + 1
+    
+    # store results
+    
+    imp_res[[counter]] <- tibble(candidate = names(r),
+                                 proportion = r)
+    
+    print(counter)
+  }
+  
+}
+
+saveRDS(imp_res, "G1785_0_A2_imp_res.rds")
+```
+
+```{r}
+# load saved data
+imp_res <- readRDS("G1785_0_A2_imp_res.rds")
+
+# plot
+imp_res %>% 
+  bind_rows() %>% #stack all the optained prop tables into one
+  ggplot(aes(x = reorder(candidate, - proportion), 
+             y = proportion)) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  # add horisontal lines to show the zone of uncertainty
+  geom_hline(aes(yintercept = min_mean_w), 
+             linewidth = 1, 
+             linetype = 2, 
+             color = "cadetblue3") + 
+  geom_hline(aes(yintercept = max_mean_w),
+             linewidth = 1,
+             linetype = 2,
+             color = "cadetblue3") + 
+  labs(x = "Author", 
+       subtitle = "Proportion of cases where a sample from an author wasthe closest one\nto Galerie_1785 Préface") + 
+  theme(axis.text.x = element_text(angle = 25, vjust = 0.5))
+```
+
+### 3eme tableau
+
+```{r, eval=FALSE}
+op_list_w <- vector(mode = "list", length = 20)
+
+# loop for 5 runs of optimisation - THIS WILL TAKE TIME
+for (i in 1:5) {
+  
+  # in each run we rewrite the sampling folder & grab new samples
+  sample_independent_opt(
+    tokenized_df = corpus_tokenized %>% 
+      # select author set here!
+      filter(author %in% target | author %in% authors_2) %>% 
+      filter(!author %in% short_samples), 
+    n_samples = 2, 
+    sample_size = 3000)
+  
+  # take data from the corpus_sampled/ folder & turn it into a doc-term matrix
+  data = diy_stylo(mfw = 200,
+                   feature = "word",
+                   n_gram = 1)
+  
+  
+  rownames(data) <- str_replace(rownames(data), "G1785_", "G1785-")
+  
+  # use the data for calculation of the confidence interval and write in the list
+  op_list_w[[i]] <- imposters.optimize(data[-c(7, 8), ]) # remove target
+}
+
+saveRDS(op_list_w, "G1785-3_A2_GI_op_list.rds")
+```
+
+```{r}
+op_list_w <- readRDS("G1785-3_A2_GI_op_list.rds")
+
+# op_list_w[[1]][1]
+
+# extract the first element from each list & calculate mean
+min_mean_w <- map(op_list_w, 1) %>% # find the first elements
+  unlist() %>% # unlist them to one vector
+  mean() # calculate mean
+
+# min_mean_w
+
+# same for the upper border
+max_mean_w <- map(op_list_w, 2) %>% 
+  unlist() %>% mean()
+
+# max_mean_w
+
+print(paste0("The zone of 'I don't know': ", min_mean_w, " to ", max_mean_w))
+```
+
+```{r, eval = FALSE}
+imp_res <- vector(mode = "list", length = 100)
+
+counter <- 0
+
+corpus_short <- corpus_tokenized %>% 
+      # select author set here!
+      filter(author %in% target | author %in% authors_2) %>% 
+      filter(!author %in% short_samples)
+
+for (i in 1:50) {
+  
+  # create samples for each trial
+  sample_independent_opt(
+    tokenized_df = corpus_short, 
+    n_samples = 2, 
+    sample_size = 3000)
+  
+  # build doc-term matrix from the samples in the corpus_sampled folder
+  data <- diy_stylo(mfw = 200, 
+                    feature = "word",
+                    n_gram = 1)
+  
+  rownames(data) <- str_replace(rownames(data), "G1785_", "G1785-")
+  
+  # test each of the true navalny sets
+  for (s in c(7, 8)) {
+    
+    # run imposters test
+    r <- imposters(reference.set = data[-c(7, 8),], # remove test data from the ref
+                   test = data[c(s),], # test one of the samples against the others
+                   features = 0.5, # test 50% of the features in each trial
+                   iterations = 100,
+                   distance = "wurzburg"
+                   )
+    
+    # count iterations
+    counter <- counter + 1
+    
+    # store results
+    
+    imp_res[[counter]] <- tibble(candidate = names(r),
+                                 proportion = r)
+    
+    print(counter)
+  }
+  
+}
+
+saveRDS(imp_res, "G1785_3_A2_imp_res.rds")
+```
+
+```{r}
+# load saved data
+imp_res <- readRDS("G1785_3_A2_imp_res.rds")
+
+# plot
+imp_res %>% 
+  bind_rows() %>% #stack all the optained prop tables into one
+  ggplot(aes(x = reorder(candidate, - proportion), 
+             y = proportion)) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  # add horisontal lines to show the zone of uncertainty
+  geom_hline(aes(yintercept = min_mean_w), 
+             linewidth = 1, 
+             linetype = 2, 
+             color = "cadetblue3") + 
+  geom_hline(aes(yintercept = max_mean_w),
+             linewidth = 1,
+             linetype = 2,
+             color = "cadetblue3") + 
+  labs(x = "Author", 
+       subtitle = "Proportion of cases where a sample from an author wasthe closest one\nto Galerie_1785 Préface") + 
+  theme(axis.text.x = element_text(angle = 25, vjust = 0.5))
+```
+
+# Conclusions
+
+-   Galerie first volume (1785): 
+
+    -   Tableaux 2 & 3 are likely written by the same author;
+
+    -   There is some probability that Preface and Tableau 1 were written by the same author;
+
+    -   The closest author to the Preface is Condorcet, but it is inconclusive ("I don't know model's zone)

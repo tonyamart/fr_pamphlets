@@ -1,0 +1,234 @@
+---
+title: "Corpus compilation"
+format: html
+editor: visual
+---
+
+## load pckg
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(htm2txt)
+```
+
+## load metadata
+
+```{r}
+meta <- read.csv("../metadata/corpus_bibliography.csv") %>% 
+  # remove Marmontel & La Harpe
+  filter(!author_short %in% c("Marmontel", "La Harpe"))
+
+glimpse(meta)
+```
+
+### meta overview
+
+```{r}
+# overview dates (some 19c. editions included)
+meta %>% 
+  count(date, sort = T)
+
+late_ed <- meta %>% 
+  # select 19-c. editions which were not marked as needed
+  filter(selected_for_galerie != "yes" & str_detect(date, "^18")) %>% 
+  pull(id)
+
+# remove 19-c editions if they were not preselected
+meta <- meta %>% 
+  filter(!id %in% late_ed)
+```
+
+Check & remove special tags
+
+```{r}
+unique(meta$selected_for_galerie)
+
+# remove tagged drama, poetry, etc.
+meta <- meta %>% 
+  filter(selected_for_galerie %in% c("yes", ""))
+```
+
+Number of books by author
+
+```{r}
+# all
+author_n <- meta %>% 
+  count(author_short, sort = T)
+
+author_selected <- meta %>% 
+  filter(selected_for_galerie == "yes") %>% 
+  count(author_short, sort = T)
+
+total <- author_n %>% 
+  left_join(author_selected, by = "author_short")
+```
+
+## prepare meta
+
+Package `htm2txt` usage example
+
+```{r, eval = FALSE}
+x <- meta$link_gallica[1]
+x
+
+# existing text
+x <- paste0(x, ".texteBrut") # attach .texteBrut to gallica link to access the text
+x
+
+# non-existing text
+# in this case it still write the metadata of the book with the identifier, but there won't be any text written after ----
+x <- paste0("https://gallica.bnf.fr/ark:/12148/bpt6k15094721", ".texteBrut")
+
+test <- gettxt(x) # text retrieval
+filename <- "../corpus_raw/test1.txt"
+
+writeLines(test, filename)
+```
+
+Prepare metadata for writing the files
+
+```{r}
+meta <- meta %>% 
+  # create a short title column (first 6 words of the title)
+  mutate(title_short = str_extract(title, "^.*?\\s.*?\\s.*?\\s.*?\\s.*?\\s.*?\\s"),
+         title_short = str_remove(title_short, "\\s$")
+         #,
+         #title_short = str_replace_all(title_short, "\\s", "-")
+         ) %>%
+  # create a filename column
+  mutate(filename = paste0("../corpus_raw/", author_short, "_", id, 
+                           #"__", title_short, 
+                           ".txt")) 
+```
+
+### save meta
+
+```{r}
+glimpse(meta)
+
+# write.csv(meta, file = "../metadata/metadata_selected.csv")
+```
+
+### load meta
+
+```{r}
+meta <- read.csv("../metadata/metadata_selected.csv") %>% select(-X)
+
+# glimpse(meta)
+```
+
+Leave only one URL in each row (might be done as expanding later)
+
+```{r}
+meta <- meta %>% 
+  mutate(link_gallica_cln = str_remove(link_gallica, "\\s\\|.*"))
+
+meta %>% 
+  filter(str_detect(link_gallica_cln, "\\s\\|"))
+```
+
+```{r}
+# glimpse(meta)
+```
+
+## retrieve texts
+
+Test retrieval
+
+```{r, eval=FALSE}
+selected <- meta %>% 
+  filter(selected_for_galerie == "yes")
+
+# filter authors for whom texts were not selected
+authors_ns <- total %>% 
+  filter(is.na(n.y)) %>% pull(author_short)
+
+authors_ns
+
+authors_ns_links <- meta %>% 
+  filter(author_short %in% authors_ns) 
+authors_ns_links %>% nrow
+
+t_links[21]
+t_filenames[21]
+
+```
+
+Filter texts which were not downloaded yet
+
+```{r}
+# read files in the folder
+fh <- list.files(path = "../corpus_raw/",
+                 full.names = TRUE) %>% 
+  str_replace("corpus_raw//", "corpus_raw/")
+
+head(fh)
+
+# filter out existing filenames
+t <- meta %>% 
+  filter(!filename %in% fh) %>% 
+  mutate(filename = str_replace(filename, "corpus_raw/", "corpus_raw/add/"))
+```
+
+```{r, eval=FALSE}
+t_links <- t$link_gallica_cln[1:20]
+t_filenames <- t$filename[1:20]
+
+text_link <- NULL
+text <- NULL
+
+start_time <- Sys.time()
+
+for (i in 1:length(t_links)) {
+  
+  print(paste("Text number", i))
+  
+  text_link <- paste0(t_links[i], ".texteBrut")
+  
+  skip_to_next <- FALSE
+  
+  tryCatch( text <- gettxt(text_link),
+            error = function(e) { skip_to_next <<- TRUE }
+  )
+  
+  if(skip_to_next) { next }
+  
+  else { 
+    writeLines(text, t_filenames[i]) 
+    print(paste0("Done with ", t_filenames[i], ", now waiting"))
+    }
+  
+  Sys.sleep(30) # set timer to not to overuse Gallica's hospitality
+}
+
+end_time <- Sys.time()
+
+end_time - start_time
+```
+
+```{r, eval = FALSE}
+for (i in 1:5) {
+  print(paste("Time before pause:", Sys.time()))
+  Sys.sleep(5)
+  print(paste("Time after pause:", Sys.time()))
+}
+```
+
+```{r, eval = FALSE}
+
+x <- c(1:9, "b")
+x
+
+print(as.numeric(x[1])+1)
+
+for (i in 1:10) {
+  
+  skip_to_next <- FALSE
+  
+  tryCatch(print(as.numeric(x[i])+1),
+           error = function(e) {skip_to_next <<- TRUE})
+  
+  if(skip_to_next) { next }
+  
+}
+```

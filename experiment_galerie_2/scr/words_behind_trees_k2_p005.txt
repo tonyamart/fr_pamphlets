@@ -1,0 +1,100 @@
+CLUSTER 1
+==============
+TEXTS
+Pastoret_1
+Pastoret_2
+Clavière_1
+Clavière_2
+Baudeau_1
+Baudeau_2
+Lacretelle_1
+Lacretelle_2
+Mirabeau_1
+Mirabeau_2
+Ducrest_1
+Ducrest_2
+Sieyès_1
+Sieyès_2
+Rabaut Saint-Étienne_1
+Rabaut Saint-Étienne_2
+Petion_1
+Petion_2
+Garat_1
+Garat_2
+Marat_1
+Marat_2
+Mme Genlis_1
+Mme Genlis_2
+Condorcet_1
+Condorcet_2
+Gouges_1
+Gouges_2
+Mercier_1
+Mercier_2
+Bonneville_1
+Bonneville_2
+G1787_6_V8_seg_2_12_1
+G1787_6_V8_seg_2_12_2
+G1787_8_V8_seg_6_244_1
+G1787_8_V8_seg_6_244_2
+Barère_1
+Barère_2
+Bancal des Issarts_1
+Bancal des Issarts_2
+Fauchet_1
+Fauchet_2
+==============
+FEATURES associated (p<0.05)
+
+les des droits hommes grands doit leur l bonheur aux liberté peuples droit intérêt plus toujours publique loi principes gloire sans peut force loix leurs qui ceux nation eux société peuple mêmes esprit moyens la tous état est gouvernement point lois chaque jamais dans ses homme patrie ils toutes vie nature public ces nombre ont grande faut génie être elles
+
+
+
+
+CLUSTER 2
+==============
+TEXTS
+Target_1
+Target_2
+Talleyrand_1
+Talleyrand_2
+Sabatier de Castres_1
+Sabatier de Castres_2
+Bergasse_1
+Bergasse_2
+Laclos_1
+Laclos_2
+D'Alembert_1
+D'Alembert_2
+Delisle de Sales_1
+Delisle de Sales_2
+Brissot_1
+Brissot_2
+Dupaty_1
+Dupaty_2
+Sillery (Genlis Ch)_1
+Sillery (Genlis Ch)_2
+G1787_5_V4_seg_7_240_1
+G1787_5_V4_seg_7_240_2
+G1787_7_V8_seg_3_66_1
+G1787_7_V8_seg_3_66_2
+La Salle_1
+La Salle_2
+Carra_1
+Carra_2
+Manuel_1
+Manuel_2
+Dusaulx_1
+Dusaulx_2
+Danton_1
+Danton_2
+Desmoulins_1
+Desmoulins_2
+==============
+FEATURES associated (p<0.05)
+
+m paris deux après dit ma avec de j depuis fait alors le d au moi général lui a quelques me en y fut mille peu t du étoit je s ai avoit
+
+
+
+
